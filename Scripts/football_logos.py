@@ -60,8 +60,21 @@ logger = logging.getLogger(__name__)
 
 # ── Paths ──────────────────────────────────────────────────────
 PROJECT_ROOT      = Path(__file__).parent.parent
+import sys
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
 OUTPUT_DIR        = PROJECT_ROOT / "Modules" / "Assets" / "logos"
+FLAGS_DIR         = PROJECT_ROOT / "Modules" / "Assets" / "flag-icons-main"
 COUNTRIES_OUT_DIR = OUTPUT_DIR / "countries"
+
+# ── Supabase Integration ──────────────────────────────────────
+try:
+    from Data.Access.storage_manager import StorageManager
+    from Data.Access.metadata_linker import MetadataLinker
+    SUPABASE_AVAILABLE = True
+except ImportError:
+    SUPABASE_AVAILABLE = False
 
 SITE_BASE = "https://football-logos.cc"
 
@@ -346,7 +359,39 @@ def _download_league_zip(slug: str, force: bool = False) -> dict:
     return {"slug": slug, "status": "not_found", "reason": "404 — all URL variants failed"}
 
 
-def download_all_logos(limit: Optional[int] = None, max_workers: int = 4, force: bool = False):
+def _upload_to_supabase(
+    local_path: Path, 
+    remote_subdir: str, 
+    storage_mgr: Optional[StorageManager] = None,
+    linker: Optional[MetadataLinker] = None,
+    league_slug: Optional[str] = None,
+    is_league_logo: bool = False
+) -> Optional[str]:
+    """Helper to upload a file to Supabase, log URL, and optionally link to database."""
+    if not SUPABASE_AVAILABLE:
+        return None
+    
+    mgr = storage_mgr or StorageManager(bucket_name="logos")
+    remote_path = f"{remote_subdir}/{local_path.name}"
+    
+    try:
+        url = mgr.upload_file(local_path, remote_path)
+        if url:
+            logger.info(f"  [↑] Joined Supabase: {url}")
+            if linker:
+                if is_league_logo and league_slug:
+                    linker.update_league_logo(league_slug, url)
+                elif league_slug:
+                    # team logo
+                    team_name = local_path.stem
+                    linker.update_team_logo(team_name, league_slug, url)
+        return url
+    except Exception as e:
+        logger.error(f"  [!] Supabase upload failed for {local_path.name}: {e}")
+        return None
+
+
+def download_all_logos(limit: Optional[int] = None, max_workers: int = 4, force: bool = False, upload_supabase: bool = False):
     slugs = LEAGUE_SLUGS[:limit] if limit else LEAGUE_SLUGS
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     logger.info(f"🌍 Football logos — {len(slugs)} leagues")
@@ -368,6 +413,13 @@ def download_all_logos(limit: Optional[int] = None, max_workers: int = 4, force:
 
     logger.info(f"📥 Downloading {len(to_download)} missing league packs...")
     counts: dict = {"ok": 0, "not_found": 0, "error": 0}
+    
+    storage_mgr = None
+    linker = None
+    if upload_supabase and SUPABASE_AVAILABLE:
+        storage_mgr = StorageManager(bucket_name="logos")
+        linker = MetadataLinker(PROJECT_ROOT)
+
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {pool.submit(_download_league_zip, s, force): s for s in to_download}
         for future in as_completed(futures):
@@ -376,10 +428,24 @@ def download_all_logos(limit: Optional[int] = None, max_workers: int = 4, force:
             counts[status] = counts.get(status, 0) + 1
             if status == "ok":
                 logger.info(f"  [+] {r['slug']}: {r['files']} files ({r['size_mb']} MB)")
+                if upload_supabase:
+                    logger.info(f"  [↑] {r['slug']}: Uploading to Supabase Storage...")
+                    league_dir = OUTPUT_DIR / r['slug'].replace("-", "_")
+                    for img in league_dir.glob("*.*"):
+                        _upload_to_supabase(
+                            img, 
+                            f"leagues/{r['slug']}", 
+                            storage_mgr=storage_mgr, 
+                            linker=linker,
+                            league_slug=r['slug']
+                        )
             elif status == "not_found":
                 logger.warning(f"  [!] {r['slug']}: {r['reason']}")
             elif status == "error":
                 logger.error(f"  [x] {r['slug']}: {r['reason']}")
+
+    if linker:
+        linker.save()
 
     logger.info(
         f"🏁 Done — {counts['ok']} new • {len(already_present)} skipped • "
@@ -492,6 +558,9 @@ def _download_country(
     session:       requests.Session,
     force:         bool = False,
     image_workers: int  = 8,
+    upload_supabase: bool = False,
+    storage_mgr: Optional[StorageManager] = None,
+    linker: Optional[MetadataLinker] = None,
 ) -> dict:
     """
     Full download pipeline for one country:
@@ -557,6 +626,17 @@ def _download_country(
         return {"name": name, "slug": slug, "status": "error", "reason": "all image downloads failed"}
 
     files, size_mb = _dir_stats(country_dir)
+    if upload_supabase:
+        logger.info(f"  [↑] {name}: Uploading {ok} logos to Supabase...")
+        for img in country_dir.glob("*.*"):
+            _upload_to_supabase(
+                img, 
+                f"countries/{slug}", 
+                storage_mgr=storage_mgr, 
+                linker=linker,
+                league_slug=slug
+            )
+
     return {
         "name": name, "slug": slug, "status": "ok",
         "files": files, "size_mb": size_mb, "downloaded": ok,
@@ -569,6 +649,7 @@ def download_all_countries(
     limit:       Optional[int] = None,
     max_workers: int           = 5,
     force:       bool          = False,
+    upload_supabase: bool      = False,
 ):
     """
     Download team logos for all 160 countries.
@@ -600,10 +681,16 @@ def download_all_countries(
         else:
             logger.info(msg)
 
+    storage_mgr = None
+    linker = None
+    if upload_supabase and SUPABASE_AVAILABLE:
+        storage_mgr = StorageManager(bucket_name="logos")
+        linker = MetadataLinker(PROJECT_ROOT)
+
     try:
         with ThreadPoolExecutor(max_workers=max_workers) as pool:
             futures = {
-                pool.submit(_download_country, c, session, force): c["name"]
+                pool.submit(_download_country, c, session, force, 8, upload_supabase, storage_mgr, linker): c["name"]
                 for c in countries
             }
             for future in as_completed(futures):
@@ -620,6 +707,9 @@ def download_all_countries(
 
                 if progress:
                     progress.update(1)
+
+        if linker:
+            linker.save()
 
     finally:
         if progress:
@@ -695,15 +785,21 @@ examples:
   python football_logos.py --countries            # download all 160 countries
   python football_logos.py --countries --limit 5  # test with 5 countries
   python football_logos.py --force                # re-download everything
+  python football_logos.py --supabase             # upload to Supabase
         """,
     )
     parser.add_argument("--limit",     type=int,            help="Process only the first N leagues/countries")
     parser.add_argument("--workers",   type=int, default=5, help="Concurrent country workers (default: 5)")
     parser.add_argument("--countries", action="store_true", help="Download team logos for all 160 countries")
     parser.add_argument("--force",     action="store_true", help="Re-download even if files already exist")
+    parser.add_argument("--supabase",  action="store_true", help="Upload logos to Supabase Storage")
     args = parser.parse_args()
 
+    if args.supabase and not SUPABASE_AVAILABLE:
+        logger.error("❌ Supabase dependencies not found. Ensure Data/Access/storage_manager.py exists.")
+        exit(1)
+
     if args.countries:
-        download_all_countries(limit=args.limit, max_workers=args.workers, force=args.force)
+        download_all_countries(limit=args.limit, max_workers=args.workers, force=args.force, upload_supabase=args.supabase)
     else:
-        download_all_logos(limit=args.limit, max_workers=args.workers, force=args.force)
+        download_all_logos(limit=args.limit, max_workers=args.workers, force=args.force, upload_supabase=args.supabase)

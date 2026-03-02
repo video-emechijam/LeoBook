@@ -143,6 +143,7 @@ PROFILES_CSV = os.path.join(DB_DIR, "profiles.csv")
 CUSTOM_RULES_CSV = os.path.join(DB_DIR, "custom_rules.csv")
 RULE_EXECUTIONS_CSV = os.path.join(DB_DIR, "rule_executions.csv")
 LIVE_SCORES_CSV = os.path.join(DB_DIR, "live_scores.csv")
+COUNTRIES_CSV = os.path.join(DB_DIR, "countries.csv")
 
 
 def init_csvs():
@@ -729,5 +730,6 @@ files_and_headers = {
     LIVE_SCORES_CSV: [
         'fixture_id', 'home_team', 'away_team', 'home_score', 'away_score',
         'minute', 'status', 'region_league', 'match_link', 'timestamp', 'last_updated'
-    ]
+    ],
+    COUNTRIES_CSV: ['code', 'name', 'continent', 'capital', 'flag_1x1', 'flag_4x3', 'last_updated']
 }

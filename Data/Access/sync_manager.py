@@ -42,6 +42,7 @@ TABLE_CONFIG = {
     'accuracy_reports': {'csv': 'accuracy_reports.csv', 'table': 'accuracy_reports', 'key': 'report_id'},
     'audit_log': {'csv': 'audit_log.csv', 'table': 'audit_log', 'key': 'id'},
     'live_scores': {'csv': 'live_scores.csv', 'table': 'live_scores', 'key': 'fixture_id'},
+    'countries': {'csv': 'countries.csv', 'table': 'countries', 'key': 'code'},
 }
 
 class SyncManager:
@@ -144,13 +145,13 @@ class SyncManager:
 
         # User-visible sync direction feedback
         if to_push_ids and to_pull_ids:
-            print(f"   [{table_name}] ↕ Bi-directional: {len(to_push_ids)} CSV→DB, {len(to_pull_ids)} DB→CSV")
+            print(f"   [{table_name}] Bi-directional: {len(to_push_ids)} CSV to DB, {len(to_pull_ids)} DB to CSV")
         elif to_push_ids:
-            print(f"   [{table_name}] ↑ Push: {len(to_push_ids)} rows CSV→DB (local is newer)")
+            print(f"   [{table_name}] Push: {len(to_push_ids)} rows CSV to DB (local is newer)")
         elif to_pull_ids:
-            print(f"   [{table_name}] ↓ Pull: {len(to_pull_ids)} rows DB→CSV (remote is newer)")
+            print(f"   [{table_name}] Pull: {len(to_pull_ids)} rows DB to CSV (remote is newer)")
         else:
-            print(f"   [{table_name}] ✓ Already in sync")
+            print(f"   [{table_name}] OK: Already in sync")
 
         # 4. Pull Operations
         if to_pull_ids:
