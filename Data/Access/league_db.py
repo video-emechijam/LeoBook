@@ -283,6 +283,7 @@ _ALTER_MIGRATIONS = [
     ("teams", "other_names", "TEXT"),
     ("teams", "abbreviations", "TEXT"),
     ("teams", "search_terms", "TEXT"),
+    ("teams", "hq_crest", "INTEGER DEFAULT 0"),
     ("fixtures", "region_league", "TEXT"),
     ("fixtures", "match_link", "TEXT"),
 ]

@@ -136,7 +136,7 @@ Examples:
   python Leo.py --sync                     Force full cloud sync
   python Leo.py --recommend                Generate and display recommendations only
   python Leo.py --accuracy                 Print accuracy report only
-  python Leo.py --search-dict              Rebuild the search dictionary from CSVs
+  python Leo.py --search-dict              Rebuild the search dictionary from SQLite
   python Leo.py --review                   Run outcome review process only
   python Leo.py --backtest                 Run a single-pass backtest check
   python Leo.py --offline-repredict        Offline reprediction mode
@@ -177,7 +177,7 @@ Examples:
     parser.add_argument('--accuracy', action='store_true',
                        help='Print accuracy report only')
     parser.add_argument('--search-dict', action='store_true',
-                       help='Rebuild the search dictionary from CSVs')
+                       help='Rebuild the search dictionary from SQLite')
     parser.add_argument('--review', action='store_true',
                        help='Run outcome review process only')
     parser.add_argument('--backtest', action='store_true',
