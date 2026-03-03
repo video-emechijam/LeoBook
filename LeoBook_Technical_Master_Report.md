@@ -1,4 +1,4 @@
-> **Version**: 5.0 · **Last Updated**: 2026-03-03 · **Architecture**: High-Velocity Concurrent Architecture (Shared Locking + Multi-Key/Multi-Model LLM Rotation + Adaptive Learning)
+> **Version**: 6.0 · **Last Updated**: 2026-03-03 · **Architecture**: High-Velocity Concurrent Architecture (Shared Locking + Multi-Key/Multi-Model LLM Rotation + Adaptive Learning + Neural RL)
 
 ## Table of Contents
 
@@ -32,6 +32,9 @@ LeoBook is a **fully autonomous sports prediction and betting system** comprised
 | `Leo.py` | Central orchestrator — runs the entire system in a loop | **Entrypoint** |
 | `.env` | API keys (Gemini, Grok, Supabase, Football.com), config | ✅ via `dotenv` |
 | `RULEBOOK.md` | Developer rules (MANDATORY reading) | — |
+| `requirements.txt` | Core Python dependencies | — |
+| `requirements-rl.txt` | PyTorch CPU + RL dependencies | — |
+| `.devcontainer/` | GitHub Codespaces / VM auto-setup | — |
 | `AIGO_Learning_Guide.md` | Documentation for the AIGO subsystem | — |
 | `leobook_algorithm.md` | Algorithm whitepaper | — |
 | `SUPABASE_SETUP.md` | Supabase setup instructions | — |
@@ -41,6 +44,7 @@ LeoBook is a **fully autonomous sports prediction and betting system** comprised
 | Directory | Files | Purpose |
 |-----------|-------|---------|
 | `Core/Intelligence/` | `rule_engine.py`, `rule_config.py`, `goal_predictor.py`, `learning_engine.py`, `rule_engine_manager.py`, `aigo_engine.py`, `aigo_suite.py`, `interaction_engine.py`, `visual_analyzer.py`, `memory_manager.py`, `selector_db.py`, `selector_manager.py`, `unified_matcher.py`, `popup_handler.py`, `llm_health_manager.py`, `api_manager.py` | AI engine, AIGO self-healing, LLM health, selectors, adaptive learning |
+| `Core/Intelligence/rl/` | `feature_encoder.py`, `model.py`, `adapter_registry.py`, `trainer.py`, `inference.py` | Neural RL engine — SharedTrunk + LoRA league adapters + league-conditioned team adapters (272K params) |
 | `Core/Browser/` | `page_analyzer.py`, `html_utils.py`, extractors | Playwright automation, DOM analysis, data extractors |
 | `Core/System/` | `lifecycle.py`, `monitoring.py`, `withdrawal_checker.py` | CLI parsing, oversight, withdrawal logic |
 | `Core/Utils/` | `constants.py`, utilities | Shared constants |
@@ -131,6 +135,13 @@ Leo.py orchestrates the cycle in sequential and concurrent phases:
 | 1 | `monitoring.py` | Health check, oversight reporting |
 | 2 | `backtest_monitor.py` | Backtest trigger detection + execution |
 
+#### RL Training (Utility Command: `--train-rl`)
+| # | Module Called | Action |
+|---|-------------|--------|
+| 1 | `Core/Intelligence/rl/trainer.py` | Chronological PPO training from historical fixtures |
+| 2 | `Core/Intelligence/rl/adapter_registry.py` | Auto-register leagues/teams, track fine-tune thresholds |
+| 3 | `Core/Intelligence/rl/inference.py` | Post-training: `RLPredictor` available for predictions |
+
 ---
 
 ## 4. Design & UI/UX
@@ -176,9 +187,10 @@ flowchart LR
     subgraph DATA ["Data Layer"]
         CSV[("Local CSVs<br/>12 tables")]
         LOCK["🔒 CSV_LOCK<br/>(Shared Locking)"]
-        LW[("learning_weights.json<br/>Adaptive Rule Weights")]
-        KJ[("knowledge.json<br/>Selector Knowledge Base")]
-        SB[("Supabase<br/>Cloud Database")]
+        LW[("learning_weights.json\n<br/>Adaptive Rule Weights")]
+        KJ[("knowledge.json\n<br/>Selector Knowledge Base")]
+        SB[("Supabase\n<br/>Cloud Database")]
+        RL[("models/\n<br/>RL Model + Adapters")]
     end
 
     subgraph APP ["Flutter App"]
@@ -202,8 +214,10 @@ flowchart LR
     REVIEW --> LW
     CSV -.->|"compute adaptive accuracy"| MOBILE
     CSV -.->|"analyze outcomes"| LW
+    PREDICT -.->|"RL model inference"| RL
+    REVIEW -.->|"online RL update"| RL
 ```
 
 ---
-*Last updated: March 3, 2026*
+*Last updated: March 3, 2026 (v6.0 — Neural RL Architecture)*
 *LeoBook Engineering Team*

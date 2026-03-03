@@ -1,4 +1,4 @@
-# LeoBook Developer RuleBook v5.0
+# LeoBook Developer RuleBook v6.0
 
 > **This document is LAW.** Every developer and AI agent working on LeoBook MUST follow these rules without exception. Violations will break the system.
 
@@ -75,6 +75,15 @@ Every Python file MUST have this header format:
 - **Concurrency**: SQLite WAL mode handles concurrent reads/writes — no manual locking required.
 - Never use `time.sleep()` in async code — use `await asyncio.sleep()`.
 - **Adaptive Feedback:** The `LearningEngine` must update weights AFTER `outcome_reviewer` completes a batch.
+
+### 2.9 Reinforcement Learning Module (`Core/Intelligence/rl/`)
+
+- **Chronological Training**: Training MUST proceed day-by-day in calendar order. NO match result may be used before its fixture date+time. This is enforced by date assertions in the training loop.
+- **2-Season Lookback**: Only data from the current season and 1 prior season is used for features/training. Older data is discarded. Last-10 matches are prioritized.
+- **Prediction Accuracy = Primary Reward**: The composite reward function weights prediction correctness as the primary signal. ROI and calibration are secondary.
+- **Adapter Registry**: All Flashscore IDs map to integer indices via `AdapterRegistry`. New leagues/teams auto-register and use GLOBAL fallback until fine-tune thresholds are met (20 matches for leagues, 5 for teams).
+- **Drop-In Compatibility**: `RLPredictor.predict()` returns the EXACT same dict format as `RuleEngine.analyze()`. No downstream changes needed.
+- **Dependencies**: PyTorch CPU-only is in `requirements-rl.txt` (separate from core `requirements.txt`). Never add CUDA deps to the main requirements.
 
 ### 2.7 Zero Hardcoded Selectors (MANDATORY)
 
@@ -253,11 +262,12 @@ LeoBook/
 ├── Core/
 │   ├── System/            ← Lifecycle, monitoring, withdrawal
 │   ├── Intelligence/      ← AI engine, rule engine, LLM, selectors
+│   │   └── rl/            ← Neural RL engine (SharedTrunk + LoRA adapters)
 │   ├── Browser/           ← Playwright helpers, extractors
 │   └── Utils/             ← Constants, utilities
 ├── Data/
 │   ├── Access/            ← DB helpers, sync, league_db (SQLite ops), review
-│   ├── Store/             ← leobook.db (SQLite source of truth) + learning_weights.json
+│   ├── Store/             ← leobook.db (SQLite) + learning_weights.json + models/ (RL)
 │   └── Supabase/          ← Migration scripts (archived)
 ├── Modules/
 │   ├── Flashscore/        ← Scraping, analysis, live streamer
@@ -450,6 +460,6 @@ LeoBook/
 
 ---
 
-*Last updated: March 2, 2026*
+*Last updated: March 3, 2026 (v6.0 — Neural RL Architecture)*
 *Authored by: LeoBook Engineering Team*
 

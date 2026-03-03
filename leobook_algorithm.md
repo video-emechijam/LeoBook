@@ -1,6 +1,6 @@
 # LeoBook Algorithm & Codebase Reference
 
-> **Version**: 5.0 · **Last Updated**: 2026-03-03 · **Architecture**: High-Velocity Concurrent Architecture (Shared Locking + Per-Match Sequential Pipeline + Adaptive Learning)
+> **Version**: 6.0 · **Last Updated**: 2026-03-03 · **Architecture**: High-Velocity Concurrent Architecture (Per-Match Pipeline + Adaptive Learning + Neural RL)
 
 This document maps the **execution flow** of [Leo.py](Leo.py) to specific files and functions.
 
@@ -11,7 +11,7 @@ This document maps the **execution flow** of [Leo.py](Leo.py) to specific files 
 Leo.py is a **pure orchestrator**. It runs an infinite `while True` loop, splitting each cycle into phases:
 
 ```
-Leo.py (Orchestrator) v5.0
+Leo.py (Orchestrator) v6.0
 ├── Prologue P1 (Sequential Prerequisite):
 │   └── Cloud Sync → Outcome Review → Accuracy Report
 ├── Concurrent Execution:
@@ -98,6 +98,77 @@ Runs in parallel with the main cycle via `asyncio.create_task()` in its **own is
 
 ---
 
+## Neural RL Engine (`Core/Intelligence/rl/`)
+
+**Objective**: Replace rule-based voting with a learned policy that adapts per-league and per-team, with prediction accuracy as the primary reward signal.
+
+### Architecture
+
+```
+FeatureEncoder (vision_data → 192-dim tensor, recency-weighted)
+    → SharedTrunk MLP (192→256→256→128, 148K params)
+        → LeagueAdapter (LoRA rank=16, ~8K params/league)
+            → ConditionedTeamAdapter (league-conditioned MLP + LoRA rank=8)
+                → PolicyHead (8 actions: 1X2, O/U, BTTS, no_bet)
+                → ValueHead (scalar expected value)
+                → StakeHead (Kelly fraction 0-5%)
+```
+
+**Key design**: Same team produces different predictions in different competitions. The `ConditionedTeamAdapter` takes a league embedding as conditioning input, so Arsenal's behaviour in the Premier League differs from Arsenal in the Champions League.
+
+### Feature Encoding (192 dims)
+
+| Feature Group | Dims | Details |
+|---------------|------|---------|
+| xG features | 4 | Home/away/diff/total expected goals |
+| Form vectors (×2 teams) | 60 | Last-10 W/D/L with exponential recency weighting |
+| Goal stats (×2 teams) | 40 | Scored/conceded patterns, O2.5%, BTTS%, clean sheets |
+| H2H summary | 8 | Win rates, avg goals, dominance flags |
+| Standings | 10 | Normalized positions, points, GD, top-3 flags |
+| Schedule context | 6 | Rest days, fatigue flags |
+| League metadata | 4 | Level, avg goals, home advantage, draw rate |
+| Reserved padding | 60 | Future-proof expansion |
+
+### Composite Reward Function
+
+```python
+reward = (
+    1.0 * prediction_accuracy      # Primary: did we predict correctly?
+  + 0.6 * (1.0 - brier_score)      # Calibration quality
+  + 0.4 * roi_normalized           # Return on investment
+)
+```
+
+### Training Pipeline (Chronological, No Future Leakage)
+
+1. **Phase 1 — Base Model**: All leagues, chronological day-by-day walk-through
+2. **Phase 2 — League Adapters**: Freeze base, train per-league LoRA adapters
+3. **Phase 3 — Team Adapters**: Freeze base+league, train league-conditioned team adapters
+4. **Phase 4 — Online Learning**: Production updates from new outcome reviews
+
+### Cold-Start Strategy
+
+| Entity | Fallback | Fine-tune threshold |
+|--------|----------|--------------------|
+| New league | GLOBAL adapter | After 20 matches |
+| New/promoted team | League-average adapter | After 5 matches |
+
+### CLI
+
+```bash
+python Leo.py --train-rl               # Full chronological training
+python Leo.py --train-rl --league ID   # Fine-tune specific league adapter
+```
+
+### Storage
+
+| File | Contents |
+|------|----------|
+| `Data/Store/models/leobook_base.pth` | SharedTrunk + heads (~800KB) |
+| `Data/Store/models/adapter_registry.json` | Flashscore ID → index mapping |
+
+---
+
 ## LLM Health Management
 
 **Module**: [llm_health_manager.py](Core/Intelligence/llm_health_manager.py)
@@ -116,5 +187,5 @@ See [leobookapp/README.md](leobookapp/README.md) for the Liquid Glass design spe
 
 ---
 
-*Last updated: March 3, 2026*
+*Last updated: March 3, 2026 (v6.0 — Neural RL Architecture)*
 *LeoBook Engineering Team*

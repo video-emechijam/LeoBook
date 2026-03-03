@@ -3,7 +3,7 @@
 **Developer**: Matterialless LLC
 **Chief Engineer**: Emenike Chinenye James
 **Powered by**: Multi-Key Gemini Rotation (25+ Keys, 5 Models) · xAI Grok API (Optional)
-**Architecture**: High-Velocity Concurrent Architecture v5.0 (Per-Match Pipeline + Live Streaming + Adaptive Learning)
+**Architecture**: High-Velocity Concurrent Architecture v6.0 (Per-Match Pipeline + Live Streaming + Adaptive Learning + Neural RL)
 
 ---
 
@@ -13,7 +13,7 @@ LeoBook is an **autonomous sports prediction and betting system** with two halve
 
 | Component | Tech | Purpose |
 |-----------|------|---------|
-| `Leo.py` | Python 3.12 + Playwright | Data extraction, rule-based prediction, odds harvesting, automated bet placement, withdrawal management |
+| `Leo.py` | Python 3.12 + Playwright + PyTorch | Data extraction, rule-based + neural RL prediction, odds harvesting, automated bet placement, withdrawal management |
 | `leobookapp/` | Flutter/Dart | Cross-platform dashboard with "Telegram-grade" UI density, Liquid Glass aesthetics, and real-time streaming |
 
 **Leo.py** is a **pure orchestrator** — it contains zero business logic. All logic lives in the modules it imports. It runs in an infinite loop, executing a cycle every 6h. The engine uses **High-Velocity Concurrent Execution** via a per-match sequential pipeline, protected by a global `CSV_LOCK` for storage integrity. A **live score streamer** runs in its own isolated Playwright session in parallel. **V5.0 transition**: The system now utilizes a data-driven selector architecture (`SelectorManager`) and enforces unified Nigerian timekeeping (`now_ng`). Data sovereignty is achieved via Flashscore-native string IDs for all entities.
@@ -22,7 +22,7 @@ For the complete file inventory and step-by-step execution trace, see [LeoBook_T
 
 ---
 
-## System Architecture (v4.0 Per-Match Pipeline)
+## System Architecture (v6.0 Per-Match Pipeline + Neural RL)
 
 ```
 Leo.py (Orchestrator)
@@ -47,11 +47,12 @@ Leo.py (Orchestrator)
 - **Multi-Key/Multi-Model Gemini Rotation**: Adaptive load balancing across 25+ free-tier keys with 5 models and dual exclusive chains (DESCENDING for AIGO intelligence, ASCENDING for SearchDict throughput). Dead keys (403) are permanently excluded.
 - **Dual-LLM Intelligent Routing**: Smart failover between Grok (optional) and Gemini with per-context model selection.
 - **Adaptive Learning**: Per-league rule weight evolution via outcome feedback loop.
+- **Neural RL Engine** (`Core/Intelligence/rl/`): SharedTrunk + LoRA league adapters + league-conditioned team adapters. PPO training with chronological walk-through, composite reward (prediction accuracy primary). Same team produces different predictions in different competitions.
 - **Live Score Streaming**: Isolated Playwright session with delta-only Supabase pushes, 2.5hr auto-finish rule, and schedule/prediction propagation.
 
 ### Core Modules
 
-- **`Core/Intelligence/`** — AI engine (rule-based prediction, adaptive learning, AIGO self-healing, LLM health management)
+- **`Core/Intelligence/`** — AI engine (rule-based prediction, **neural RL engine**, adaptive learning, AIGO self-healing, LLM health management)
 - **`Core/Browser/`** — Playwright automation and data extractors (H2H, standings, league pages)
 - **`Core/System/`** — Lifecycle, monitoring, withdrawal checker
 - **`Modules/Flashscore/`** — Schedule extraction, match processing, offline reprediction, live score streaming
@@ -86,9 +87,13 @@ See [AIGO_Learning_Guide.md](AIGO_Learning_Guide.md) for the full pipeline speci
 LeoBook/
 ├── Leo.py                  # Orchestrator (dispatch-based CLI)
 ├── RULEBOOK.md             # Developer rules (MANDATORY reading)
+├── requirements.txt        # Core Python dependencies
+├── requirements-rl.txt     # PyTorch CPU + RL dependencies
+├── .devcontainer/          # GitHub Codespaces / VM auto-setup
 ├── Core/
 │   ├── Browser/            # Playwright automation + extractors
 │   ├── Intelligence/       # AI engine, AIGO, LLM health, selectors, learning
+│   │   └── rl/             # Neural RL engine (SharedTrunk + LoRA adapters)
 │   ├── System/             # Lifecycle, monitoring, withdrawal
 │   └── Utils/              # Constants, utilities
 ├── Modules/
@@ -142,9 +147,16 @@ The app implements a **Telegram-inspired high-density aesthetic** optimized for 
 ### Backend (Leo.py)
 
 ```bash
+# Core setup
 pip install -r requirements.txt
+pip install -r requirements-rl.txt  # PyTorch CPU + RL deps
 playwright install chromium
 cp .env.example .env  # Configure API keys
+
+# Or use Codespace/VM one-shot setup:
+bash .devcontainer/setup.sh
+
+# Full cycle
 python Leo.py              # Full cycle (infinite loop)
 python Leo.py --prologue    # Run prologue only (P1 + P2)
 python Leo.py --prologue --page 1  # Prologue P1 only
@@ -170,6 +182,11 @@ python Leo.py --rule-engine --list  # List registered rule engines
 python Leo.py --rule-engine --set-default <name>  # Set default engine
 python Leo.py --rule-engine --backtest --from-date 2025-08-01 # Backtest with date
 python Leo.py --offline-repredict  # Offline reprediction mode
+
+# RL Model Training
+python Leo.py --train-rl               # Full chronological training
+python Leo.py --train-rl --league ID   # Fine-tune specific league adapter
+
 python Leo.py --help        # See all commands
 ```
 
@@ -221,10 +238,11 @@ flutter run -d chrome  # or: flutter run (mobile)
 - `python Leo.py --backtest` — Run backtest check
 - `python Leo.py --streamer` — Run live streamer standalone
 - `python Leo.py --assets` — Sync team and league assets
+- `python Leo.py --train-rl` — Train/retrain the RL model from historical fixtures
 - Monitor `Data/Store/audit_log.csv` for real-time event transparency
 - Live streamer runs automatically in parallel — check `[Streamer]` logs
 
 ---
 
-*Last updated: March 3, 2026*
+*Last updated: March 3, 2026 (v6.0 — Neural RL Architecture)*
 *LeoBook Engineering Team*
