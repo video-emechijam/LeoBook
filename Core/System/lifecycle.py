@@ -159,8 +159,10 @@ Examples:
   python Leo.py --enrich-leagues            Extract Flashscore league pages -> SQLite
   python Leo.py --enrich-leagues --limit 5  Extract first 5 unprocessed leagues
   python Leo.py --enrich-leagues --reset    Reset and extract all leagues
-  python Leo.py --enrich-leagues --seasons 2 Extract last 2 seasons per league
-  python Leo.py --enrich-leagues --all-seasons Extract all available seasons
+   python Leo.py --enrich-leagues --seasons 2 Extract last 2 seasons per league
+   python Leo.py --enrich-leagues --all-seasons Extract all available seasons
+   python Leo.py --train-rl               Train RL model from historical fixtures
+   python Leo.py --train-rl --league ID   Fine-tune a specific league adapter
         """
     )
     # --- Granular Chapter / Page Selection ---
@@ -211,7 +213,13 @@ Examples:
     parser.add_argument('--all-seasons', action='store_true',
                        help='Extract all available seasons (use with --enrich-leagues)')
     parser.add_argument('--upgrade-crests', action='store_true',
-                       help='Upgrade team crests to high-quality logos from Modules/Assets/logos')
+                        help='Upgrade team crests to high-quality logos from Modules/Assets/logos')
+
+    # --- RL Training ---
+    parser.add_argument('--train-rl', action='store_true',
+                        help='Train/retrain the RL model from historical fixtures')
+    parser.add_argument('--league', type=str, metavar='ID',
+                        help='Fine-tune a specific league adapter (use with --train-rl)')
 
     # --- Rule Engine Management ---
     parser.add_argument('--rule-engine', action='store_true',
@@ -239,5 +247,7 @@ Examples:
         parser.error("--refresh requires --schedule")
     if getattr(args, 'all', False) and not args.schedule:
         parser.error("--all requires --schedule")
+    if args.league and not args.train_rl:
+        parser.error("--league requires --train-rl")
     return args
 

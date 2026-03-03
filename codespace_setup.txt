@@ -2,3 +2,46 @@ pip install -r requirements.txt
 python -m playwright install
 sudo rm /etc/apt/sources.list.d/yarn.list
 python -m playwright install-deps
+
+
+# GitHub Codespaces - File Copy, Move, Zip & Unzip Commands
+# For leobook.db + crests folder
+
+## 1. Create Export Folder & Copy Files (Recommended Safe Method)
+
+```bash
+cd /workspaces/LeoBook/Data/Store
+
+# Create clean export folder
+mkdir -p ../leobook-export
+
+# Copy the database file
+cp leobook.db ../leobook-export/
+
+# Copy the entire crests folder
+cp -r crests ../leobook-export/
+
+
+2. Zip the Export Folder
+cd /workspaces/LeoBook/Data
+
+# Create the zip (from the parent folder)
+zip -r leobook-export.zip leobook-export/
+
+
+
+3. Download the Zip
+
+In the left file explorer → right-click leobook-export.zip → Download
+
+
+4. Extract the Zip (Exact Reverse of the Zipping Procedure)
+# 1. Go to your Store folder
+cd /workspaces/LeoBook/Data/Store
+
+# 2. Exact reverse unzip (this is the clean mirror of our zipping steps)
+unzip ../leobook-export.zip "leobook-export/leobook.db" "leobook-export/crests/*" -d .
+
+# 3. Cleanup (remove zip and empty wrapper folder)
+rm ../leobook-export.zip
+rm -r ../leobook-export 2>/dev/null || true

@@ -392,6 +392,21 @@ async def run_utility(args):
         limit = getattr(args, 'limit', None)
         upgrade_all_crests(limit=limit)
 
+    elif args.train_rl:
+        print("\n  --- LEO: RL Model Training ---")
+        from Core.Intelligence.rl.trainer import RLTrainer
+        trainer = RLTrainer()
+        league_id = getattr(args, 'league', None)
+        if league_id:
+            print(f"  [RL] Fine-tuning league adapter: {league_id}")
+            # Load existing model, then fine-tune specific league
+            trainer.load()
+            trainer.train_from_fixtures()  # Full retrain with league focus
+        else:
+            print("  [RL] Full chronological training from historical fixtures...")
+            trainer.train_from_fixtures()
+        print("  [SUCCESS] RL training complete.")
+
 
 # ============================================================
 # DISPATCH — Routes CLI args to the appropriate functions
@@ -565,7 +580,8 @@ if __name__ == "__main__":
                       args.search_dict, args.review, args.backtest,
                       args.rule_engine, args.streamer, args.schedule,
                       args.enrich, args.assets,
-                      args.logos, args.enrich_leagues, args.upgrade_crests])
+                      args.logos, args.enrich_leagues, args.upgrade_crests,
+                      args.train_rl])
     is_granular = args.prologue or args.chapter is not None
 
     try:
