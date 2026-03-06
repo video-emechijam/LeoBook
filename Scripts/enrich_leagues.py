@@ -1059,6 +1059,25 @@ async def main(limit: Optional[int] = None, offset: int = 0, reset: bool = False
         # Default: smart gap scan — leagues with missing critical data
         leagues = get_leagues_with_gaps(conn)
         scan_mode = "GAP SCAN (missing data)"
+        
+        # If history enrichment is requested, also include leagues that need history
+        if num_seasons > 0 or target_season is not None or all_seasons:
+            from Data.Access.league_db import get_leagues_missing_seasons
+            min_needed = num_seasons if num_seasons > 0 else 2
+            if target_season is not None:
+                min_needed = max(min_needed, target_season + 1)
+            
+            history_leagues = get_leagues_missing_seasons(conn, min_seasons=min_needed)
+            
+            # Merge and dedup
+            existing_ids = {lg['league_id'] for lg in leagues}
+            added_count = 0
+            for lg in history_leagues:
+                if lg['league_id'] not in existing_ids:
+                    leagues.append(lg)
+                    added_count += 1
+            if added_count > 0:
+                print(f"  [Scan] Identified {added_count} additional leagues missing historical seasons ({min_needed}+ needed)")
 
     if offset > 0:
         leagues = leagues[offset:]

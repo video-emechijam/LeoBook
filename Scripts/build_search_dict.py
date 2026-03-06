@@ -425,13 +425,13 @@ async def main():
     empty_leagues = [l for l in leagues_raw if raw_to_rlid[l] not in fully_enriched_league_keys and raw_to_rlid[l] not in incomplete_league_keys]
     incomplete_leagues_list = [l for l in leagues_raw if raw_to_rlid[l] in incomplete_league_keys]
 
-    print(f"\nâ”€â”€ PASS 1: Teams â”€â”€")
+    print(f"\n--- PASS 1: Teams ---")
     print(f"  {len(teams_raw) - len(fully_enriched_team_ids) - len(incomplete_team_ids)} teams to process.")
-    print(f"\nâ”€â”€ PASS 2: Teams â”€â”€")
+    print(f"\n--- PASS 2: Teams ---")
     print(f"  {len(incomplete_team_ids)} teams to re-process (incomplete data).")
-    print(f"\nâ”€â”€ PASS 1: Leagues â”€â”€")
+    print(f"\n--- PASS 1: Leagues ---")
     print(f"  {len(empty_leagues)} leagues to process.")
-    print(f"\nâ”€â”€ PASS 2: Leagues â”€â”€")
+    print(f"\n--- PASS 2: Leagues ---")
     print(f"  {len(incomplete_leagues_list)} leagues to re-process (incomplete data).")
 
     # --- Ensure health manager is initialized before circuit-breaker checks ---
@@ -440,7 +440,7 @@ async def main():
     # --- Process Leagues ---
     for league_list, pass_name in [(empty_leagues, "PASS 1"), (incomplete_leagues_list, "PASS 2")]:
         if not league_list: continue
-        print(f"\nâ”€â”€ {pass_name}: Leagues â”€â”€")
+        print(f"\n--- {pass_name}: Leagues ---")
         for i in range(0, len(league_list), BATCH_SIZE):
             # Circuit breaker: skip if all LLM providers are down
             if not health_manager._gemini_active and not getattr(health_manager, '_grok_active', False):
@@ -756,5 +756,24 @@ async def enrich_batch_teams_search_dict(team_pairs: list, batch_size: int = 10)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+    parser = argparse.ArgumentParser(description="Rebuild search dictionary and metadata (LLM-enriched)")
+    parser.add_argument("--test-health", action="store_true", help="Only test LLM provider connectivity and exit")
+    args = parser.parse_args()
+
+    if args.test_health:
+        async def test_health():
+            await health_manager.ensure_initialized()
+            print("\n  --- LLM Health Status ---")
+            providers = health_manager.get_ordered_providers()
+            for p in providers:
+                active = health_manager.is_provider_active(p)
+                print(f"  [{'[OK]' if active else '[X]'}] {p}")
+            
+            if health_manager._gemini_active:
+                print(f"  Gemini Keys: {len(health_manager._gemini_active)} active")
+        
+        asyncio.run(test_health())
+    else:
+        asyncio.run(main())
 

@@ -683,6 +683,32 @@ def get_leagues_with_gaps(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     return [dict(r) for r in rows]
 
 
+def get_leagues_missing_seasons(conn: sqlite3.Connection, min_seasons: int = 2) -> List[Dict[str, Any]]:
+    """Return processed leagues that have fewer than min_seasons in the schedules table.
+    
+    Useful for triggering historical enrichment even if metadata is complete.
+    """
+    # Find league IDs that have at least min_seasons
+    rows = conn.execute("""
+        SELECT league_id FROM schedules
+        WHERE season IS NOT NULL AND season != ''
+        GROUP BY league_id
+        HAVING COUNT(DISTINCT season) >= ?
+    """, (min_seasons,)).fetchall()
+    
+    ok_ids = {r[0] for r in rows}
+    
+    # Get all processed leagues
+    all_processed = conn.execute("SELECT * FROM leagues WHERE processed = 1 AND url != ''").fetchall()
+    
+    missing = []
+    for row in all_processed:
+        if row['league_id'] not in ok_ids:
+            missing.append(dict(row))
+            
+    return missing
+
+
 def get_stale_leagues(conn: sqlite3.Connection, days: int = 7) -> List[Dict[str, Any]]:
     """Return leagues not updated in the last N days."""
     rows = conn.execute(

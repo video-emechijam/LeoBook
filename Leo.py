@@ -416,6 +416,14 @@ async def run_utility(args):
         await run_full_sync(session_name="Manual Sync")
         print("  [SUCCESS] Sync complete.")
 
+    elif getattr(args, 'reset_sync', None):
+        print(f"\n  --- LEO: Reset Sync Watermark [{args.reset_sync}] ---")
+        conn = init_db()
+        table = args.reset_sync.lower()
+        conn.execute("DELETE FROM _sync_watermarks WHERE table_name = ?", (table,))
+        conn.commit()
+        print(f"  [SUCCESS] Watermark for '{table}' reset. Run with --sync to push all rows.")
+
     elif getattr(args, 'pull', False):
         print("\n  --- LEO: Pull ALL from Supabase → local SQLite ---")
         init_db()
@@ -726,6 +734,7 @@ if __name__ == "__main__":
 
     # Determine which mode to run
     is_utility = any([args.sync, getattr(args, 'pull', False),
+                      getattr(args, 'reset_sync', None),
                       args.recommend, args.accuracy,
                       args.search_dict, args.review,
                       args.rule_engine, args.streamer,

@@ -167,6 +167,8 @@ Examples:
                        help='Force push-only sync (local → Supabase)')
     parser.add_argument('--pull', action='store_true',
                        help='Pull ALL data from Supabase → local SQLite (bootstrap/recovery)')
+    parser.add_argument('--reset-sync', type=str, metavar='TABLE',
+                       help='Reset sync watermark for a specific table (e.g. schedules, teams)')
     parser.add_argument('--recommend', action='store_true',
                        help='Generate and display recommendations only')
     parser.add_argument('--accuracy', action='store_true',
