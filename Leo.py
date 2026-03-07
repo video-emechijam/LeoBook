@@ -607,8 +607,7 @@ async def dispatch(args):
 
 @AIGOSuite.aigo_retry(max_retries=2, delay=60.0, use_aigo=False)
 async def main():
-    """Full cycle: Startup → Prologue (Data Gates) → Ch1 (Predictions) → Ch2 (Betting).
-    Dynamic scheduling replaces fixed 6hr sleep."""
+    """Entry point for the Autonomous Supervisor."""
     # Singleton Check
     if os.path.exists(LOCK_FILE):
         try:
@@ -624,102 +623,12 @@ async def main():
         f.write(str(os.getpid()))
 
     try:
-        # ── STARTUP: DB + Supabase sync (must complete before streamer) ──
-        # Now handled by StartupWorker if we wanted to be fully actor-based,
-        # but the prompt asks to replace the while True loop with Supervisor instantiation.
-        # We'll keep the specialized startup logic here for now but move the cycle into the Supervisor.
-        
         from Core.System.supervisor import Supervisor
-        from Core.System.pipeline_workers import StartupWorker, PrologueWorker, Chapter1Worker, Chapter2Worker
-        
         supervisor = Supervisor()
-        
-        # ── Startup Phase ──
-        if not await supervisor.dispatch(StartupWorker):
-            print("   [FATAL] Startup failed. Critical system failure.")
-            sys.exit(1)
-
-        # ── Initialize scheduler ──
-        scheduler = TaskScheduler()
-        scheduler.schedule_weekly_enrichment()
-        scheduler.cleanup_old()
-
-        async with async_playwright() as p:
-            # ── Start live streamer AFTER startup sync ──
-            async def _isolated_streamer():
-                async with async_playwright() as streamer_pw:
-                    import tempfile
-                    import shutil
-                    temp_dir = tempfile.mkdtemp(prefix="leo_streamer_")
-                    try:
-                        await live_score_streamer(streamer_pw, user_data_dir=temp_dir)
-                    finally:
-                        shutil.rmtree(temp_dir, ignore_errors=True)
-
-            streamer_task = asyncio.create_task(_isolated_streamer())
-
-            while True:
-                try:
-                    # Capture cycle metadata
-                    supervisor.state["cycle_count"] += 1
-                    supervisor.state["cycle_start_time"] = dt.now().isoformat()
-                    cycle_num = supervisor.state["cycle_count"]
-                    log_state(chapter="Cycle Start", action=f"Starting Cycle #{cycle_num}")
-                    log_audit_event("CYCLE_START", f"Cycle #{cycle_num} initiated.")
-                    
-                    # ── Task Execution Phase ──
-                    await execute_scheduled_tasks(scheduler, p)
-
-                    # ── Pipeline Phases via Supervisor ──
-                    
-                    # Gate 1: Prologue
-                    if await supervisor.dispatch(PrologueWorker):
-                        
-                        # Gate 2: Chapter 1 (Predictions)
-                        ch1_worker = Chapter1Worker(p)
-                        fb_healthy = await supervisor.dispatch(ch1_worker.__class__, scheduler=scheduler, playwright_instance=p)
-                        
-                        # Gate 3: Chapter 2 (Betting)
-                        if fb_healthy:
-                            await supervisor.dispatch(Chapter2Worker, playwright_instance=p)
-                        else:
-                            print("\n" + "=" * 60)
-                            print("  CHAPTER 2: SKIPPED — Football.com session unhealthy")
-                            print("=" * 60)
-                            log_audit_event("CH2_SKIPPED", "Skipped: Football.com session failed.", status="skipped")
-                    else:
-                        print("  [Error] Prologue Gate failed. Cycle aborted.")
-
-                    # ── SCHEDULE NEXT TASKS ──
-                    scheduler.schedule_weekly_enrichment()
-
-                    # ── CYCLE COMPLETE — Dynamic sleep ──
-                    log_audit_event("CYCLE_COMPLETE", f"Cycle #{cycle_num} finished.")
-
-                    next_wake = scheduler.next_wake_time()
-                    if next_wake:
-                        from Core.Utils.constants import now_ng
-                        sleep_secs = max(60, (next_wake - now_ng()).total_seconds())
-                        sleep_hrs = sleep_secs / 3600
-                        if sleep_hrs > DEFAULT_CYCLE_HOURS:
-                            sleep_secs = DEFAULT_CYCLE_HOURS * 3600
-                            sleep_hrs = DEFAULT_CYCLE_HOURS
-                        print(f"\n   [System] Cycle #{cycle_num} finished at {dt.now().strftime('%H:%M:%S')}. "
-                              f"Next task at {next_wake.strftime('%Y-%m-%d %H:%M')}. Sleeping {sleep_hrs:.1f}h...")
-                    else:
-                        sleep_secs = DEFAULT_CYCLE_HOURS * 3600
-                        print(f"\n   [System] Cycle #{cycle_num} finished at {dt.now().strftime('%H:%M:%S')}. "
-                              f"Sleeping {DEFAULT_CYCLE_HOURS}h...")
-
-                    await asyncio.sleep(sleep_secs)
-
-                except Exception as e:
-                    supervisor.state["error_log"].append(f"{dt.now()}: {e}")
-                    print(f"[ERROR] Main loop: {e}")
-                    log_audit_event("CYCLE_ERROR", f"Unhandled: {e}", status="failed")
-                    await asyncio.sleep(60)
+        await supervisor.run()
     finally:
-        if os.path.exists(LOCK_FILE): os.remove(LOCK_FILE)
+        if os.path.exists(LOCK_FILE): 
+            os.remove(LOCK_FILE)
 
 
 
@@ -829,5 +738,4 @@ if __name__ == "__main__":
         print("\n   --- LEO: Shutting down. ---")
     finally:
         sys.stdout, sys.stderr = original_stdout, original_stderr
-        log_file.close()
         log_file.close()

@@ -64,10 +64,18 @@ class Supervisor:
     async def dispatch(self, worker_class: Type[BaseWorker], *args, timeout: int = 1800, max_retries: int = 2, **kwargs) -> bool:
         """
         Instantiates and executes a worker with timeout and retry logic.
+        Handles playwright_instance requirement for specific workers.
         """
-        worker = worker_class()
+        # Handle workers that require playwright_instance in __init__
+        p_instance = kwargs.get('playwright_instance')
+        if p_instance and worker_class.__name__ in ('Chapter1Worker', 'Chapter2Worker'):
+            worker = worker_class(p_instance)
+            # Remove from kwargs to avoid double-passing to execute()
+            del kwargs['playwright_instance']
+        else:
+            worker = worker_class()
+
         attempt = 0
-        
         while attempt <= max_retries:
             try:
                 logger.info(f"[Supervisor] Dispatching {worker.name} (Attempt {attempt+1}/{max_retries+1})")
@@ -90,26 +98,106 @@ class Supervisor:
         
         return False
 
-    async def run_cycle(self, chapters: list):
+    async def run_cycle(self, scheduler, p) -> bool:
         """
-        Executes a sequence of chapters/workers as a single autonomous loop.
+        Executes a sequence of chapters/workers as a single autonomous cycle.
         """
+        from Core.System.pipeline_workers import StartupWorker, PrologueWorker, Chapter1Worker, Chapter2Worker
+        
         self.state["status"] = "running"
-        self.state["cycle_count"] += 1
         self.capture_state("global_state", self.state)
         
-        startTime = now_ng()
         logger.info(f"=== Starting Autonomous Cycle #{self.state['cycle_count']} (ID: {self.run_id}) ===")
 
-        for worker_class in chapters:
-            success = await self.dispatch(worker_class)
-            if not success:
-                logger.error(f"Critical failure in chapter {worker_class.__name__}. Aborting cycle.")
-                self.state["status"] = "failed"
-                break
-        else:
-            self.state["status"] = "completed"
-            logger.info(f"=== Cycle #{self.state['cycle_count']} Complete ===")
+        # 1. Startup/Audit
+        if not await self.dispatch(StartupWorker):
+            return False
 
+        # 2. Data Readiness Gates
+        if not await self.dispatch(PrologueWorker):
+            return False
+
+        # 3. Prediction Pipeline
+        fb_healthy = await self.dispatch(Chapter1Worker, scheduler, playwright_instance=p)
+
+        # 4. Betting Automation
+        if fb_healthy:
+            await self.dispatch(Chapter2Worker, playwright_instance=p)
+        else:
+            logger.warning("[Supervisor] Skipping Chapter 2 (unhealthy session)")
+
+        self.state["status"] = "completed"
         self.state["last_run"] = now_ng().isoformat()
         self.capture_state("global_state", self.state)
+        logger.info(f"=== Cycle #{self.state['cycle_count']} Complete ===")
+        return True
+
+    async def run(self):
+        """
+        Main infinite loop orchestrator. 
+        Manages browser lifecycle, scheduling, and autonomous heartbeats.
+        """
+        import os
+        from playwright.async_api import async_playwright
+        from Core.System.scheduler import TaskScheduler
+        import tempfile
+        import shutil
+        from Leo import live_score_streamer, execute_scheduled_tasks, log_state, log_audit_event
+        
+        cycle_hours = int(os.getenv('LEO_CYCLE_WAIT_HOURS', '6'))
+        scheduler = TaskScheduler()
+        scheduler.schedule_weekly_enrichment()
+
+        try:
+            async with async_playwright() as p:
+                # Isolated background streamer
+                async def _streamer_safe():
+                    async with async_playwright() as sp:
+                        tdir = tempfile.mkdtemp(prefix="leo_stream_")
+                        try:
+                            await live_score_streamer(sp, user_data_dir=tdir)
+                        except Exception as e:
+                            logger.error(f"[Streamer] Background error: {e}")
+                        finally:
+                            shutil.rmtree(tdir, ignore_errors=True)
+
+                asyncio.create_task(_streamer_safe())
+
+                while True:
+                    self.state["cycle_count"] += 1
+                    cycle_num = self.state["cycle_count"]
+                    log_state(chapter="Cycle Start", action=f"Initiating Cycle #{cycle_num}")
+                    log_audit_event("CYCLE_START", f"Cycle #{cycle_num} initiated.")
+
+                    try:
+                        # Maintenance
+                        await execute_scheduled_tasks(scheduler, p)
+                        
+                        # Execute Cycle
+                        await self.run_cycle(scheduler, p)
+
+                    except Exception as e:
+                        logger.error(f"[Supervisor] Unhandled cycle error: {e}")
+                        self.state["error_log"].append(f"{datetime.now()}: {e}")
+                        await asyncio.sleep(60)
+
+                    # Post-cycle cleanup & sleep
+                    scheduler.schedule_weekly_enrichment()
+                    self.capture_state("global_state", self.state)
+
+                    next_wake = scheduler.next_wake_time()
+                    if next_wake:
+                        sleep_secs = max(60, (next_wake - now_ng()).total_seconds())
+                        if sleep_secs > cycle_hours * 3600:
+                            sleep_secs = cycle_hours * 3600
+                    else:
+                        sleep_secs = cycle_hours * 3600
+
+                    logger.info(f"[Supervisor] Cycle #{cycle_num} done. Sleeping {sleep_secs/3600:.1f}h...")
+                    await asyncio.sleep(sleep_secs)
+
+        except KeyboardInterrupt:
+            logger.info("[Supervisor] Manual shutdown. Saving state...")
+            self.state["status"] = "shutdown"
+            self.capture_state("global_state", self.state)
+            raise
