@@ -380,7 +380,7 @@ class SyncManager:
             df['date'] = pd.to_datetime(df['date'], errors='coerce').dt.strftime('%Y-%m-%d')
         for col in ['home_score', 'away_score']:
             if col in df.columns:
-                df[col] = pd.to_numeric(df[col], errors='coerce')
+                df[col] = pd.to_numeric(df[col], errors='coerce').astype('Int64')
 
         # Timestamp normalization
         now_iso = datetime.utcnow().isoformat()
