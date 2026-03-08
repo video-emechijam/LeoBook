@@ -213,54 +213,8 @@ async def run_chapter_1_p1(p):
         print("  CHAPTER 1 PAGE 1: URL Resolution & Odds Harvesting")
         print("=" * 60)
 
-        # --- Smart SearchDict: only this week's unmatched teams ---
-        try:
-            from Data.Access.league_db import init_db
-            from Data.Access.db_helpers import _get_conn
-            conn = _get_conn()
-            weekly_fixtures = get_weekly_fixtures(conn)
-
-            if weekly_fixtures:
-                # Collect unique team IDs/names from this week's fixtures
-                team_set = set()
-                for f in weekly_fixtures:
-                    hid = f.get('home_team_id', '')
-                    aid = f.get('away_team_id', '')
-                    hname = f.get('home_team_name', '')
-                    aname = f.get('away_team_name', '')
-                    if hid and hname:
-                        team_set.add((hid, hname))
-                    if aid and aname:
-                        team_set.add((aid, aname))
-
-                # Filter to unenriched teams only
-                from Data.Access.league_db import query_all
-                teams_data = query_all(conn, 'teams')
-                enriched_ids = set()
-                for row in teams_data:
-                    st = str(row.get('search_terms', '') or '').strip()
-                    abbr = str(row.get('abbreviations', '') or '').strip()
-                    tid = str(row.get('team_id', ''))
-                    if tid and st and st != '[]' and abbr and abbr != '[]':
-                        enriched_ids.add(tid)
-
-                unenriched = [{'team_id': tid, 'team_name': tname}
-                              for tid, tname in team_set if tid not in enriched_ids]
-
-                if unenriched:
-                    from Scripts.build_search_dict import enrich_batch_teams_search_dict
-                    cap = min(len(unenriched), 100)
-                    print(f"    [SearchDict] Retrying enrichment for {cap}/{len(unenriched)} teams needed for this week...")
-                    await enrich_batch_teams_search_dict(unenriched[:cap])
-                    print(f"    [SearchDict] Done.")
-                else:
-                    print(f"    [SearchDict] All {len(team_set)} teams for this week already enriched.")
-
-                print(f"    [Fixtures] {len(weekly_fixtures)} scheduled matches found for next 7 days.")
-            else:
-                print("    [Fixtures] No scheduled matches found for next 7 days.")
-        except Exception as e:
-            print(f"    [SearchDict] Non-fatal error: {e}")
+        # --- Smart SearchDict: DISABLED (enrichment done separately) ---
+        print("    [SearchDict] Skipped (disabled).")
 
         # --- Football.com Odds Harvesting (no login) ---
         await run_odds_harvesting(p)
@@ -539,18 +493,19 @@ async def run_utility(args):
         trainer = RLTrainer()
         phase = getattr(args, 'phase', 1)
         cold = getattr(args, 'cold', False)
+        resume = getattr(args, 'resume', False)
         limit = getattr(args, '_limit_count', None) # Use --limit for days if needed
         
         league_id = getattr(args, 'league', None)
         if league_id:
             print(f"  [RL] League-specific training: {league_id} (Phase {phase})")
             trainer.load()
-            trainer.train_from_fixtures(phase=phase, cold=cold, limit_days=limit)
+            trainer.train_from_fixtures(phase=phase, cold=cold, limit_days=limit, resume=resume)
         else:
             print(f"  [RL] Starting Phase {phase} training...")
             if phase > 1:
                 trainer.load()
-            trainer.train_from_fixtures(phase=phase, cold=cold, limit_days=limit)
+            trainer.train_from_fixtures(phase=phase, cold=cold, limit_days=limit, resume=resume)
         print("  [SUCCESS] RL training session complete.")
 
 

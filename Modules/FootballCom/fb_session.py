@@ -8,6 +8,7 @@ import os
 import subprocess
 from pathlib import Path
 from playwright.async_api import Playwright, BrowserContext
+from Core.Utils.constants import FB_MOBILE_USER_AGENT, FB_MOBILE_VIEWPORT
 
 async def cleanup_chrome_processes():
     """Automatically terminate conflicting Chrome processes before launch."""
@@ -45,16 +46,18 @@ async def launch_browser_with_retry(playwright: Playwright, user_data_dir: Path,
                 "--disable-blink-features=AutomationControlled",
                 "--no-first-run",
                 "--no-service-autorun",
-                "--password-store=basic"
+                "--password-store=basic",
+                "--new-window"
             ]
 
             context = await playwright.chromium.launch_persistent_context(
                 user_data_dir=str(user_data_dir),
+                channel='chrome',
                 headless=use_headless,
                 args=chrome_args,
                 ignore_default_args=["--enable-automation"],
-                viewport={'width': 375, 'height': 612},
-                user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
+                viewport=FB_MOBILE_VIEWPORT,
+                user_agent=FB_MOBILE_USER_AGENT,
                 timeout=timeout
             )
 

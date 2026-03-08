@@ -24,6 +24,7 @@ from Data.Access.league_db import (
     upsert_league, upsert_team, upsert_fb_match, upsert_live_score,
     log_audit_event as _log_audit_db, upsert_country,
     upsert_accuracy_report, query_all, DB_PATH,
+    upsert_match_odds_batch, get_fb_url_for_league,
 )
 
 # Module-level connection (lazy init)
@@ -480,6 +481,22 @@ def save_site_matches(matches: List[Dict[str, Any]]):
             'booking_url': match.get('booking_url', ''),
             'status': match.get('status', ''),
         })
+
+
+def save_match_odds(odds_list: List[Dict[str, Any]]) -> int:
+    """Persist match odds to SQLite immediately. Returns rows written."""
+    return upsert_match_odds_batch(_get_conn(), odds_list)
+
+
+def get_match_odds(fixture_id: str) -> List[Dict[str, Any]]:
+    """Return all odds rows for a fixture ordered by rank."""
+    conn = _get_conn()
+    rows = conn.execute(
+        "SELECT * FROM match_odds WHERE fixture_id = ? "
+        "ORDER BY rank_in_list ASC",
+        (fixture_id,)
+    ).fetchall()
+    return [dict(r) for r in rows]
 
 
 def load_site_matches(target_date: str) -> List[Dict[str, Any]]:

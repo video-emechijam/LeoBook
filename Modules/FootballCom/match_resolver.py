@@ -26,6 +26,9 @@ class GrokMatcher:
         Resolves a Flashscore match name against a list of Football.com matches.
         Returns (best_match_dict, score).
         """
+        if not fs_name:
+            return None, 0.0
+
         # Quick exact/fuzzy pre-filter to avoid API costs limitations
         best_fuzzy, fuzzy_score = self._fuzzy_resolve(fs_name, fb_matches)
         if fuzzy_score > 90: # Slightly lower threshold for raw Levenshtein score mapping
@@ -40,10 +43,23 @@ class GrokMatcher:
     def _fuzzy_resolve(self, fs_name: str, fb_matches: List[Dict]) -> Tuple[Optional[Dict], float]:
         best_match = None
         min_distance = 999
-        target = fs_name.lower()
+        
+        # Guard input fs_name (Requirement FIX 5)
+        fs_home = (fs_name or '').strip().lower() # Handling name as a whole if it's already a pair
+        if not fs_home:
+            return None, 0.0
+        
+        target = fs_home
         
         for m in fb_matches:
-            candidate = f"{m.get('home_team')} vs {m.get('away_team')}".lower()
+            # Guard candidate side (Requirement FIX 5)
+            candidate_home = (m.get('home_team') or '').strip().lower()
+            candidate_away = (m.get('away_team') or '').strip().lower()
+            
+            if not candidate_home or not candidate_away:
+                continue # Skip malformed candidates silently
+                
+            candidate = f"{candidate_home} vs {candidate_away}"
             dist = distance(target, candidate)
             if dist < min_distance:
                 min_distance = dist

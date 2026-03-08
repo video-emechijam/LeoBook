@@ -37,6 +37,7 @@ TABLE_CONFIG = {
     'audit_log':        {'local_table': 'audit_log',        'remote_table': 'audit_log',        'key': 'id'},
     'live_scores':      {'local_table': 'live_scores',      'remote_table': 'live_scores',      'key': 'fixture_id'},
     'countries':        {'local_table': 'countries',        'remote_table': 'countries',        'key': 'code'},
+    'match_odds':       {'local_table': 'match_odds',       'remote_table': 'match_odds',       'key': 'fixture_id,market_id,exact_outcome,line'},
 }
 
 # ── Supabase auto-provisioning DDL ─────────────────────────────────────────
@@ -152,6 +153,22 @@ SUPABASE_SCHEMA = {
             rule_id TEXT, fixture_id TEXT, user_id TEXT,
             result TEXT, executed_at TEXT,
             last_updated TIMESTAMPTZ DEFAULT now()
+        );""",
+    'match_odds': """
+        CREATE TABLE IF NOT EXISTS public.match_odds (
+            fixture_id TEXT,
+            site_match_id TEXT,
+            market_id TEXT,
+            base_market TEXT,
+            category TEXT,
+            exact_outcome TEXT,
+            line TEXT,
+            odds_value REAL,
+            likelihood_pct INTEGER,
+            rank_in_list INTEGER,
+            extracted_at TEXT,
+            last_updated TIMESTAMPTZ DEFAULT now(),
+            PRIMARY KEY (fixture_id, market_id, exact_outcome, line)
         );""",
 }
 

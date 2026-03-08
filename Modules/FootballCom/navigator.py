@@ -31,6 +31,8 @@ AUTH_FILE = AUTH_DIR / "storage_state.json"
 if not PHONE or not PASSWORD:
     raise ValueError("FB_PHONE and FB_PASSWORD environment variables must be set for login.")
 
+MOBILE_VIEWPORT = {"width": 500, "height": 640}
+
 async def log_page_title(page: Page, label: str = ""):
     """Logs the current page title."""
     try:
@@ -44,6 +46,7 @@ async def log_page_title(page: Page, label: str = ""):
 @AIGOSuite.aigo_retry(max_retries=2, delay=2.0, context_key="fb_match_page", element_key="navbar_balance")
 async def extract_balance(page: Page) -> float:
     """Extract account balance with AIGO self-healing safety net."""
+    await page.set_viewport_size(MOBILE_VIEWPORT)
     print("  [Money] Retrieving account balance...")
     
     # Refresh selector from manager in case of updates
@@ -68,6 +71,7 @@ async def extract_balance(page: Page) -> float:
 @AIGOSuite.aigo_retry(max_retries=2, delay=3.0, context_key="fb_global", element_key="login_button")
 async def perform_login(page: Page):
     """Perform login with AIGO protection for the entire flow."""
+    await page.set_viewport_size(MOBILE_VIEWPORT)
     print("  [Auth] Initiating Football.com login flow...")
     
     # 1. Navigate to main page
@@ -118,6 +122,8 @@ async def load_or_create_session(context: BrowserContext) -> Tuple[BrowserContex
         page = await context.new_page()
     else:
         page = context.pages[0]
+
+    await page.set_viewport_size(MOBILE_VIEWPORT)
 
     # Navigate to check state if needed
     current_url = page.url
@@ -201,15 +207,10 @@ async def navigate_to_schedule(page: Page):
     #if "/sport/football/" in page.url:
          #return await hide_overlays(page)
 
-    sel = SelectorManager.get_selector_strict("fb_main_page", "full_schedule_button")
-    
-    # Standard Playwright: Check visibility and click
-    if sel and await page.locator(sel).count() > 0:
-        await page.locator(sel).first.click(force=True)
-        await page.wait_for_load_state("domcontentloaded", timeout=10000)
-    else:
-        # Direct URL as fallback
-        await page.goto("https://www.football.com/ng/m/sport/football/", wait_until="domcontentloaded")
+    # Direct URL as primary now (per user request)
+    schedule_url = "https://www.football.com/ng/m/sport/football/?sort=2&tab=matches"
+    print(f"  [Navigation] Going to direct schedule URL: {schedule_url}")
+    await page.goto(schedule_url, wait_until="domcontentloaded", timeout=30000)
         
     await hide_overlays(page)
     

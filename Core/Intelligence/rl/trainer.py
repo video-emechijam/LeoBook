@@ -378,7 +378,7 @@ class RLTrainer:
     # Chronological training from fixtures
     # -------------------------------------------------------------------
 
-    def train_from_fixtures(self, phase: int = 1, cold: bool = False, limit_days: Optional[int] = None):
+    def train_from_fixtures(self, phase: int = 1, cold: bool = False, limit_days: Optional[int] = None, resume: bool = False):
         """
         3-Phase Chronological Training:
         Phase 1: Imitation Learning (Warm-start from Rule Engine)
@@ -419,6 +419,33 @@ class RLTrainer:
 
         print(f"  [TRAIN] Window: {all_dates[0]} → {all_dates[-1]} ({len(all_dates)} days)")
 
+        # --- Checkpoint setup ---
+        CHECKPOINT_DIR = MODELS_DIR / "checkpoints"
+        os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+        latest_path = MODELS_DIR / f"phase{phase}_latest.pth"
+        total_matches_global = 0
+        total_correct_global = 0
+        start_day_idx = 0
+
+        # --- Resume from checkpoint ---
+        if resume and latest_path.exists():
+            try:
+                ckpt = torch.load(latest_path, map_location=self.device, weights_only=False)
+                self.model.load_state_dict(ckpt["model_state"], strict=False)
+                self.optimizer.load_state_dict(ckpt["optimizer_state"])
+                start_day_idx = ckpt["day"]
+                total_matches_global = ckpt.get("total_matches", 0)
+                total_correct_global = ckpt.get("correct_predictions", 0)
+                print(f"  [RESUME] ✓ Loaded checkpoint from Day {start_day_idx}/{len(all_dates)} ({ckpt.get('match_date', '?')})")
+                print(f"  [RESUME]   Matches so far: {total_matches_global} | Correct: {total_correct_global}")
+                all_dates = all_dates[start_day_idx:]  # Skip completed days
+                if not all_dates:
+                    print(f"  [RESUME] All days already completed. Nothing to do.")
+                    return
+            except Exception as e:
+                print(f"  [RESUME] Failed to load checkpoint: {e} — starting fresh")
+                start_day_idx = 0
+
         # Phase 1 LR reduction: imitation needs 10x lower LR than PPO exploration
         original_lrs = []
         if phase == 1 and not cold:
@@ -427,7 +454,8 @@ class RLTrainer:
                 pg['lr'] = pg['lr'] * 0.1
             print(f"  [TRAIN] Phase 1 LR reduced 10x for stable imitation (base → {self.optimizer.param_groups[0]['lr']:.2e})")
 
-        for day_idx, match_date in enumerate(all_dates):
+        for day_offset, match_date in enumerate(all_dates):
+            day_idx = start_day_idx + day_offset
             day_matches = 0
             day_reward = 0.0
             day_imit_loss = 0.0
@@ -514,10 +542,32 @@ class RLTrainer:
                 gn = day_grad_norm / day_matches
                 if phase == 1 and not cold:
                     il = day_imit_loss / day_matches
-                    print(f"  [Day {day_idx+1:2d}/{len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | ImitLoss: {il:6.4f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
+                    print(f"  [Day {day_idx+1:2d}/{start_day_idx + len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | ImitLoss: {il:6.4f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
                 else:
                     rw = day_reward / day_matches
-                    print(f"  [Day {day_idx+1:2d}/{len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | Reward: {rw:6.3f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
+                    print(f"  [Day {day_idx+1:2d}/{start_day_idx + len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | Reward: {rw:6.3f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
+
+                # --- Save checkpoint after each day ---
+                total_matches_global += day_matches
+                total_correct_global += int(day_rl_acc)
+                ckpt_data = {
+                    "day": day_idx + 1,
+                    "total_days": start_day_idx + len(all_dates),
+                    "match_date": match_date,
+                    "model_state": self.model.state_dict(),
+                    "optimizer_state": self.optimizer.state_dict(),
+                    "total_matches": total_matches_global,
+                    "correct_predictions": total_correct_global,
+                    "phase": phase,
+                }
+                torch.save(ckpt_data, CHECKPOINT_DIR / f"phase{phase}_day{day_idx+1:03d}.pth")
+                torch.save(ckpt_data, latest_path)
+
+                # Keep only last 5 daily checkpoints
+                existing = sorted(CHECKPOINT_DIR.glob(f"phase{phase}_day*.pth"))
+                while len(existing) > 5:
+                    existing[0].unlink()
+                    existing = existing[1:]
 
         # Restore LR after Phase 1  
         if original_lrs:

@@ -51,21 +51,22 @@ LeoBook v7.0 transitions to an **autonomous, event-driven sync strategy** manage
 ### Tables Synced (11 tables)
 *Notice: `standings` has been removed as it is now a computed VIEW.*
 
-| Table                 | Unique Key            |
-| --------------------- | --------------------- |
-| `predictions`         | `fixture_id`          |
-| `schedules`           | `fixture_id`          |
-| `teams`               | `team_id`             |
-| `region_league`       | `league_id`           |
-| `fb_matches`          | `site_match_id`       |
-| `profiles`            | `id`                  |
-| `custom_rules`        | `id`                  |
-| `accuracy_reports`    | `report_id`           |
-| `live_scores`         | `fixture_id`          |
-| `scheduled_tasks`     | `task_id`             |
-| `readiness_cache`     | `gate_id`             |
-| `enrichment_queue`    | `id`                  |
-| `season_completeness` | `league_id`, `season` |
+| Table                 | Unique Key                                        |
+| --------------------- | ------------------------------------------------- |
+| `predictions`         | `fixture_id`                                      |
+| `schedules`           | `fixture_id`                                      |
+| `teams`               | `team_id`                                         |
+| `region_league`       | `league_id`                                       |
+| `fb_matches`          | `site_match_id`                                   |
+| `profiles`            | `id`                                              |
+| `custom_rules`        | `id`                                              |
+| `accuracy_reports`    | `report_id`                                       |
+| `live_scores`         | `fixture_id`                                      |
+| `match_odds`          | `fixture_id`, `market_id`, `outcome_name`, `line` |
+| `scheduled_tasks`     | `task_id`                                         |
+| `readiness_cache`     | `gate_id`                                         |
+| `enrichment_queue`    | `id`                                              |
+| `season_completeness` | `league_id`, `season`                             |
 
 ---
 

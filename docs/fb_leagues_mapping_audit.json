@@ -1,0 +1,2598 @@
+{
+    "generated_at": "2026-03-08T08:57:36.565024+00:00",
+    "total_fb_leagues": 296,
+    "matched_t1": 110,
+    "matched_t2": 3,
+    "matched_t3": 13,
+    "review_required": 8,
+    "unmatched_count": 162,
+    "duplicate_conflicts": 0,
+    "country_mismatches": 0,
+    "unresolved_countries": [],
+    "matches": [
+        {
+            "fb_country": "England",
+            "fb_league_name": "National League",
+            "fb_tournament_id": "173",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:173/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_4CWHXGM1",
+            "fs_name": "National League",
+            "fs_url": "https://www.flashscore.com/football/england/national-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "EFL Trophy",
+            "fb_tournament_id": "334",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:334/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_4STIHq2f",
+            "fs_name": "EFL Trophy",
+            "fs_url": "https://www.flashscore.com/football/england/efl-trophy/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "Championship",
+            "fb_tournament_id": "18",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:18/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_2DSCa5fE",
+            "fs_name": "Championship",
+            "fs_url": "https://www.flashscore.com/football/england/championship/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "EFL Cup",
+            "fb_tournament_id": "21",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:21/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_OMT80ou8",
+            "fs_name": "EFL Cup",
+            "fs_url": "https://www.flashscore.com/football/england/efl-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "17",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:17/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_dYlOSQOD",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/england/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "League One",
+            "fb_tournament_id": "24",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:24/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_rJSMG3H0",
+            "fs_name": "League One",
+            "fs_url": "https://www.flashscore.com/football/england/league-one/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "FA Cup",
+            "fb_tournament_id": "19",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:19/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_lYQtaqPQ",
+            "fs_name": "FA Cup",
+            "fs_url": "https://www.flashscore.com/football/england/fa-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "England",
+            "fb_league_name": "League Two",
+            "fb_tournament_id": "25",
+            "fb_category_id": "1",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:1/sr:tournament:25/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_198_0MwU4NW6",
+            "fs_name": "League Two",
+            "fs_url": "https://www.flashscore.com/football/england/league-two/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Germany",
+            "fb_league_name": "2. Bundesliga",
+            "fb_tournament_id": "44",
+            "fb_category_id": "30",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:30/sr:tournament:44/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_81_tKH71vSe",
+            "fs_name": "2. Bundesliga",
+            "fs_url": "https://www.flashscore.com/football/germany/2-bundesliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Germany",
+            "fb_league_name": "3. Liga",
+            "fb_tournament_id": "491",
+            "fb_category_id": "30",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:30/sr:tournament:491/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_81_fNLB0bs2",
+            "fs_name": "3. Liga",
+            "fs_url": "https://www.flashscore.com/football/germany/3-liga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Germany",
+            "fb_league_name": "Bundesliga",
+            "fb_tournament_id": "35",
+            "fb_category_id": "30",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:30/sr:tournament:35/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_81_W6BOzpK2",
+            "fs_name": "Bundesliga",
+            "fs_url": "https://www.flashscore.com/football/germany/bundesliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Germany",
+            "fb_league_name": "DFB Pokal",
+            "fb_tournament_id": "217",
+            "fb_category_id": "30",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:30/sr:tournament:217/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_81_MNEDyOlF",
+            "fs_name": "DFB Pokal",
+            "fs_url": "https://www.flashscore.com/football/germany/dfb-pokal/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Serie C, Group C",
+            "fb_tournament_id": "26558",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:26558/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_MsYTtKp0",
+            "fs_name": "Serie C - Group C",
+            "fs_url": "https://www.flashscore.com/football/italy/serie-c-group-c/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Serie B",
+            "fb_tournament_id": "53",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:53/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_6oug4RRc",
+            "fs_name": "Serie B",
+            "fs_url": "https://www.flashscore.com/football/italy/serie-b/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Coppa Italia",
+            "fb_tournament_id": "328",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:328/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_bLyo6mco",
+            "fs_name": "Coppa Italia",
+            "fs_url": "https://www.flashscore.com/football/italy/coppa-italia/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Serie A",
+            "fb_tournament_id": "23",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:23/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_COuk57Ci",
+            "fs_name": "Serie A",
+            "fs_url": "https://www.flashscore.com/football/italy/serie-a/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Primavera 1",
+            "fb_tournament_id": "2340",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:2340/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_tWO9gjI2",
+            "fs_name": "Primavera 1",
+            "fs_url": "https://www.flashscore.com/football/italy/primavera-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Italy",
+            "fb_league_name": "Serie C, Group B",
+            "fb_tournament_id": "26556",
+            "fb_category_id": "31",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:31/sr:tournament:26556/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_98_v9PdCuVt",
+            "fs_name": "Serie C - Group B",
+            "fs_url": "https://www.flashscore.com/football/italy/serie-c-group-b/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Spain",
+            "fb_league_name": "LALIGA HYPERMOTION",
+            "fb_tournament_id": "54",
+            "fb_category_id": "32",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:32/sr:tournament:54/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_176_vZiPmPJi",
+            "fs_name": "LaLiga2",
+            "fs_url": "https://www.flashscore.com/football/spain/laliga2/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Spain",
+            "fb_league_name": "Copa del Rey",
+            "fb_tournament_id": "329",
+            "fb_category_id": "32",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:32/sr:tournament:329/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_176_lnb8EJRp",
+            "fs_name": "Copa del Rey",
+            "fs_url": "https://www.flashscore.com/football/spain/copa-del-rey/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Spain",
+            "fb_league_name": "LaLiga",
+            "fb_tournament_id": "8",
+            "fb_category_id": "32",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:32/sr:tournament:8/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_176_QVmLl54o",
+            "fs_name": "LaLiga",
+            "fs_url": "https://www.flashscore.com/football/spain/laliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International Clubs",
+            "fb_league_name": "UEFA Europa League",
+            "fb_tournament_id": "679",
+            "fb_category_id": "393",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:393/sr:tournament:679/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_6_ClDjv3V5",
+            "fs_name": "Europa League",
+            "fs_url": "https://www.flashscore.com/football/europe/europa-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International Clubs",
+            "fb_league_name": "UEFA Champions League",
+            "fb_tournament_id": "7",
+            "fb_category_id": "393",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:393/sr:tournament:7/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_6_xGrwqq16",
+            "fs_name": "Champions League",
+            "fs_url": "https://www.flashscore.com/football/europe/champions-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International Clubs",
+            "fb_league_name": "UEFA Conference League",
+            "fb_tournament_id": "34480",
+            "fb_category_id": "393",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:393/sr:tournament:34480/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_6_GfRbsVWM",
+            "fs_name": "Conference League",
+            "fs_url": "https://www.flashscore.com/football/europe/conference-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International Clubs",
+            "fb_league_name": "CONMEBOL Libertadores",
+            "fb_tournament_id": "384",
+            "fb_category_id": "393",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:393/sr:tournament:384/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_3_zmKRcPKu",
+            "fs_name": "Copa Libertadores",
+            "fs_url": "https://www.flashscore.com/football/south-america/copa-libertadores/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International Clubs",
+            "fb_league_name": "AFC Champions League Elite",
+            "fb_tournament_id": "463",
+            "fb_category_id": "393",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:393/sr:tournament:463/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_5_ddxzWOqT",
+            "fs_name": "AFC Champions League",
+            "fs_url": "https://www.flashscore.com/football/asia/afc-champions-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "National",
+            "fb_tournament_id": "183",
+            "fb_category_id": "7",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:7/sr:tournament:183/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_77_pv9Nf2KF",
+            "fs_name": "National",
+            "fs_url": "https://www.flashscore.com/football/france/national/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "Coupe de France",
+            "fb_tournament_id": "335",
+            "fb_category_id": "7",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:7/sr:tournament:335/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_77_AaHxMIcd",
+            "fs_name": "Coupe de France",
+            "fs_url": "https://www.flashscore.com/football/france/coupe-de-france/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "Ligue 1",
+            "fb_tournament_id": "34",
+            "fb_category_id": "7",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:7/sr:tournament:34/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_77_KIShoMk3",
+            "fs_name": "Ligue 1",
+            "fs_url": "https://www.flashscore.com/football/france/ligue-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "Ligue 2",
+            "fb_tournament_id": "182",
+            "fb_category_id": "7",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:7/sr:tournament:182/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_77_Y35Jer59",
+            "fs_name": "Ligue 2",
+            "fs_url": "https://www.flashscore.com/football/france/ligue-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Algeria",
+            "fb_league_name": "Ligue 1",
+            "fb_tournament_id": "841",
+            "fb_category_id": "304",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:304/sr:tournament:841/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_18_zLQAGOBK",
+            "fs_name": "Ligue 1",
+            "fs_url": "https://www.flashscore.com/football/algeria/ligue-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Algeria",
+            "fb_league_name": "Ligue 2",
+            "fb_tournament_id": "14321",
+            "fb_category_id": "304",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:304/sr:tournament:14321/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_18_MJijSTCe",
+            "fs_name": "Ligue 2",
+            "fs_url": "https://www.flashscore.com/football/algeria/ligue-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Andorra",
+            "fb_league_name": "Primera Divisio",
+            "fb_tournament_id": "742",
+            "fb_category_id": "376",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:376/sr:tournament:742/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_19_E7DwJSo4",
+            "fs_name": "Primera Divisió",
+            "fs_url": "https://www.flashscore.com/football/andorra/primera-divisio/",
+            "tier": "T2",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Argentina",
+            "fb_league_name": "Primera LPF",
+            "fb_tournament_id": "155",
+            "fb_category_id": "48",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:48/sr:tournament:155/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_22_naYhNOaA",
+            "fs_name": "Liga Profesional",
+            "fs_url": "https://www.flashscore.com/football/argentina/liga-profesional/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Argentina",
+            "fb_league_name": "Primera Nacional",
+            "fb_tournament_id": "703",
+            "fb_category_id": "48",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:48/sr:tournament:703/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_22_QTNHA4p4",
+            "fs_name": "Primera Nacional",
+            "fs_url": "https://www.flashscore.com/football/argentina/primera-nacional/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Armenia",
+            "fb_league_name": "First League",
+            "fb_tournament_id": "672",
+            "fb_category_id": "296",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:296/sr:tournament:672/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_23_88zrouK3",
+            "fs_name": "First League",
+            "fs_url": "https://www.flashscore.com/football/armenia/first-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Armenia",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "671",
+            "fb_category_id": "296",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:296/sr:tournament:671/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_23_I5wWW4UM",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/armenia/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Australia",
+            "fb_league_name": "A-League, Women",
+            "fb_tournament_id": "1894",
+            "fb_category_id": "34",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:34/sr:tournament:1894/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_24_tbR6H4dE",
+            "fs_name": "A-League Women",
+            "fs_url": "https://www.flashscore.com/football/australia/a-league-women/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Australia",
+            "fb_league_name": "A-League",
+            "fb_tournament_id": "136",
+            "fb_category_id": "34",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:34/sr:tournament:136/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_24_OjWW1naM",
+            "fs_name": "A-League",
+            "fs_url": "https://www.flashscore.com/football/australia/a-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Austria",
+            "fb_league_name": "2. Liga",
+            "fb_tournament_id": "135",
+            "fb_category_id": "17",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:17/sr:tournament:135/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_25_EPQbW9EF",
+            "fs_name": "2. Liga",
+            "fs_url": "https://www.flashscore.com/football/austria/2-liga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Austria",
+            "fb_league_name": "Bundesliga",
+            "fb_tournament_id": "45",
+            "fb_category_id": "17",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:17/sr:tournament:45/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_25_rJg7S7Me",
+            "fs_name": "Bundesliga",
+            "fs_url": "https://www.flashscore.com/football/austria/bundesliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Azerbaijan",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "709",
+            "fb_category_id": "297",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:297/sr:tournament:709/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_26_Y5mO1DE2",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/azerbaijan/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Belgium",
+            "fb_league_name": "Challenger Pro League",
+            "fb_tournament_id": "9",
+            "fb_category_id": "33",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:33/sr:tournament:9/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_32_dMwNgPSC",
+            "fs_name": "Challenger Pro League",
+            "fs_url": "https://www.flashscore.com/football/belgium/challenger-pro-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Belgium",
+            "fb_league_name": "Pro League",
+            "fb_tournament_id": "38",
+            "fb_category_id": "33",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:33/sr:tournament:38/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_32_dG2SqPrf",
+            "fs_name": "Jupiler Pro League",
+            "fs_url": "https://www.flashscore.com/football/belgium/jupiler-pro-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Goiano",
+            "fb_tournament_id": "381",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:381/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_K4YaWRyM",
+            "fs_name": "Goiano",
+            "fs_url": "https://www.flashscore.com/football/brazil/goiano/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Brasileiro Serie C",
+            "fb_tournament_id": "1281",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:1281/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_xIv3pZNg",
+            "fs_name": "Serie C",
+            "fs_url": "https://www.flashscore.com/football/brazil/serie-c/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Brasileiro Serie B",
+            "fb_tournament_id": "390",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:390/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_vRtLP6rs",
+            "fs_name": "Serie B Superbet",
+            "fs_url": "https://www.flashscore.com/football/brazil/serie-b-superbet/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Sergipano",
+            "fb_tournament_id": "15257",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:15257/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_M9Aetg5p",
+            "fs_name": "Sergipano",
+            "fs_url": "https://www.flashscore.com/football/brazil/sergipano/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paraibano",
+            "fb_tournament_id": "15231",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:15231/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_QVzcgzUp",
+            "fs_name": "Paraibano",
+            "fs_url": "https://www.flashscore.com/football/brazil/paraibano/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Amazonense",
+            "fb_tournament_id": "27983",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:27983/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_UTsGLDvb",
+            "fs_name": "Amazonense",
+            "fs_url": "https://www.flashscore.com/football/brazil/amazonense/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Brasileiro Serie A",
+            "fb_tournament_id": "325",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:325/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_Yq4hUnzQ",
+            "fs_name": "Serie A Betano",
+            "fs_url": "https://www.flashscore.com/football/brazil/serie-a-betano/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Pernambucano",
+            "fb_tournament_id": "380",
+            "fb_category_id": "13",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:13/sr:tournament:380/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_39_2P3AHVr9",
+            "fs_name": "Pernambucano",
+            "fs_url": "https://www.flashscore.com/football/brazil/pernambucano/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Bulgaria",
+            "fb_league_name": "Vtora Liga",
+            "fb_tournament_id": "1135",
+            "fb_category_id": "78",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:78/sr:tournament:1135/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_41_vPgupwAd",
+            "fs_name": "Vtora liga",
+            "fs_url": "https://www.flashscore.com/football/bulgaria/vtora-liga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "China",
+            "fb_league_name": "Chinese Super League",
+            "fb_tournament_id": "649",
+            "fb_category_id": "99",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:99/sr:tournament:649/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_52_nc9yRmcn",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/china/super-league/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Croatia",
+            "fb_league_name": "Croatian Cup",
+            "fb_tournament_id": "307",
+            "fb_category_id": "14",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:14/sr:tournament:307/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_59_fDL2c8tU",
+            "fs_name": "Croatian Cup",
+            "fs_url": "https://www.flashscore.com/football/croatia/croatian-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Croatia",
+            "fb_league_name": "HNL",
+            "fb_tournament_id": "170",
+            "fb_category_id": "14",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:14/sr:tournament:170/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_59_nqMxclRN",
+            "fs_name": "HNL",
+            "fs_url": "https://www.flashscore.com/football/croatia/hnl/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Croatia",
+            "fb_league_name": "Prva NL",
+            "fb_tournament_id": "724",
+            "fb_category_id": "14",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:14/sr:tournament:724/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_59_OExXX8de",
+            "fs_name": "Prva NL",
+            "fs_url": "https://www.flashscore.com/football/croatia/prva-nl/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "2. Liga, Women",
+            "fb_tournament_id": "47994",
+            "fb_category_id": "18",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:18/sr:tournament:47994/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_62_rJI88zeh",
+            "fs_name": "2. Liga Women",
+            "fs_url": "https://www.flashscore.com/football/czech-republic/2-liga-women/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Denmark",
+            "fb_league_name": "Superliga",
+            "fb_tournament_id": "39",
+            "fb_category_id": "8",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:8/sr:tournament:39/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_63_O6W7GIaF",
+            "fs_name": "Superliga",
+            "fs_url": "https://www.flashscore.com/football/denmark/superliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Egypt",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "808",
+            "fb_category_id": "305",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:305/sr:tournament:808/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_69_xbpjAGxq",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/egypt/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Ethiopia",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "33656",
+            "fb_category_id": "914",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:914/sr:tournament:33656/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_74_pjAXwP51",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/ethiopia/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Faroe Islands",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "673",
+            "fb_category_id": "201",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:201/sr:tournament:673/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_231_dYEqqvyA",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/faroe-islands/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Ghana",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "1191",
+            "fb_category_id": "542",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:542/sr:tournament:1191/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_82_6BeXoaup",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/ghana/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Greece",
+            "fb_league_name": "Super League 2",
+            "fb_tournament_id": "186",
+            "fb_category_id": "67",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:67/sr:tournament:186/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_83_Kfjz5IjJ",
+            "fs_name": "Super League 2",
+            "fs_url": "https://www.flashscore.com/football/greece/super-league-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Greece",
+            "fb_league_name": "Super League",
+            "fb_tournament_id": "185",
+            "fb_category_id": "67",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:67/sr:tournament:185/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_83_d2pwJFHI",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/greece/super-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Hong Kong, China",
+            "fb_league_name": "FA Cup",
+            "fb_tournament_id": "15219",
+            "fb_category_id": "339",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:339/sr:tournament:15219/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_222_QoMJjjvA",
+            "fs_name": "FA Cup",
+            "fs_url": "https://www.flashscore.com/football/hong-kong/fa-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Hungary",
+            "fb_league_name": "NB I",
+            "fb_tournament_id": "187",
+            "fb_category_id": "11",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:11/sr:tournament:187/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_91_6aYykcXn",
+            "fs_name": "NB I.",
+            "fs_url": "https://www.flashscore.com/football/hungary/nb-i/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Hungary",
+            "fb_league_name": "NB II",
+            "fb_tournament_id": "1339",
+            "fb_category_id": "11",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:11/sr:tournament:1339/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_91_KIZK2ns8",
+            "fs_name": "NB II.",
+            "fs_url": "https://www.flashscore.com/football/hungary/nb-ii/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "India",
+            "fb_league_name": "I-League",
+            "fb_tournament_id": "848",
+            "fb_category_id": "352",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:352/sr:tournament:848/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_93_OQyqbHWB",
+            "fs_name": "I-League",
+            "fs_url": "https://www.flashscore.com/football/india/i-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Indonesia",
+            "fb_league_name": "Super League",
+            "fb_tournament_id": "1015",
+            "fb_category_id": "368",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:368/sr:tournament:1015/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_228_8SwKOBWT",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/indonesia/super-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "International",
+            "fb_league_name": "FIFA World Cup",
+            "fb_tournament_id": "16",
+            "fb_category_id": "4",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:4/sr:tournament:16/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_1_lvUBR5F8",
+            "fs_name": "World Cup",
+            "fs_url": "https://www.flashscore.com/football/africa/world-cup/",
+            "tier": "T3",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Ireland",
+            "fb_league_name": "Premier Division",
+            "fb_tournament_id": "192",
+            "fb_category_id": "51",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:51/sr:tournament:192/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_96_naHiWdnt",
+            "fs_name": "Premier Division",
+            "fs_url": "https://www.flashscore.com/football/ireland/premier-division/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Jamaica",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "1892",
+            "fb_category_id": "502",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:502/sr:tournament:1892/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_99_YF6FF3QK",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/jamaica/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Japan",
+            "fb_league_name": "J1 League",
+            "fb_tournament_id": "196",
+            "fb_category_id": "52",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:52/sr:tournament:196/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_100_pAq4eRQ9",
+            "fs_name": "J1 League",
+            "fs_url": "https://www.flashscore.com/football/japan/j1-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Kazakhstan",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "682",
+            "fb_category_id": "278",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:278/sr:tournament:682/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_102_zNSwBuue",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/kazakhstan/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Kenya",
+            "fb_league_name": "Super League",
+            "fb_tournament_id": "48935",
+            "fb_category_id": "805",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:805/sr:tournament:48935/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_103_4nMDWeBq",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/kenya/super-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Kosovo",
+            "fb_league_name": "Superliga",
+            "fb_tournament_id": "14189",
+            "fb_category_id": "565",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:565/sr:tournament:14189/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_212_EDEvdFa7",
+            "fs_name": "Superliga",
+            "fs_url": "https://www.flashscore.com/football/kosovo/superliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Latvia",
+            "fb_league_name": "Virsliga",
+            "fb_tournament_id": "197",
+            "fb_category_id": "163",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:163/sr:tournament:197/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_110_rmWo9J97",
+            "fs_name": "Virsliga",
+            "fs_url": "https://www.flashscore.com/football/latvia/virsliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Malta",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "629",
+            "fb_category_id": "134",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:134/sr:tournament:629/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_124_ELVAW0WQ",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/malta/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Malta",
+            "fb_league_name": "Challenge League",
+            "fb_tournament_id": "630",
+            "fb_category_id": "134",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:134/sr:tournament:630/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_124_tSWpiWmI",
+            "fs_name": "Challenge League",
+            "fs_url": "https://www.flashscore.com/football/malta/challenge-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "Liga Premier Serie A",
+            "fb_tournament_id": "40533",
+            "fb_category_id": "12",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:12/sr:tournament:40533/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_128_UiQWK8Vr",
+            "fs_name": "Liga Premier Serie A",
+            "fs_url": "https://www.flashscore.com/football/mexico/liga-premier-serie-a/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "Liga Premier Serie B",
+            "fb_tournament_id": "40535",
+            "fb_category_id": "12",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:12/sr:tournament:40535/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_128_CGFyKSpk",
+            "fs_name": "Liga Premier Serie B",
+            "fs_url": "https://www.flashscore.com/football/mexico/liga-premier-serie-b/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Moldova",
+            "fb_league_name": "Super Liga",
+            "fb_tournament_id": "685",
+            "fb_category_id": "279",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:279/sr:tournament:685/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_130_hA1Zm19f",
+            "fs_name": "Super Liga",
+            "fs_url": "https://www.flashscore.com/football/moldova/super-liga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Netherlands",
+            "fb_league_name": "Eerste Divisie",
+            "fb_tournament_id": "131",
+            "fb_category_id": "35",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:35/sr:tournament:131/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_139_6Nl8nagD",
+            "fs_name": "Eerste Divisie",
+            "fs_url": "https://www.flashscore.com/football/netherlands/eerste-divisie/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Netherlands",
+            "fb_league_name": "Eredivisie",
+            "fb_tournament_id": "37",
+            "fb_category_id": "35",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:35/sr:tournament:37/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_139_Or1bBrWD",
+            "fs_name": "Eredivisie",
+            "fs_url": "https://www.flashscore.com/football/netherlands/eredivisie/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Netherlands",
+            "fb_league_name": "Derde Divisie",
+            "fb_tournament_id": "47988",
+            "fb_category_id": "35",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:35/sr:tournament:47988/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_139_Cz9FVnQe",
+            "fs_name": "Derde Divisie",
+            "fs_url": "https://www.flashscore.com/football/netherlands/derde-divisie/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "North Macedonia",
+            "fb_league_name": "2. MFL",
+            "fb_tournament_id": "718",
+            "fb_category_id": "159",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:159/sr:tournament:718/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_118_4fNwNBm5",
+            "fs_name": "2. MFL",
+            "fs_url": "https://www.flashscore.com/football/north-macedonia/2-mfl/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "North Macedonia",
+            "fb_league_name": "1. MFL",
+            "fb_tournament_id": "199",
+            "fb_category_id": "159",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:159/sr:tournament:199/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_118_86Ja30cq",
+            "fs_name": "1. MFL",
+            "fs_url": "https://www.flashscore.com/football/north-macedonia/1-mfl/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Norway",
+            "fb_league_name": "Eliteserien",
+            "fb_tournament_id": "20",
+            "fb_category_id": "5",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:5/sr:tournament:20/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_145_GOvB22xg",
+            "fs_name": "Eliteserien",
+            "fs_url": "https://www.flashscore.com/football/norway/eliteserien/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Norway",
+            "fb_league_name": "NM Cup",
+            "fb_tournament_id": "29",
+            "fb_category_id": "5",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:5/sr:tournament:29/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_145_fXf5mQ7t",
+            "fs_name": "NM Cup",
+            "fs_url": "https://www.flashscore.com/football/norway/nm-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Peru",
+            "fb_league_name": "Liga 1",
+            "fb_tournament_id": "406",
+            "fb_category_id": "20",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:20/sr:tournament:406/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_152_KrrdAMyI",
+            "fs_name": "Liga 1",
+            "fs_url": "https://www.flashscore.com/football/peru/liga-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "Ekstraklasa",
+            "fb_tournament_id": "202",
+            "fb_category_id": "47",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:47/sr:tournament:202/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_154_lrMHUHDc",
+            "fs_name": "Ekstraklasa",
+            "fs_url": "https://www.flashscore.com/football/poland/ekstraklasa/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Portugal",
+            "fb_league_name": "Liga Portugal",
+            "fb_tournament_id": "238",
+            "fb_category_id": "44",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:44/sr:tournament:238/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_155_UmMRoGzp",
+            "fs_name": "Liga Portugal",
+            "fs_url": "https://www.flashscore.com/football/portugal/liga-portugal/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Portugal",
+            "fb_league_name": "Liga Portugal 2",
+            "fb_tournament_id": "239",
+            "fb_category_id": "44",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:44/sr:tournament:239/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_155_hSUajdSS",
+            "fs_name": "Liga Portugal 2",
+            "fs_url": "https://www.flashscore.com/football/portugal/liga-portugal-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Republic of Korea",
+            "fb_league_name": "K-League 1",
+            "fb_tournament_id": "410",
+            "fb_category_id": "291",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:291/sr:tournament:410/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_106_0IDCJLlH",
+            "fs_name": "K League 1",
+            "fs_url": "https://www.flashscore.com/football/south-korea/k-league-1/",
+            "tier": "T2",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Republic of Korea",
+            "fb_league_name": "K-League 2",
+            "fb_tournament_id": "777",
+            "fb_category_id": "291",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:291/sr:tournament:777/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_106_URqnleDq",
+            "fs_name": "K League 2",
+            "fs_url": "https://www.flashscore.com/football/south-korea/k-league-2/",
+            "tier": "T2",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Romania",
+            "fb_league_name": "Superliga",
+            "fb_tournament_id": "152",
+            "fb_category_id": "77",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:77/sr:tournament:152/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_157_GILi6JC9",
+            "fs_name": "Superliga",
+            "fs_url": "https://www.flashscore.com/football/romania/superliga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Romania",
+            "fb_league_name": "Liga 2",
+            "fb_tournament_id": "562",
+            "fb_category_id": "77",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:77/sr:tournament:562/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_157_bgStjEJ1",
+            "fs_name": "Liga 2",
+            "fs_url": "https://www.flashscore.com/football/romania/liga-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Russia",
+            "fb_league_name": "Russian Cup",
+            "fb_tournament_id": "91",
+            "fb_category_id": "21",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:21/sr:tournament:91/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_158_WvZyDeKk",
+            "fs_name": "Russian Cup",
+            "fs_url": "https://www.flashscore.com/football/russia/russian-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Russia",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "203",
+            "fb_category_id": "21",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:21/sr:tournament:203/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_158_YacqHHdS",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/russia/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Rwanda",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "20162",
+            "fb_category_id": "951",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:951/sr:tournament:20162/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_159_2iKGhM4D",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/rwanda/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "San Marino",
+            "fb_league_name": "Campionato Sammarinese",
+            "fb_tournament_id": "738",
+            "fb_category_id": "387",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:387/sr:tournament:738/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_163_zVucZzyE",
+            "fs_name": "Campionato Sammarinese",
+            "fs_url": "https://www.flashscore.com/football/san-marino/campionato-sammarinese/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Saudi Arabia",
+            "fb_league_name": "Division 1",
+            "fb_tournament_id": "2298",
+            "fb_category_id": "310",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:310/sr:tournament:2298/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_165_8fhFSggG",
+            "fs_name": "Division 1",
+            "fs_url": "https://www.flashscore.com/football/saudi-arabia/division-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Scotland",
+            "fb_league_name": "Premiership",
+            "fb_tournament_id": "36",
+            "fb_category_id": "22",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:22/sr:tournament:36/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_199_tGwiyvJ1",
+            "fs_name": "Premiership",
+            "fs_url": "https://www.flashscore.com/football/scotland/premiership/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Scotland",
+            "fb_league_name": "Championship",
+            "fb_tournament_id": "206",
+            "fb_category_id": "22",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:22/sr:tournament:206/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_199_6uz2cJBL",
+            "fs_name": "Championship",
+            "fs_url": "https://www.flashscore.com/football/scotland/championship/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Scotland",
+            "fb_league_name": "Scottish Cup",
+            "fb_tournament_id": "347",
+            "fb_category_id": "22",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:22/sr:tournament:347/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_199_O4voiHlk",
+            "fs_name": "Scottish Cup",
+            "fs_url": "https://www.flashscore.com/football/scotland/scottish-cup/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Senegal",
+            "fb_league_name": "Ligue 1",
+            "fb_tournament_id": "1226",
+            "fb_category_id": "886",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:886/sr:tournament:1226/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_166_WSwyB5y2",
+            "fs_name": "Ligue 1",
+            "fs_url": "https://www.flashscore.com/football/senegal/ligue-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Singapore",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "634",
+            "fb_category_id": "45",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:45/sr:tournament:634/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_170_CpsbdueR",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/singapore/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Slovakia",
+            "fb_league_name": "2. Liga",
+            "fb_tournament_id": "224",
+            "fb_category_id": "23",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:23/sr:tournament:224/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_171_6ZvdGuYf",
+            "fs_name": "2. liga",
+            "fs_url": "https://www.flashscore.com/football/slovakia/2-liga/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Sweden",
+            "fb_league_name": "Allsvenskan",
+            "fb_tournament_id": "40",
+            "fb_category_id": "9",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:9/sr:tournament:40/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_181_nXxWpLmT",
+            "fs_name": "Allsvenskan",
+            "fs_url": "https://www.flashscore.com/football/sweden/allsvenskan/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Switzerland",
+            "fb_league_name": "Promotion League",
+            "fb_tournament_id": "1101",
+            "fb_category_id": "25",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:25/sr:tournament:1101/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_182_bkzIEcdo",
+            "fs_name": "Promotion League",
+            "fs_url": "https://www.flashscore.com/football/switzerland/promotion-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Switzerland",
+            "fb_league_name": "Super League",
+            "fb_tournament_id": "215",
+            "fb_category_id": "25",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:25/sr:tournament:215/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_182_KAjTCI1l",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/switzerland/super-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Switzerland",
+            "fb_league_name": "Challenge League",
+            "fb_tournament_id": "216",
+            "fb_category_id": "25",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:25/sr:tournament:216/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_182_jVMQJOHF",
+            "fs_name": "Challenge League",
+            "fs_url": "https://www.flashscore.com/football/switzerland/challenge-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Thailand",
+            "fb_league_name": "Thai League 2",
+            "fb_tournament_id": "19232",
+            "fb_category_id": "485",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:485/sr:tournament:19232/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_186_zirne0n9",
+            "fs_name": "Thai League 2",
+            "fs_url": "https://www.flashscore.com/football/thailand/thai-league-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Thailand",
+            "fb_league_name": "Thai League 1",
+            "fb_tournament_id": "1032",
+            "fb_category_id": "485",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:485/sr:tournament:1032/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_186_hOlyBdW0",
+            "fs_name": "Thai League 1",
+            "fs_url": "https://www.flashscore.com/football/thailand/thai-league-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Turkiye",
+            "fb_league_name": "Super Lig",
+            "fb_tournament_id": "52",
+            "fb_category_id": "46",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:46/sr:tournament:52/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_191_Opdcd08Q",
+            "fs_name": "Super Lig",
+            "fs_url": "https://www.flashscore.com/football/turkey/super-lig/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Turkiye",
+            "fb_league_name": "1. Lig",
+            "fb_tournament_id": "98",
+            "fb_category_id": "46",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:46/sr:tournament:98/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_191_Spw6Az1D",
+            "fs_name": "1. Lig",
+            "fs_url": "https://www.flashscore.com/football/turkey/1-lig/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Ukraine",
+            "fb_league_name": "Premier League",
+            "fb_tournament_id": "218",
+            "fb_category_id": "86",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:86/sr:tournament:218/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_195_Myjs3vp6",
+            "fs_name": "Premier League",
+            "fs_url": "https://www.flashscore.com/football/ukraine/premier-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "MLS Next Pro",
+            "fb_tournament_id": "36479",
+            "fb_category_id": "26",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:26/sr:tournament:36479/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_200_W4f7hWh9",
+            "fs_name": "MLS Next Pro",
+            "fs_url": "https://www.flashscore.com/football/usa/mls-next-pro/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "MLS",
+            "fb_tournament_id": "242",
+            "fb_category_id": "26",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:26/sr:tournament:242/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_200_CQv5qrFt",
+            "fs_name": "MLS",
+            "fs_url": "https://www.flashscore.com/football/usa/mls/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "USL Championship",
+            "fb_tournament_id": "28163",
+            "fb_category_id": "26",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:26/sr:tournament:28163/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_200_OjCHtstG",
+            "fs_name": "USL Championship",
+            "fs_url": "https://www.flashscore.com/football/usa/usl-championship/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "USL Super League, Women",
+            "fb_tournament_id": "43439",
+            "fb_category_id": "26",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:26/sr:tournament:43439/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_200_WnHhmdP7",
+            "fs_name": "USL Super League Women",
+            "fs_url": "https://www.flashscore.com/football/usa/usl-super-league-women/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "USL League One",
+            "fb_tournament_id": "28165",
+            "fb_category_id": "26",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:26/sr:tournament:28165/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_200_KhaoVzyl",
+            "fs_name": "USL League One",
+            "fs_url": "https://www.flashscore.com/football/usa/usl-league-one/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Vietnam",
+            "fb_league_name": "V-League 1",
+            "fb_tournament_id": "626",
+            "fb_category_id": "366",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:366/sr:tournament:626/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_206_CGXGiMTB",
+            "fs_name": "V.League 1",
+            "fs_url": "https://www.flashscore.com/football/vietnam/v-league-1/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Vietnam",
+            "fb_league_name": "V-League 2",
+            "fb_tournament_id": "771",
+            "fb_category_id": "366",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:366/sr:tournament:771/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_206_659pm2N7",
+            "fs_name": "V.League 2",
+            "fs_url": "https://www.flashscore.com/football/vietnam/v-league-2/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        },
+        {
+            "fb_country": "Zambia",
+            "fb_league_name": "Super League",
+            "fb_tournament_id": "2142",
+            "fb_category_id": "812",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:812/sr:tournament:2142/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_209_QcPRi4on",
+            "fs_name": "Super League",
+            "fs_url": "https://www.flashscore.com/football/zambia/super-league/",
+            "tier": "T1",
+            "confidence": "CONFIRMED"
+        }
+    ],
+    "unmatched": [
+        {
+            "fb_country": "Spain",
+            "fb_league_name": "Segunda Federacion",
+            "fb_category_id": "32",
+            "fb_tournament_id": "544"
+        },
+        {
+            "fb_country": "Spain",
+            "fb_league_name": "Primera Federacion",
+            "fb_category_id": "32",
+            "fb_tournament_id": "34834"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "U19 National",
+            "fb_category_id": "7",
+            "fb_tournament_id": "26276"
+        },
+        {
+            "fb_country": "France",
+            "fb_league_name": "National 2",
+            "fb_category_id": "7",
+            "fb_tournament_id": "47986"
+        },
+        {
+            "fb_country": "Albania",
+            "fb_league_name": "Kategoria Superiore",
+            "fb_category_id": "257",
+            "fb_tournament_id": "720"
+        },
+        {
+            "fb_country": "Andorra",
+            "fb_league_name": "Second Divisio",
+            "fb_category_id": "376",
+            "fb_tournament_id": "743"
+        },
+        {
+            "fb_country": "Austria Amateur",
+            "fb_league_name": "Burgenlandliga",
+            "fb_category_id": "97",
+            "fb_tournament_id": "43773"
+        },
+        {
+            "fb_country": "Austria Amateur",
+            "fb_league_name": "Wiener Stadtliga",
+            "fb_category_id": "97",
+            "fb_tournament_id": "43831"
+        },
+        {
+            "fb_country": "Austria Amateur",
+            "fb_league_name": "Steiermark, Landesliga",
+            "fb_category_id": "97",
+            "fb_tournament_id": "43803"
+        },
+        {
+            "fb_country": "Belarus",
+            "fb_league_name": "Belarus Cup",
+            "fb_category_id": "91",
+            "fb_tournament_id": "578"
+        },
+        {
+            "fb_country": "Belgium",
+            "fb_league_name": "Nationale 1 VV",
+            "fb_category_id": "33",
+            "fb_tournament_id": "43371"
+        },
+        {
+            "fb_country": "Belgium",
+            "fb_league_name": "Nationale 1 ACFF",
+            "fb_category_id": "33",
+            "fb_tournament_id": "43373"
+        },
+        {
+            "fb_country": "Bosnia & Herzegovina",
+            "fb_league_name": "Premijer Liga",
+            "fb_category_id": "158",
+            "fb_tournament_id": "222"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Carioca, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "92"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Gaucho, Serie A1",
+            "fb_category_id": "13",
+            "fb_tournament_id": "377"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Catarinense, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "376"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paulista, Serie A4",
+            "fb_category_id": "13",
+            "fb_tournament_id": "35795"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paranaense, 2. Divisao",
+            "fb_category_id": "13",
+            "fb_tournament_id": "39439"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Candango, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "27851"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paulista, Serie A3",
+            "fb_category_id": "13",
+            "fb_tournament_id": "1614"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paulista, Serie A1",
+            "fb_category_id": "13",
+            "fb_tournament_id": "372"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Cearense, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "378"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Paraense, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "27749"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Potiguar, 1. Divisao",
+            "fb_category_id": "13",
+            "fb_tournament_id": "27739"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Mato-Grossense, 1. Divisao",
+            "fb_category_id": "13",
+            "fb_tournament_id": "27747"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Mineiro, Modulo I",
+            "fb_category_id": "13",
+            "fb_tournament_id": "379"
+        },
+        {
+            "fb_country": "Brazil",
+            "fb_league_name": "Amapaense, Serie A",
+            "fb_category_id": "13",
+            "fb_tournament_id": "29118"
+        },
+        {
+            "fb_country": "Bulgaria",
+            "fb_league_name": "Parva Liga",
+            "fb_category_id": "78",
+            "fb_tournament_id": "247"
+        },
+        {
+            "fb_country": "Cambodia",
+            "fb_league_name": "Cambodian Premier League",
+            "fb_category_id": "852",
+            "fb_tournament_id": "19250"
+        },
+        {
+            "fb_country": "Chile",
+            "fb_league_name": "Primera Division",
+            "fb_category_id": "49",
+            "fb_tournament_id": "27665"
+        },
+        {
+            "fb_country": "Chile",
+            "fb_league_name": "Primera B",
+            "fb_category_id": "49",
+            "fb_tournament_id": "1240"
+        },
+        {
+            "fb_country": "Chinese Taipei",
+            "fb_league_name": "Premier League",
+            "fb_category_id": "793",
+            "fb_tournament_id": "26912"
+        },
+        {
+            "fb_country": "Colombia",
+            "fb_league_name": "Liga DIMAYOR",
+            "fb_category_id": "274",
+            "fb_tournament_id": "27070"
+        },
+        {
+            "fb_country": "Colombia",
+            "fb_league_name": "Torneo DIMAYOR",
+            "fb_category_id": "274",
+            "fb_tournament_id": "1238"
+        },
+        {
+            "fb_country": "Costa Rica",
+            "fb_league_name": "Primera Division, Clausura",
+            "fb_category_id": "289",
+            "fb_tournament_id": "27094"
+        },
+        {
+            "fb_country": "Croatia",
+            "fb_league_name": "U19 Prva NL Juniori",
+            "fb_category_id": "14",
+            "fb_tournament_id": "48060"
+        },
+        {
+            "fb_country": "Cyprus",
+            "fb_league_name": "2nd Division",
+            "fb_category_id": "102",
+            "fb_tournament_id": "692"
+        },
+        {
+            "fb_country": "Cyprus",
+            "fb_league_name": "1st Division",
+            "fb_category_id": "102",
+            "fb_tournament_id": "171"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "MSFL",
+            "fb_category_id": "18",
+            "fb_tournament_id": "14147"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "Divize B",
+            "fb_category_id": "18",
+            "fb_tournament_id": "40729"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "Divize E",
+            "fb_category_id": "18",
+            "fb_tournament_id": "40735"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "FNL",
+            "fb_category_id": "18",
+            "fb_tournament_id": "205"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "1. Liga",
+            "fb_category_id": "18",
+            "fb_tournament_id": "172"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "CFL",
+            "fb_category_id": "18",
+            "fb_tournament_id": "14151"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "Divize F",
+            "fb_category_id": "18",
+            "fb_tournament_id": "40737"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "Divize D",
+            "fb_category_id": "18",
+            "fb_tournament_id": "40733"
+        },
+        {
+            "fb_country": "Czechia",
+            "fb_league_name": "Divize C",
+            "fb_category_id": "18",
+            "fb_tournament_id": "40731"
+        },
+        {
+            "fb_country": "Denmark",
+            "fb_league_name": "1. Division",
+            "fb_category_id": "8",
+            "fb_tournament_id": "47"
+        },
+        {
+            "fb_country": "Denmark",
+            "fb_league_name": "DBU Pokalen",
+            "fb_category_id": "8",
+            "fb_tournament_id": "76"
+        },
+        {
+            "fb_country": "Denmark Amateur",
+            "fb_league_name": "Danmarksserien",
+            "fb_category_id": "95",
+            "fb_tournament_id": "37195"
+        },
+        {
+            "fb_country": "Dominican Republic",
+            "fb_league_name": "Liga Dominicana de Futbol",
+            "fb_category_id": "1031",
+            "fb_tournament_id": "24443"
+        },
+        {
+            "fb_country": "Ecuador",
+            "fb_league_name": "LigaPro Primera A",
+            "fb_category_id": "165",
+            "fb_tournament_id": "240"
+        },
+        {
+            "fb_country": "El Salvador",
+            "fb_league_name": "Primera Division, Reserves, Clausura",
+            "fb_category_id": "367",
+            "fb_tournament_id": "36167"
+        },
+        {
+            "fb_country": "El Salvador",
+            "fb_league_name": "Primera Division, Clausura",
+            "fb_category_id": "367",
+            "fb_tournament_id": "27090"
+        },
+        {
+            "fb_country": "England Amateur",
+            "fb_league_name": "U21 Premier League 2",
+            "fb_category_id": "252",
+            "fb_tournament_id": "1129"
+        },
+        {
+            "fb_country": "England Amateur",
+            "fb_league_name": "U21 Professional Development League",
+            "fb_category_id": "252",
+            "fb_tournament_id": "29842"
+        },
+        {
+            "fb_country": "Estonia",
+            "fb_league_name": "Premium Liiga",
+            "fb_category_id": "92",
+            "fb_tournament_id": "178"
+        },
+        {
+            "fb_country": "Faroe Islands",
+            "fb_league_name": "1st deild",
+            "fb_category_id": "201",
+            "fb_tournament_id": "674"
+        },
+        {
+            "fb_country": "Georgia",
+            "fb_league_name": "Erovnuli Liga",
+            "fb_category_id": "270",
+            "fb_tournament_id": "704"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "U19 DFB Nachwuchsliga",
+            "fb_category_id": "122",
+            "fb_tournament_id": "24702"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "Regionalliga North",
+            "fb_category_id": "122",
+            "fb_tournament_id": "42"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "Bremen Liga",
+            "fb_category_id": "122",
+            "fb_tournament_id": "508"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "Regionalliga Northeast",
+            "fb_category_id": "122",
+            "fb_tournament_id": "1083"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "Regionalliga Southwest",
+            "fb_category_id": "122",
+            "fb_tournament_id": "1079"
+        },
+        {
+            "fb_country": "Germany Amateur",
+            "fb_league_name": "Regionalliga West",
+            "fb_category_id": "122",
+            "fb_tournament_id": "493"
+        },
+        {
+            "fb_country": "Greece",
+            "fb_league_name": "U19 Super League",
+            "fb_category_id": "67",
+            "fb_tournament_id": "26384"
+        },
+        {
+            "fb_country": "Greece",
+            "fb_league_name": "Greece Cup",
+            "fb_category_id": "67",
+            "fb_tournament_id": "375"
+        },
+        {
+            "fb_country": "Guatemala",
+            "fb_league_name": "Liga Nacional, Clausura",
+            "fb_category_id": "365",
+            "fb_tournament_id": "27398"
+        },
+        {
+            "fb_country": "Guatemala",
+            "fb_league_name": "Primera Division",
+            "fb_category_id": "365",
+            "fb_tournament_id": "48000"
+        },
+        {
+            "fb_country": "Honduras",
+            "fb_league_name": "Liga Nacional. Clausura",
+            "fb_category_id": "437",
+            "fb_tournament_id": "27416"
+        },
+        {
+            "fb_country": "Hong Kong, China",
+            "fb_league_name": "1. Division",
+            "fb_category_id": "339",
+            "fb_tournament_id": "19224"
+        },
+        {
+            "fb_country": "Hungary",
+            "fb_league_name": "NB III",
+            "fb_category_id": "11",
+            "fb_tournament_id": "47952"
+        },
+        {
+            "fb_country": "India",
+            "fb_league_name": "Indian Super League",
+            "fb_category_id": "352",
+            "fb_tournament_id": "1900"
+        },
+        {
+            "fb_country": "International",
+            "fb_league_name": "AFC Asian Cup, Women",
+            "fb_category_id": "4",
+            "fb_tournament_id": "1692"
+        },
+        {
+            "fb_country": "International",
+            "fb_league_name": "FIFA World Cup Qualification, UEFA",
+            "fb_category_id": "4",
+            "fb_tournament_id": "11"
+        },
+        {
+            "fb_country": "International",
+            "fb_league_name": "Finalissima",
+            "fb_category_id": "4",
+            "fb_tournament_id": "36497"
+        },
+        {
+            "fb_country": "International",
+            "fb_league_name": "FIFA World Cup Qualification, Inter-Confederation Playoffs",
+            "fb_category_id": "4",
+            "fb_tournament_id": "20434"
+        },
+        {
+            "fb_country": "International Youth",
+            "fb_league_name": "U20 CONMEBOL Libertadores",
+            "fb_category_id": "392",
+            "fb_tournament_id": "1074"
+        },
+        {
+            "fb_country": "Ireland",
+            "fb_league_name": "First Division",
+            "fb_category_id": "51",
+            "fb_tournament_id": "193"
+        },
+        {
+            "fb_country": "Ireland",
+            "fb_league_name": "Leinster Senior League, Senior Division",
+            "fb_category_id": "51",
+            "fb_tournament_id": "11843"
+        },
+        {
+            "fb_country": "Jordan",
+            "fb_league_name": "Jordan League",
+            "fb_category_id": "329",
+            "fb_tournament_id": "929"
+        },
+        {
+            "fb_country": "Lithuania",
+            "fb_league_name": "A Lyga",
+            "fb_category_id": "160",
+            "fb_tournament_id": "198"
+        },
+        {
+            "fb_country": "Luxembourg",
+            "fb_league_name": "Division Nationale",
+            "fb_category_id": "197",
+            "fb_tournament_id": "690"
+        },
+        {
+            "fb_country": "Mali",
+            "fb_league_name": "Ligue 1",
+            "fb_category_id": "832",
+            "fb_tournament_id": "40817"
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "Liga MX, Clausura",
+            "fb_category_id": "12",
+            "fb_tournament_id": "27466"
+        },
+        {
+            "fb_country": "Montenegro",
+            "fb_league_name": "2. CFL",
+            "fb_category_id": "386",
+            "fb_tournament_id": "717"
+        },
+        {
+            "fb_country": "Morocco",
+            "fb_league_name": "Botola Pro D2",
+            "fb_category_id": "303",
+            "fb_tournament_id": "19496"
+        },
+        {
+            "fb_country": "Morocco",
+            "fb_league_name": "Botola Pro D1",
+            "fb_category_id": "303",
+            "fb_tournament_id": "937"
+        },
+        {
+            "fb_country": "Nicaragua",
+            "fb_league_name": "Primera Division",
+            "fb_category_id": "389",
+            "fb_tournament_id": "19242"
+        },
+        {
+            "fb_country": "Nigeria",
+            "fb_league_name": "Premier League",
+            "fb_category_id": "532",
+            "fb_tournament_id": "2112"
+        },
+        {
+            "fb_country": "Northern Ireland",
+            "fb_league_name": "Premiership",
+            "fb_category_id": "130",
+            "fb_tournament_id": "200"
+        },
+        {
+            "fb_country": "Panama",
+            "fb_league_name": "Liga Panamena, Clausura",
+            "fb_category_id": "526",
+            "fb_tournament_id": "27104"
+        },
+        {
+            "fb_country": "Panama",
+            "fb_league_name": "Liga Prom",
+            "fb_category_id": "526",
+            "fb_tournament_id": "19490"
+        },
+        {
+            "fb_country": "Paraguay",
+            "fb_league_name": "Division de Honor",
+            "fb_category_id": "280",
+            "fb_tournament_id": "27098"
+        },
+        {
+            "fb_country": "Paraguay",
+            "fb_league_name": "Primera Division Reserve, Apertura",
+            "fb_category_id": "280",
+            "fb_tournament_id": "27214"
+        },
+        {
+            "fb_country": "Paraguay",
+            "fb_league_name": "Primera Division Reserve, Clausura",
+            "fb_category_id": "280",
+            "fb_tournament_id": "27216"
+        },
+        {
+            "fb_country": "Philippines",
+            "fb_league_name": "Philippines Footb. League",
+            "fb_category_id": "847",
+            "fb_tournament_id": "1654"
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "CLJ",
+            "fb_category_id": "47",
+            "fb_tournament_id": "1365"
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "1. Liga",
+            "fb_category_id": "47",
+            "fb_tournament_id": "229"
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "II Liga",
+            "fb_category_id": "47",
+            "fb_tournament_id": "515"
+        },
+        {
+            "fb_country": "Portugal",
+            "fb_league_name": "Liga Portugal 3",
+            "fb_category_id": "44",
+            "fb_tournament_id": "34900"
+        },
+        {
+            "fb_country": "Portugal",
+            "fb_league_name": "Campeonato de Portugal",
+            "fb_category_id": "44",
+            "fb_tournament_id": "14758"
+        },
+        {
+            "fb_country": "Romania",
+            "fb_league_name": "Liga 3",
+            "fb_category_id": "77",
+            "fb_tournament_id": "39533"
+        },
+        {
+            "fb_country": "Romania",
+            "fb_league_name": "Romania Cup",
+            "fb_category_id": "77",
+            "fb_tournament_id": "355"
+        },
+        {
+            "fb_country": "Russia",
+            "fb_league_name": "2. Liga, Division A",
+            "fb_category_id": "21",
+            "fb_tournament_id": "40305"
+        },
+        {
+            "fb_country": "Russia",
+            "fb_league_name": "1. Liga",
+            "fb_category_id": "21",
+            "fb_tournament_id": "204"
+        },
+        {
+            "fb_country": "Saudi Arabia",
+            "fb_league_name": "Saudi Pro League",
+            "fb_category_id": "310",
+            "fb_tournament_id": "955"
+        },
+        {
+            "fb_country": "Scotland",
+            "fb_league_name": "League 2",
+            "fb_category_id": "22",
+            "fb_tournament_id": "209"
+        },
+        {
+            "fb_country": "Scotland",
+            "fb_league_name": "League 1",
+            "fb_category_id": "22",
+            "fb_tournament_id": "207"
+        },
+        {
+            "fb_country": "Serbia",
+            "fb_league_name": "Prva Liga",
+            "fb_category_id": "152",
+            "fb_tournament_id": "721"
+        },
+        {
+            "fb_country": "Serbia",
+            "fb_league_name": "U19 League",
+            "fb_category_id": "152",
+            "fb_tournament_id": "48291"
+        },
+        {
+            "fb_country": "Serbia",
+            "fb_league_name": "Srpska Liga",
+            "fb_category_id": "152",
+            "fb_tournament_id": "48213"
+        },
+        {
+            "fb_country": "Serbia",
+            "fb_league_name": "Superliga",
+            "fb_category_id": "152",
+            "fb_tournament_id": "210"
+        },
+        {
+            "fb_country": "Simulated Reality League",
+            "fb_league_name": "Serie A SRL",
+            "fb_category_id": "2123",
+            "fb_tournament_id": "32221"
+        },
+        {
+            "fb_country": "Simulated Reality League",
+            "fb_league_name": "Bundesliga SRL",
+            "fb_category_id": "2123",
+            "fb_tournament_id": "32217"
+        },
+        {
+            "fb_country": "Simulated Reality League",
+            "fb_league_name": "Ligue 1 SRL",
+            "fb_category_id": "2123",
+            "fb_tournament_id": "32223"
+        },
+        {
+            "fb_country": "Simulated Reality League",
+            "fb_league_name": "LaLiga SRL",
+            "fb_category_id": "2123",
+            "fb_tournament_id": "32219"
+        },
+        {
+            "fb_country": "Slovakia",
+            "fb_league_name": "3. Liga",
+            "fb_category_id": "23",
+            "fb_tournament_id": "47536"
+        },
+        {
+            "fb_country": "Slovakia",
+            "fb_league_name": "Superliga",
+            "fb_category_id": "23",
+            "fb_tournament_id": "211"
+        },
+        {
+            "fb_country": "Slovakia",
+            "fb_league_name": "Slovensky Pohar",
+            "fb_category_id": "23",
+            "fb_tournament_id": "303"
+        },
+        {
+            "fb_country": "Slovakia",
+            "fb_league_name": "U19 1. Liga",
+            "fb_category_id": "23",
+            "fb_tournament_id": "1327"
+        },
+        {
+            "fb_country": "Slovenia",
+            "fb_league_name": "2. Liga",
+            "fb_category_id": "24",
+            "fb_tournament_id": "532"
+        },
+        {
+            "fb_country": "Slovenia",
+            "fb_league_name": "PrvaLiga",
+            "fb_category_id": "24",
+            "fb_tournament_id": "212"
+        },
+        {
+            "fb_country": "Slovenia",
+            "fb_league_name": "3. SNL",
+            "fb_category_id": "24",
+            "fb_tournament_id": "47998"
+        },
+        {
+            "fb_country": "SoccerSpecials",
+            "fb_league_name": "Kings League Spain",
+            "fb_category_id": "2631",
+            "fb_tournament_id": "47241"
+        },
+        {
+            "fb_country": "South Africa",
+            "fb_league_name": "FA Cup",
+            "fb_category_id": "322",
+            "fb_tournament_id": "1020"
+        },
+        {
+            "fb_country": "South Africa",
+            "fb_league_name": "Championship",
+            "fb_category_id": "322",
+            "fb_tournament_id": "1906"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 12",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26040"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 9",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26034"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 5",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26026"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 17",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26050"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 15",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26046"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 7",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26030"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 3",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26022"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 13",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26042"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 2",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26020"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 11",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26038"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 6",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26028"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 4",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26024"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 8",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26032"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 14",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26044"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 10",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26036"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 16",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26048"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 18",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26052"
+        },
+        {
+            "fb_country": "Spain Amateur",
+            "fb_league_name": "Tercera Federacion, Group 1",
+            "fb_category_id": "421",
+            "fb_tournament_id": "26018"
+        },
+        {
+            "fb_country": "Sweden",
+            "fb_league_name": "Svenska Cup",
+            "fb_category_id": "9",
+            "fb_tournament_id": "80"
+        },
+        {
+            "fb_country": "Switzerland",
+            "fb_league_name": "1. Liga Classic",
+            "fb_category_id": "25",
+            "fb_tournament_id": "37051"
+        },
+        {
+            "fb_country": "Tunisia",
+            "fb_league_name": "Ligue 1",
+            "fb_category_id": "378",
+            "fb_tournament_id": "984"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "3. Lig, Group 1",
+            "fb_category_id": "254",
+            "fb_tournament_id": "26386"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "U19 PAF Ligi",
+            "fb_category_id": "254",
+            "fb_tournament_id": "29912"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "3. Lig, Group 3",
+            "fb_category_id": "254",
+            "fb_tournament_id": "26390"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "2. Lig",
+            "fb_category_id": "254",
+            "fb_tournament_id": "97"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "3. Lig, Group 2",
+            "fb_category_id": "254",
+            "fb_tournament_id": "26388"
+        },
+        {
+            "fb_country": "Turkiye Amateur",
+            "fb_league_name": "3. Lig, Group 4",
+            "fb_category_id": "254",
+            "fb_tournament_id": "33133"
+        },
+        {
+            "fb_country": "United Arab Emirates",
+            "fb_league_name": "First Division",
+            "fb_category_id": "299",
+            "fb_tournament_id": "19238"
+        },
+        {
+            "fb_country": "Uruguay",
+            "fb_league_name": "Primera Division",
+            "fb_category_id": "57",
+            "fb_tournament_id": "278"
+        },
+        {
+            "fb_country": "USA",
+            "fb_league_name": "National Womens Soccer League",
+            "fb_category_id": "26",
+            "fb_tournament_id": "1690"
+        },
+        {
+            "fb_country": "Venezuela",
+            "fb_league_name": "Segunda Division",
+            "fb_category_id": "281",
+            "fb_tournament_id": "17302"
+        },
+        {
+            "fb_country": "Venezuela",
+            "fb_league_name": "Primera Division",
+            "fb_category_id": "281",
+            "fb_tournament_id": "231"
+        },
+        {
+            "fb_country": "Wales",
+            "fb_league_name": "Cymru Championship, North",
+            "fb_category_id": "131",
+            "fb_tournament_id": "29244"
+        },
+        {
+            "fb_country": "Wales",
+            "fb_league_name": "FAW Welsh Cup",
+            "fb_category_id": "131",
+            "fb_tournament_id": "388"
+        },
+        {
+            "fb_country": "Wales",
+            "fb_league_name": "Premier League, Women",
+            "fb_category_id": "131",
+            "fb_tournament_id": "11141"
+        }
+    ],
+    "review_required_list": [
+        {
+            "fb_country": "Australia",
+            "fb_league_name": "Victoria Premier League 1",
+            "fb_tournament_id": "32367",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:34/sr:tournament:32367/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_24_4xHememg",
+            "fs_name": "Victoria Premier League",
+            "fs_url": "https://www.flashscore.com/football/australia/victoria-premier-league/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        },
+        {
+            "fb_country": "Costa Rica",
+            "fb_league_name": "Liga de Ascenso, Clausura",
+            "fb_tournament_id": "27765",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:289/sr:tournament:27765/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_57_riEiBZjN",
+            "fs_name": "Liga de Ascenso",
+            "fs_url": "https://www.flashscore.com/football/costa-rica/liga-de-ascenso/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "Liga MX, Women, Clausura",
+            "fb_tournament_id": "28955",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:12/sr:tournament:28955/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_128_S8Dr0wAf",
+            "fs_name": "Liga MX Women",
+            "fs_url": "https://www.flashscore.com/football/mexico/liga-mx-women/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "Liga de Expansion MX, Clausura",
+            "fb_tournament_id": "27384",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:12/sr:tournament:27384/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_128_SlhZpIaP",
+            "fs_name": "Liga de Expansion MX",
+            "fs_url": "https://www.flashscore.com/football/mexico/liga-de-expansion-mx/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.8
+        },
+        {
+            "fb_country": "Mexico",
+            "fb_league_name": "U21 Liga MX",
+            "fb_tournament_id": "48056",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:12/sr:tournament:48056/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_128_GdGmZTV6",
+            "fs_name": "Liga MX U21",
+            "fs_url": "https://www.flashscore.com/football/mexico/liga-mx-u21/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 1.0
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "III Liga, Group 3",
+            "fb_tournament_id": "25839",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:47/sr:tournament:25839/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_154_OWZW2KN5",
+            "fs_name": "III Liga - Group I",
+            "fs_url": "https://www.flashscore.com/football/poland/iii-liga-group-i/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "III Liga, Group 4",
+            "fb_tournament_id": "25841",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:47/sr:tournament:25841/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_154_OWZW2KN5",
+            "fs_name": "III Liga - Group I",
+            "fs_url": "https://www.flashscore.com/football/poland/iii-liga-group-i/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        },
+        {
+            "fb_country": "Poland",
+            "fb_league_name": "III Liga, Group 2",
+            "fb_tournament_id": "25837",
+            "fb_url": "https://www.football.com/ng/m/sport/football/sr:category:47/sr:tournament:25837/?time=all&source=sport_menu&sort=2",
+            "fs_league_id": "1_154_OWZW2KN5",
+            "fs_name": "III Liga - Group I",
+            "fs_url": "https://www.flashscore.com/football/poland/iii-liga-group-i/",
+            "tier": "T4",
+            "confidence": "REVIEW_REQUIRED",
+            "match_score": 0.75
+        }
+    ]
+}

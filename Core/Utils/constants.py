@@ -26,3 +26,7 @@ CURRENCY_SYMBOL = os.getenv("CURRENCY_SYMBOL", "$")
 # Concurrency Control
 MAX_CONCURRENCY = int(os.getenv("MAX_CONCURRENCY", 1))
 
+# Browser / Mobile Settings
+FB_MOBILE_USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"
+FB_MOBILE_VIEWPORT = {'width': 375, 'height': 612}
+

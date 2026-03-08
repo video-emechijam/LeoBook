@@ -12,23 +12,35 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- =============================================================================
 
 CREATE TABLE IF NOT EXISTS public.profiles (
-    id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    id UUID REFERENCES auth.users (id) ON DELETE CASCADE PRIMARY KEY,
     email TEXT,
     username TEXT UNIQUE,
     full_name TEXT,
     avatar_url TEXT,
     tier TEXT DEFAULT 'free',
     credits INTEGER DEFAULT 0,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Users can view own profile" ON public.profiles;
-CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can view own profile" ON public.profiles FOR
+SELECT USING (auth.uid () = id);
+
 DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
-CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON public.profiles FOR
+UPDATE USING (auth.uid () = id);
 
 -- =============================================================================
 -- 2. CUSTOM RULE ENGINE
@@ -54,24 +66,33 @@ CREATE TABLE IF NOT EXISTS public.custom_rules (
     accuracy JSONB DEFAULT '{}'::jsonb,
     backtest_csv_url TEXT
 );
+
 ALTER TABLE public.custom_rules ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Users can fully manage own rules" ON public.custom_rules;
-CREATE POLICY "Users can fully manage own rules" ON public.custom_rules FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can fully manage own rules" ON public.custom_rules FOR ALL USING (auth.uid () = user_id);
 
 CREATE TABLE IF NOT EXISTS public.rule_executions (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    rule_id UUID REFERENCES public.custom_rules(id) ON DELETE CASCADE,
+    id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    rule_id UUID REFERENCES public.custom_rules (id) ON DELETE CASCADE,
     fixture_id TEXT,
-    user_id UUID REFERENCES public.profiles(id),
+    user_id UUID REFERENCES public.profiles (id),
     result JSONB,
-    executed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    executed_at TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.rule_executions ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Users can view own rule executions" ON public.rule_executions;
-CREATE POLICY "Users can view own rule executions" ON public.rule_executions FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can view own rule executions" ON public.rule_executions FOR
+SELECT USING (auth.uid () = user_id);
 
 -- =============================================================================
 -- 3. CORE DATA TABLES (mirrors db_helpers.py files_and_headers exactly)
@@ -119,11 +140,17 @@ CREATE TABLE IF NOT EXISTS public.predictions (
     league_stage TEXT,
     home_score TEXT,
     away_score TEXT,
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.predictions ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access Predictions" ON public.predictions;
-CREATE POLICY "Public Read Access Predictions" ON public.predictions FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access Predictions" ON public.predictions FOR
+SELECT USING (true);
 
 -- schedules (15 columns) — CSV key: fixture_id
 CREATE TABLE IF NOT EXISTS public.schedules (
@@ -141,13 +168,19 @@ CREATE TABLE IF NOT EXISTS public.schedules (
     match_status TEXT,
     match_link TEXT,
     league_stage TEXT,
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
 -- Migration: add league_id if missing
 ALTER TABLE public.schedules ADD COLUMN IF NOT EXISTS league_id TEXT;
+
 ALTER TABLE public.schedules ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access Schedules" ON public.schedules;
-CREATE POLICY "Public Read Access Schedules" ON public.schedules FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access Schedules" ON public.schedules FOR
+SELECT USING (true);
 
 -- teams (6 CSV columns + search enrichment) — CSV key: team_id
 CREATE TABLE IF NOT EXISTS public.teams (
@@ -170,10 +203,15 @@ DO $$ BEGIN
     ALTER TABLE public.teams RENAME COLUMN rl_ids TO league_ids;
   END IF;
 END $$;
+
 ALTER TABLE public.teams ADD COLUMN IF NOT EXISTS league_ids TEXT;
+
 ALTER TABLE public.teams ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access Teams" ON public.teams;
-CREATE POLICY "Public Read Access Teams" ON public.teams FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access Teams" ON public.teams FOR
+SELECT USING (true);
 
 -- region_league (9 CSV columns + search enrichment) — CSV key: league_id
 CREATE TABLE IF NOT EXISTS public.region_league (
@@ -198,10 +236,15 @@ DO $$ BEGIN
 END $$;
 -- Migration: drop deprecated columns
 ALTER TABLE public.region_league DROP COLUMN IF EXISTS logo_url;
+
 ALTER TABLE public.region_league DROP COLUMN IF EXISTS country;
+
 ALTER TABLE public.region_league ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access RegionLeague" ON public.region_league;
-CREATE POLICY "Public Read Access RegionLeague" ON public.region_league FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access RegionLeague" ON public.region_league FOR
+SELECT USING (true);
 
 -- standings (15 columns) — CSV key: standings_key
 CREATE TABLE IF NOT EXISTS public.standings (
@@ -218,12 +261,18 @@ CREATE TABLE IF NOT EXISTS public.standings (
     goals_against INTEGER,
     goal_difference INTEGER,
     points INTEGER,
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    region_league TEXT
+    last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        region_league TEXT
 );
+
 ALTER TABLE public.standings ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access Standings" ON public.standings;
-CREATE POLICY "Public Read Access Standings" ON public.standings FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access Standings" ON public.standings FOR
+SELECT USING (true);
 
 -- fb_matches (17 columns) — CSV key: site_match_id
 CREATE TABLE IF NOT EXISTS public.fb_matches (
@@ -243,11 +292,17 @@ CREATE TABLE IF NOT EXISTS public.fb_matches (
     booking_code TEXT,
     booking_url TEXT,
     status TEXT,
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.fb_matches ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access FBMatches" ON public.fb_matches;
-CREATE POLICY "Public Read Access FBMatches" ON public.fb_matches FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access FBMatches" ON public.fb_matches FOR
+SELECT USING (true);
 
 -- live_scores (11 columns) — CSV key: fixture_id
 CREATE TABLE IF NOT EXISTS public.live_scores (
@@ -260,12 +315,51 @@ CREATE TABLE IF NOT EXISTS public.live_scores (
     status TEXT,
     region_league TEXT,
     match_link TEXT,
-    timestamp TIMESTAMP WITH TIME ZONE,
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    timestamp TIMESTAMP
+    WITH
+        TIME ZONE,
+        last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.live_scores ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access LiveScores" ON public.live_scores;
-CREATE POLICY "Public Read Access LiveScores" ON public.live_scores FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access LiveScores" ON public.live_scores FOR
+SELECT USING (true);
+
+-- match_odds (v8.0) — CSV key: fixture_id, market_id, exact_outcome, line
+CREATE TABLE IF NOT EXISTS public.match_odds (
+    fixture_id TEXT NOT NULL,
+    site_match_id TEXT NOT NULL,
+    market_id TEXT NOT NULL,
+    base_market TEXT NOT NULL,
+    category TEXT,
+    exact_outcome TEXT NOT NULL,
+    line TEXT,
+    odds_value DECIMAL(10, 3),
+    likelihood_pct INTEGER,
+    rank_in_list INTEGER,
+    extracted_at TEXT,
+    last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        PRIMARY KEY (
+            fixture_id,
+            market_id,
+            exact_outcome,
+            line
+        )
+);
+
+ALTER TABLE public.match_odds ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public Read Access MatchOdds" ON public.match_odds;
+
+CREATE POLICY "Public Read Access MatchOdds" ON public.match_odds FOR
+SELECT USING (true);
 
 -- =============================================================================
 -- 4. REPORTING & AUDIT
@@ -273,31 +367,47 @@ CREATE POLICY "Public Read Access LiveScores" ON public.live_scores FOR SELECT U
 
 CREATE TABLE IF NOT EXISTS public.accuracy_reports (
     report_id TEXT PRIMARY KEY,
-    timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    volume INTEGER DEFAULT 0,
-    win_rate DECIMAL(5,2) DEFAULT 0,
-    return_pct DECIMAL(5,2) DEFAULT 0,
-    period TEXT DEFAULT 'last_24h',
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    timestamp TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        volume INTEGER DEFAULT 0,
+        win_rate DECIMAL(5, 2) DEFAULT 0,
+        return_pct DECIMAL(5, 2) DEFAULT 0,
+        period TEXT DEFAULT 'last_24h',
+        last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.accuracy_reports ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access AccuracyReports" ON public.accuracy_reports;
-CREATE POLICY "Public Read Access AccuracyReports" ON public.accuracy_reports FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access AccuracyReports" ON public.accuracy_reports FOR
+SELECT USING (true);
 
 CREATE TABLE IF NOT EXISTS public.audit_log (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    event_type TEXT NOT NULL,
-    description TEXT,
-    balance_before DECIMAL(15,2),
-    balance_after DECIMAL(15,2),
-    stake DECIMAL(15,2),
-    status TEXT DEFAULT 'success',
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    timestamp TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW (),
+        event_type TEXT NOT NULL,
+        description TEXT,
+        balance_before DECIMAL(15, 2),
+        balance_after DECIMAL(15, 2),
+        stake DECIMAL(15, 2),
+        status TEXT DEFAULT 'success',
+        last_updated TIMESTAMP
+    WITH
+        TIME ZONE DEFAULT NOW ()
 );
+
 ALTER TABLE public.audit_log ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access AuditLog" ON public.audit_log;
-CREATE POLICY "Public Read Access AuditLog" ON public.audit_log FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access AuditLog" ON public.audit_log FOR
+SELECT USING (true);
 
 -- =============================================================================
 -- 5. ADAPTIVE LEARNING
@@ -310,9 +420,13 @@ CREATE TABLE IF NOT EXISTS public.learning_weights (
     predictions_analyzed INTEGER DEFAULT 0,
     last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
 ALTER TABLE public.learning_weights ENABLE ROW LEVEL SECURITY;
+
 DROP POLICY IF EXISTS "Public Read Access LearningWeights" ON public.learning_weights;
-CREATE POLICY "Public Read Access LearningWeights" ON public.learning_weights FOR SELECT USING (true);
+
+CREATE POLICY "Public Read Access LearningWeights" ON public.learning_weights FOR
+SELECT USING (true);
 
 -- =============================================================================
 -- 6. AUTO-UPDATE TRIGGERS
@@ -327,41 +441,77 @@ END;
 $$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS update_profiles_last_updated ON public.profiles;
+
 CREATE TRIGGER update_profiles_last_updated BEFORE UPDATE ON public.profiles FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_rules_last_updated ON public.custom_rules;
+
 CREATE TRIGGER update_rules_last_updated BEFORE UPDATE ON public.custom_rules FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_predictions_last_updated ON public.predictions;
+
 CREATE TRIGGER update_predictions_last_updated BEFORE UPDATE ON public.predictions FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_schedules_last_updated ON public.schedules;
+
 CREATE TRIGGER update_schedules_last_updated BEFORE UPDATE ON public.schedules FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_teams_last_updated ON public.teams;
+
 CREATE TRIGGER update_teams_last_updated BEFORE UPDATE ON public.teams FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_standings_last_updated ON public.standings;
+
 CREATE TRIGGER update_standings_last_updated BEFORE UPDATE ON public.standings FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_fbmatches_last_updated ON public.fb_matches;
+
 CREATE TRIGGER update_fbmatches_last_updated BEFORE UPDATE ON public.fb_matches FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_livescores_last_updated ON public.live_scores;
+
 CREATE TRIGGER update_livescores_last_updated BEFORE UPDATE ON public.live_scores FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_reports_last_updated ON public.accuracy_reports;
+
 CREATE TRIGGER update_reports_last_updated BEFORE UPDATE ON public.accuracy_reports FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_audit_last_updated ON public.audit_log;
+
 CREATE TRIGGER update_audit_last_updated BEFORE UPDATE ON public.audit_log FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
 DROP TRIGGER IF EXISTS update_learning_weights_last_updated ON public.learning_weights;
+
 CREATE TRIGGER update_learning_weights_last_updated BEFORE UPDATE ON public.learning_weights FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
+
+DROP TRIGGER IF EXISTS update_match_odds_last_updated ON public.match_odds;
+
+CREATE TRIGGER update_match_odds_last_updated BEFORE UPDATE ON public.match_odds FOR EACH ROW EXECUTE PROCEDURE update_last_updated_column();
 
 -- =============================================================================
 -- 7. GRANTS
 -- =============================================================================
 GRANT SELECT ON public.predictions TO anon, authenticated;
+
 GRANT SELECT ON public.schedules TO anon, authenticated;
+
 GRANT SELECT ON public.teams TO anon, authenticated;
+
 GRANT SELECT ON public.region_league TO anon, authenticated;
+
 GRANT SELECT ON public.standings TO anon, authenticated;
+
 GRANT SELECT ON public.fb_matches TO anon, authenticated;
+
 GRANT SELECT ON public.live_scores TO anon, authenticated;
+
 GRANT SELECT ON public.accuracy_reports TO anon, authenticated;
+
 GRANT SELECT ON public.audit_log TO anon, authenticated;
+
 GRANT SELECT ON public.learning_weights TO anon, authenticated;
+
+GRANT SELECT ON public.match_odds TO anon, authenticated;
 
 -- =============================================================================
 -- 8. AUTH TRIGGERS (Moved to end to prevent blocking tables if permissions fail)

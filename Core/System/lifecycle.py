@@ -225,6 +225,8 @@ Examples:
                         help='Skip Phase 1 (cold start control group)')
     parser.add_argument('--league', type=str, metavar='ID',
                         help='Fine-tune a specific league adapter (use with --train-rl)')
+    parser.add_argument('--resume', action='store_true',
+                        help='Resume training from latest checkpoint (use with --train-rl)')
 
     # --- Rule Engine Management ---
     parser.add_argument('--rule-engine', action='store_true',

@@ -70,3 +70,128 @@ node_modules/
 # LeoBook v7.1 specific
 Config/ensemble_weights.json
 Data/Store/data_quality_report_*.json
+Data/Auth/ChromeData_v3/Local State
+Data/Auth/ChromeData_v3/Variations
+Data/Auth/ChromeData_v3/Default/Affiliation Database
+Data/Auth/ChromeData_v3/Default/DIPS
+Data/Auth/ChromeData_v3/Default/DIPS-wal
+Data/Auth/ChromeData_v3/Default/History
+Data/Auth/ChromeData_v3/Default/Network Action Predictor
+Data/Auth/ChromeData_v3/Default/passkey_enclave_state
+Data/Auth/ChromeData_v3/Default/Preferences
+Data/Auth/ChromeData_v3/Default/Web Data
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_0
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_1
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_2
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_3
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/f_000132
+Data/Auth/ChromeData_v3/Default/Code Cache/js/59717ef01ba6b382_0
+Data/Auth/ChromeData_v3/Default/Code Cache/js/index-dir/the-real-index
+Data/Auth/ChromeData_v3/Default/DawnGraphiteCache/data_1
+Data/Auth/ChromeData_v3/Default/DawnWebGPUCache/data_1
+Data/Auth/ChromeData_v3/Default/Extension State/LOG
+Data/Auth/ChromeData_v3/Default/Extension State/LOG.old
+Data/Auth/ChromeData_v3/Default/GCM Store/LOG
+Data/Auth/ChromeData_v3/Default/GCM Store/LOG.old
+Data/Auth/ChromeData_v3/Default/GPUCache/data_0
+Data/Auth/ChromeData_v3/Default/GPUCache/data_1
+Data/Auth/ChromeData_v3/Default/GPUCache/data_2
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/000136.ldb
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/001290.ldb
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/LOG
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/LOG.old
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/LOG
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/LOG.old
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Network/Cookies
+Data/Auth/ChromeData_v3/Default/Network/Network Persistent State
+Data/Auth/ChromeData_v3/Default/Network/Reporting and NEL
+Data/Auth/ChromeData_v3/Default/Network/TransportSecurity
+Data/Auth/ChromeData_v3/Default/Platform Notifications/LOG
+Data/Auth/ChromeData_v3/Default/Platform Notifications/LOG.old
+Data/Auth/ChromeData_v3/Default/Service Worker/Database/LOG
+Data/Auth/ChromeData_v3/Default/Service Worker/Database/LOG.old
+Data/Auth/ChromeData_v3/Default/Session Storage/LOG
+Data/Auth/ChromeData_v3/Default/Session Storage/LOG.old
+Data/Auth/ChromeData_v3/Default/Session Storage/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Sessions/Session_13417293542941387
+Data/Auth/ChromeData_v3/Default/Sessions/Session_13417294898005949
+Data/Auth/ChromeData_v3/Default/Sessions/Tabs_13417293543323749
+Data/Auth/ChromeData_v3/Default/Sessions/Tabs_13417294898405197
+Data/Auth/ChromeData_v3/Default/Site Characteristics Database/LOG
+Data/Auth/ChromeData_v3/Default/Site Characteristics Database/LOG.old
+Data/Auth/ChromeData_v3/Default/Sync Data/LevelDB/LOG
+Data/Auth/ChromeData_v3/Default/Sync Data/LevelDB/LOG.old
+Data/Auth/ChromeData_v3/Default/WebStorage/QuotaManager
+Data/Auth/ChromeData_v3/Default/shared_proto_db/LOG
+Data/Auth/ChromeData_v3/Default/shared_proto_db/LOG.old
+Data/Auth/ChromeData_v3/Default/shared_proto_db/metadata/LOG
+Data/Auth/ChromeData_v3/Default/shared_proto_db/metadata/LOG.old
+Data/Auth/ChromeData_v3/GrShaderCache/data_1
+Data/Auth/ChromeData_v3/GraphiteDawnCache/data_1
+Data/Auth/ChromeData_v3/ShaderCache/data_1
+Data/Auth/ChromeData_v3/segmentation_platform/ukm_db
+Data/Auth/ChromeData_v3/Local State
+Data/Auth/ChromeData_v3/Variations
+Data/Auth/ChromeData_v3/Default/Affiliation Database
+Data/Auth/ChromeData_v3/Default/DIPS
+Data/Auth/ChromeData_v3/Default/DIPS-wal
+Data/Auth/ChromeData_v3/Default/History
+Data/Auth/ChromeData_v3/Default/Network Action Predictor
+Data/Auth/ChromeData_v3/Default/passkey_enclave_state
+Data/Auth/ChromeData_v3/Default/Preferences
+Data/Auth/ChromeData_v3/Default/Web Data
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_0
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_1
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_2
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/data_3
+Data/Auth/ChromeData_v3/Default/Cache/Cache_Data/f_000132
+Data/Auth/ChromeData_v3/Default/Code Cache/js/59717ef01ba6b382_0
+Data/Auth/ChromeData_v3/Default/Code Cache/js/index-dir/the-real-index
+Data/Auth/ChromeData_v3/Default/DawnGraphiteCache/data_1
+Data/Auth/ChromeData_v3/Default/DawnWebGPUCache/data_1
+Data/Auth/ChromeData_v3/Default/Extension State/LOG
+Data/Auth/ChromeData_v3/Default/Extension State/LOG.old
+Data/Auth/ChromeData_v3/Default/GCM Store/LOG
+Data/Auth/ChromeData_v3/Default/GCM Store/LOG.old
+Data/Auth/ChromeData_v3/Default/GPUCache/data_0
+Data/Auth/ChromeData_v3/Default/GPUCache/data_1
+Data/Auth/ChromeData_v3/Default/GPUCache/data_2
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/000136.ldb
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/001290.ldb
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/LOG
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/LOG.old
+Data/Auth/ChromeData_v3/Default/IndexedDB/https_www.football.com_0.indexeddb.leveldb/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/LOG
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/LOG.old
+Data/Auth/ChromeData_v3/Default/Local Storage/leveldb/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Network/Cookies
+Data/Auth/ChromeData_v3/Default/Network/Network Persistent State
+Data/Auth/ChromeData_v3/Default/Network/Reporting and NEL
+Data/Auth/ChromeData_v3/Default/Network/TransportSecurity
+Data/Auth/ChromeData_v3/Default/Platform Notifications/LOG
+Data/Auth/ChromeData_v3/Default/Platform Notifications/LOG.old
+Data/Auth/ChromeData_v3/Default/Service Worker/Database/LOG
+Data/Auth/ChromeData_v3/Default/Service Worker/Database/LOG.old
+Data/Auth/ChromeData_v3/Default/Session Storage/LOG
+Data/Auth/ChromeData_v3/Default/Session Storage/LOG.old
+Data/Auth/ChromeData_v3/Default/Session Storage/MANIFEST-000001
+Data/Auth/ChromeData_v3/Default/Sessions/Session_13417293542941387
+Data/Auth/ChromeData_v3/Default/Sessions/Session_13417294898005949
+Data/Auth/ChromeData_v3/Default/Sessions/Tabs_13417293543323749
+Data/Auth/ChromeData_v3/Default/Sessions/Tabs_13417294898405197
+Data/Auth/ChromeData_v3/Default/Site Characteristics Database/LOG
+Data/Auth/ChromeData_v3/Default/Site Characteristics Database/LOG.old
+Data/Auth/ChromeData_v3/Default/Sync Data/LevelDB/LOG
+Data/Auth/ChromeData_v3/Default/Sync Data/LevelDB/LOG.old
+Data/Auth/ChromeData_v3/Default/WebStorage/QuotaManager
+Data/Auth/ChromeData_v3/Default/shared_proto_db/LOG
+Data/Auth/ChromeData_v3/Default/shared_proto_db/LOG.old
+Data/Auth/ChromeData_v3/Default/shared_proto_db/metadata/LOG
+Data/Auth/ChromeData_v3/Default/shared_proto_db/metadata/LOG.old
+Data/Auth/ChromeData_v3/GrShaderCache/data_1
+Data/Auth/ChromeData_v3/GraphiteDawnCache/data_1
+Data/Auth/ChromeData_v3/ShaderCache/data_1
+Data/Auth/ChromeData_v3/segmentation_platform/ukm_db
+Data/Auth/

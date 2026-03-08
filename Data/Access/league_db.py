@@ -9,11 +9,41 @@ import csv
 import json
 import os
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 from Core.Utils.constants import now_ng
 
 DB_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "Store")
 DB_PATH = os.path.join(DB_DIR, "leobook.db")
+LEAGUES_JSON_PATH = os.path.join(DB_DIR, "leagues.json")
+
+# Module-level cache for leagues.json
+_leagues_json_cache: Optional[Dict[str, Dict[str, Any]]] = None
+
+def get_fb_url_for_league(conn, league_id: str) -> Optional[str]:
+    """
+    Returns the fb_url for a league from leagues.json if it has been mapped.
+    Returns None if the league has no fb_ keys yet or not found.
+    Cached at module level to avoid redundant disk I/O.
+    """
+    global _leagues_json_cache
+    
+    if _leagues_json_cache is None:
+        try:
+            if os.path.exists(LEAGUES_JSON_PATH):
+                with open(LEAGUES_JSON_PATH, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    # Create a lookup map by league_id
+                    _leagues_json_cache = {l['league_id']: l for l in data if 'league_id' in l}
+            else:
+                _leagues_json_cache = {}
+        except Exception as e:
+            print(f"  [DB] Error loading leagues.json for cache: {e}")
+            _leagues_json_cache = {}
+
+    league_entry = _leagues_json_cache.get(league_id)
+    if league_entry:
+        return league_entry.get('fb_url')
+    return None
 
 
 def get_connection() -> sqlite3.Connection:
@@ -264,6 +294,22 @@ _SCHEMA_SQL = """
         last_updated        TEXT DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS match_odds (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        fixture_id      TEXT    NOT NULL,
+        site_match_id   TEXT    NOT NULL,
+        market_id       TEXT    NOT NULL,
+        base_market     TEXT    NOT NULL,
+        category        TEXT    NOT NULL DEFAULT '',
+        exact_outcome   TEXT    NOT NULL,
+        line            TEXT    DEFAULT '',
+        odds_value      REAL    NOT NULL,
+        likelihood_pct  INTEGER NOT NULL DEFAULT 0,
+        rank_in_list    INTEGER NOT NULL DEFAULT 0,
+        extracted_at    TEXT    NOT NULL DEFAULT (datetime('now')),
+        UNIQUE(fixture_id, market_id, exact_outcome, line)
+    );
+
     -- Indexes for hot-path queries (only on columns that exist at CREATE time)
     CREATE INDEX IF NOT EXISTS idx_schedules_league ON schedules(league_id);
     CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(date);
@@ -271,6 +317,9 @@ _SCHEMA_SQL = """
     CREATE INDEX IF NOT EXISTS idx_leagues_league_id ON leagues(league_id);
     CREATE INDEX IF NOT EXISTS idx_predictions_date ON predictions(date);
     CREATE INDEX IF NOT EXISTS idx_predictions_status ON predictions(status);
+    CREATE INDEX IF NOT EXISTS idx_match_odds_fixture ON match_odds(fixture_id);
+    CREATE INDEX IF NOT EXISTS idx_match_odds_market ON match_odds(market_id, extracted_at);
+    CREATE INDEX IF NOT EXISTS idx_match_odds_site ON match_odds(site_match_id);
 """
 
 # Columns that need to be added to existing tables that were created
@@ -582,10 +631,32 @@ def _reconstruct_teams_table_if_legacy_unique_exists(conn: sqlite3.Connection):
 
 
 
+def _migrate_match_odds_if_needed(conn: sqlite3.Connection):
+    """Drop old match_odds table if it has the legacy schema (last_updated column).
+    The new schema uses line DEFAULT '' instead of nullable line, and no last_updated.
+    Data is re-extractable so dropping is safe."""
+    try:
+        res = conn.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND name='match_odds'"
+        ).fetchone()
+        if not res:
+            return  # Table doesn't exist yet — will be created by _SCHEMA_SQL
+        schema_sql = res[0]
+        if 'last_updated' in schema_sql:
+            print("  [Migration] Dropping legacy match_odds table (schema v7 -> v8)...")
+            conn.execute("DROP TABLE IF EXISTS match_odds")
+            conn.commit()
+            print("  [Migration] [OK] match_odds will be recreated with v8 schema.")
+    except Exception as e:
+        print(f"  [Migration] [!] match_odds check failed: {e}")
+
+
 def init_db(conn: Optional[sqlite3.Connection] = None) -> sqlite3.Connection:
     """Create all tables, run migrations, auto-import CSVs. Returns the connection."""
     if conn is None:
         conn = get_connection()
+
+    _migrate_match_odds_if_needed(conn)
 
     conn.executescript(_SCHEMA_SQL)
     conn.commit()
@@ -1300,3 +1371,45 @@ def query_all(conn: sqlite3.Connection, table: str, where: str = None,
 def count_rows(conn: sqlite3.Connection, table: str) -> int:
     """Count rows in a table."""
     return conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+def upsert_match_odds_batch(
+    conn: sqlite3.Connection,
+    odds_list: List[Dict[str, Any]],
+) -> int:
+    """Bulk upsert match odds. Returns rows written."""
+    if not odds_list:
+        return 0
+    conn.executemany(
+        """
+        INSERT INTO match_odds (
+            fixture_id, site_match_id, market_id, base_market,
+            category, exact_outcome, line, odds_value,
+            likelihood_pct, rank_in_list, extracted_at
+        ) VALUES (
+            :fixture_id, :site_match_id, :market_id, :base_market,
+            :category, :exact_outcome, :line, :odds_value,
+            :likelihood_pct, :rank_in_list, :extracted_at
+        )
+        ON CONFLICT(fixture_id, market_id, exact_outcome, line)
+        DO UPDATE SET
+            odds_value   = excluded.odds_value,
+            extracted_at = excluded.extracted_at
+        """,
+        [
+            {
+                "fixture_id":     o["fixture_id"],
+                "site_match_id":  o["site_match_id"],
+                "market_id":      o["market_id"],
+                "base_market":    o["base_market"],
+                "category":       o.get("category", ""),
+                "exact_outcome":  o["exact_outcome"],
+                "line":           o.get("line") or "",
+                "odds_value":     o["odds_value"],
+                "likelihood_pct": o.get("likelihood_pct", 0),
+                "rank_in_list":   o.get("rank_in_list", 0),
+                "extracted_at":   o["extracted_at"],
+            }
+            for o in odds_list
+        ],
+    )
+    conn.commit()
+    return len(odds_list)

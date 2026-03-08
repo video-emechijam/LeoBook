@@ -1,15 +1,3 @@
-2026/03/06-18:59:03.762 2670 Reusing MANIFEST C:\Users\Admin\Desktop\ProProjection\LeoBook\Data\Auth\ChromeData_v3\Default\IndexedDB\https_www.football.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/06-18:59:03.764 2670 Recovering log #1284
-2026/03/06-18:59:03.764 2670 Reusing old log C:\Users\Admin\Desktop\ProProjection\LeoBook\Data\Auth\ChromeData_v3\Default\IndexedDB\https_www.football.com_0.indexeddb.leveldb/001284.log 
-2026/03/06-18:59:03.765 2670 Delete type=2 #1283
-2026/03/06-18:59:04.061 1d3c Level-0 table #1289: started
-2026/03/06-18:59:04.145 1d3c Level-0 table #1289: 1188 bytes OK
-2026/03/06-18:59:04.215 1d3c Delete type=0 #1284
-2026/03/06-18:59:04.216 2670 Manual compaction at level-0 from ' \xd3\x01\x00\x00\x00' @ 72057594037927935 : 1 .. ' \xd4\x01\x00\x00\x00' @ 0 : 0; will stop at ' \xd3\x01\x00\x00\x05' @ 13278 : 1
-2026/03/06-18:59:04.235 2670 Compacting 1@0 + 1@1 files
-2026/03/06-18:59:04.383 2670 Generated table #1290@0: 1204 keys, 15251 bytes
-2026/03/06-18:59:04.383 2670 Compacted 1@0 + 1@1 files => 15251 bytes
-2026/03/06-18:59:04.418 2670 compacted to: files[ 0 1 1 0 0 0 0 ]
-2026/03/06-18:59:04.419 2670 Delete type=2 #1289
-2026/03/06-18:59:04.420 2670 Manual compaction at level-0 from ' \xd3\x01\x00\x00\x05' @ 13278 : 1 .. ' \xd4\x01\x00\x00\x00' @ 0 : 0; will stop at (end)
-2026/03/06-18:59:17.870 16ec Manual compaction at level-0 from ' \xd4\x01\x00\x00\x00' @ 72057594037927935 : 1 .. ' \xd5\x01\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/08-12:49:34.879 1590 Reusing MANIFEST C:\Users\Admin\Desktop\ProProjection\LeoBook\Data\Auth\ChromeData_v3\Default\IndexedDB\https_www.football.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/08-12:49:34.881 1590 Recovering log #1314
+2026/03/08-12:49:34.908 1590 Reusing old log C:\Users\Admin\Desktop\ProProjection\LeoBook\Data\Auth\ChromeData_v3\Default\IndexedDB\https_www.football.com_0.indexeddb.leveldb/001314.log 
