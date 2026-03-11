@@ -511,7 +511,10 @@ async def run_utility(args):
     elif getattr(args, 'push_models', False):
         print("\n  --- LEO: Push Models → Supabase Storage ---")
         from Data.Access.model_sync import ModelSync
-        ModelSync(skip_large=getattr(args, 'skip_large', False)).push()
+        ModelSync(
+            skip_large=getattr(args, 'skip_large', False),
+            all_checkpoints=getattr(args, 'all_checkpoints', False)
+        ).push()
 
     elif getattr(args, 'pull_models', False):
         print("\n  --- LEO: Pull Models ← Supabase Storage ---")

@@ -37,8 +37,8 @@ MODELS_DIR = PROJECT_ROOT / "Data" / "Store" / "models"
 # Files above this size (MB) get a warning and progress indicator
 LARGE_FILE_THRESHOLD_MB = 50
 
-# Files above this size will be chunked to bypass Supabase 500MB limits
-MAX_SINGLE_FILE_SIZE_MB = 200 
+# Files above this size will be chunked to bypass Supabase limits (Free tier default is 50MB)
+MAX_SINGLE_FILE_SIZE_MB = 40 
 CHUNK_SIZE_BYTES = MAX_SINGLE_FILE_SIZE_MB * 1024 * 1024
 
 
@@ -59,13 +59,15 @@ def _fmt_elapsed(seconds: float) -> str:
 class ModelSync:
     """Upload and download RL model files to/from Supabase Storage."""
 
-    def __init__(self, skip_large: bool = False):
+    def __init__(self, skip_large: bool = False, all_checkpoints: bool = False):
         """
         Args:
             skip_large: If True, skip files > LARGE_FILE_THRESHOLD_MB during push.
+            all_checkpoints: If True, sync everything in checkpoints/ folder.
         """
         self.supabase = get_supabase_client()
         self.skip_large = skip_large
+        self.all_checkpoints = all_checkpoints
         if not self.supabase:
             raise RuntimeError("Supabase client not available. Check SUPABASE_URL and SUPABASE_KEY in .env")
         self._ensure_bucket()
@@ -85,24 +87,19 @@ class ModelSync:
     def _list_local_files(self) -> List[Path]:
         """Find all model files that exist locally, skipping redundant checkpoints."""
         files = []
-        latest_sizes = {}
 
         # 1. Grab major aliases (latest models)
         for name in MODEL_FILES:
             p = MODELS_DIR / name
             if p.exists():
                 files.append(p)
-                latest_sizes[p.stat().st_size] = p.name
 
-        # 2. Add checkpoint files ONLY if they don't look like duplicates of "latest"
-        ckpt_dir = MODELS_DIR / "checkpoints"
-        if ckpt_dir.exists():
-            for p in sorted(ckpt_dir.glob("*.pth"), reverse=True):
-                sz = p.stat().st_size
-                # If size matches exactly a "latest" file, it's likely a duplicate. Skip to save GBs.
-                if sz in latest_sizes:
-                    continue
-                files.append(p)
+        # 2. Add checkpoint files ONLY if specifically requested
+        if self.all_checkpoints:
+            ckpt_dir = MODELS_DIR / "checkpoints"
+            if ckpt_dir.exists():
+                for p in sorted(ckpt_dir.glob("*.pth"), reverse=True):
+                    files.append(p)
 
         return files
 
@@ -146,21 +143,27 @@ class ModelSync:
                 # CHUNKING LOGIC: If file > limit, split and upload parts
                 if file_size > CHUNK_SIZE_BYTES:
                     num_chunks = (file_size + CHUNK_SIZE_BYTES - 1) // CHUNK_SIZE_BYTES
-                    print(f"    [{i}/{len(files)}] 🧩 Slicing into {num_chunks} parts...")
                     
-                    with open(local_path, "rb") as f:
-                        for part_idx in range(num_chunks):
-                            part_name = f"{remote_path}.part{part_idx}"
-                            chunk_data = f.read(CHUNK_SIZE_BYTES)
-                            
-                            # Upload part
-                            self.supabase.storage.from_(BUCKET_NAME).upload(
-                                path=part_name,
-                                file=chunk_data,
-                                file_options={"x-upsert": "true", "content-type": "application/octet-stream"},
-                            )
-                            # Progress update (simple for parts)
-                            print(f"      ↑ Part {part_idx+1}/{num_chunks} uploaded.")
+                    with tqdm(
+                        total=file_size,
+                        unit='B',
+                        unit_scale=True,
+                        unit_divisor=1024,
+                        desc=f"    [{i}/{len(files)}] 🧩 {remote_path} (Slicing {num_chunks} parts)",
+                        leave=False
+                    ) as pbar:
+                        with open(local_path, "rb") as f:
+                            for part_idx in range(num_chunks):
+                                part_name = f"{remote_path}.part{part_idx}"
+                                chunk_data = f.read(CHUNK_SIZE_BYTES)
+                                
+                                # Upload part
+                                self.supabase.storage.from_(BUCKET_NAME).upload(
+                                    path=part_name,
+                                    file=chunk_data,
+                                    file_options={"x-upsert": "true", "content-type": "application/octet-stream"},
+                                )
+                                pbar.update(len(chunk_data))
                 else:
                     # Normal Single File Upload (small enough)
                     with open(local_path, "rb") as f:

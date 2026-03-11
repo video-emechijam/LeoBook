@@ -247,11 +247,13 @@ Examples:
 
     # --- Model Sync (Supabase Storage) ---
     parser.add_argument('--push-models', action='store_true',
-                        help='Upload trained RL models → Supabase Storage')
+                        help='Upload Data/Store/models/ → Supabase Storage')
     parser.add_argument('--pull-models', action='store_true',
-                        help='Download RL models from Supabase Storage → local')
+                        help='Download Supabase Storage → Data/Store/models/')
     parser.add_argument('--skip-large', action='store_true',
-                        help='Skip files > 50 MB during --push-models (upload only trunk + adapters)')
+                        help='Skip syncing files > 50MB (during push)')
+    parser.add_argument('--all-checkpoints', action='store_true',
+                        help='Force sync all files in checkpoints/ folder (default: False)')
 
     parser.add_argument('--rule-engine', action='store_true',
                        help='Show default rule engine info (combine with --list, --set-default, --backtest)')
