@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 from Data.Access.db_helpers import _get_conn, save_team_entry, save_region_league_entry
 from Data.Access.league_db import query_all
 
-# CSV_LOCK replaced — SQLite WAL handles concurrency
-CSV_LOCK = asyncio.Lock()
+# FIX: CSV_LOCK is never referenced anywhere — removed dead code
+# CSV_LOCK = asyncio.Lock()
 
 # Load environment variables
 load_dotenv()
@@ -30,14 +30,8 @@ SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 # LLM Provider Configuration
 # Model chain is dynamic via LLMHealthManager.MODELS_ASCENDING
 # (cheapest first for search-dict bulk enrichment)
-LLM_PROVIDERS = [
-    {
-        'name': 'Grok',
-        'api_key': os.getenv('GROK_API_KEY'),
-        'api_url': 'https://api.x.ai/v1/chat/completions',
-        'model': 'grok-4-1-fast-reasoning',
-    },
-]
+# FIX: LLM_PROVIDERS block was dead config — never iterated, all routing
+#      goes through health_manager. Removed to avoid confusion.
 BATCH_SIZE = 10
 SLEEP_BETWEEN_BATCHES = 4
 
@@ -165,7 +159,14 @@ Return ONLY the JSON array — no explanations, no markdown.
 
 
 def _call_llm(provider: dict, prompt: str) -> list:
-    """Calls a single LLM provider and returns parsed results."""
+    """Calls a single LLM provider and returns parsed results.
+
+    FIX: No longer calls resp.raise_for_status() blindly. Instead, captures
+    the full response text before raising so that callers can inspect the body
+    for daily-limit signals ('PerDay', 'limit: 0') when a 429 is received.
+    Raises a RuntimeError with the response body embedded in the message on
+    non-2xx status codes so upstream exception handlers can extract quota info.
+    """
     headers = {
         "Authorization": f"Bearer {provider['api_key']}",
         "Content-Type": "application/json"
@@ -177,7 +178,11 @@ def _call_llm(provider: dict, prompt: str) -> list:
         "max_tokens": 4096
     }
     resp = requests.post(provider["api_url"], headers=headers, json=payload, timeout=60)
-    resp.raise_for_status()
+    if not resp.ok:
+        # Embed response body so callers see 'PerDay'/'limit: 0' in the error string.
+        raise RuntimeError(
+            f"{resp.status_code} {resp.reason} | body: {resp.text[:500]}"
+        )
     content = resp.json()["choices"][0]["message"]["content"].strip()
 
     data = extract_json_with_salvage(content)
@@ -193,7 +198,8 @@ def query_llm_for_metadata(items, item_type="team", retries=2):
     """
     Queries LLM providers with ASCENDING model chain (cheapest first).
     For Gemini: iterates model chain × key rotation.
-    On 429: try next key for same model, then downgrade model.
+    On 429: inspects error body for daily-limit signal; if daily, marks model exhausted
+            and downgrades. If per-minute, applies COOLDOWN_SECONDS and tries next key.
     """
     if not items:
         return []
@@ -213,10 +219,14 @@ def query_llm_for_metadata(items, item_type="team", retries=2):
             # Model-chain rotation: try each model, exhaust keys per model
             consecutive_429s = 0
             for model_name in model_chain:
-                while True: # Try all available keys for this model
+                # FIX: skip models already known to be daily-exhausted
+                if health_manager.is_model_daily_exhausted(model_name):
+                    print(f"  [Skip] {model_name} — daily quota exhausted.")
+                    continue
+                while True:  # Try all available keys for this model
                     api_key = health_manager.get_next_gemini_key(model=model_name)
                     if not api_key:
-                        # Check if keys are just on cooldown (not permanently dead)
+                        # Check if keys are just on per-minute cooldown
                         wait_secs = health_manager.get_cooldown_remaining(model_name)
                         if wait_secs > 0:
                             print(f"  [LLM] All keys cooling down for {model_name}. Waiting {wait_secs:.0f}s...")
@@ -244,8 +254,12 @@ def query_llm_for_metadata(items, item_type="team", retries=2):
                         except Exception as e:
                             err_str = str(e)
                             if "429" in err_str:
-                                health_manager.on_gemini_429(api_key, model=model_name)
+                                # FIX: pass err_str so health_manager can detect daily vs per-minute
+                                health_manager.on_gemini_429(api_key, model=model_name, err_str=err_str)
                                 consecutive_429s += 1
+                                # If model is now daily-exhausted, skip to next model immediately
+                                if health_manager.is_model_daily_exhausted(model_name):
+                                    break
                                 # Exponential backoff: 2, 4, 8, ... capped at 30s
                                 backoff = min(2 ** consecutive_429s, 30)
                                 print(f"  [LLM] Key ...{key_suffix} rate-limited on {model_name}, backoff {backoff}s...")
@@ -348,7 +362,7 @@ def find_best_match_league(input_name: str, country: str, existing_leagues: dict
     Returns (league_id, is_new).
     """
     norm_input = normalize_for_search(input_name)
-    # Strip round/stage suffixes for matching: "TURKEY - 1. LIG - ROUND 22" â†’ "turkey 1 lig"
+    # Strip round/stage suffixes for matching: "TURKEY - 1. LIG - ROUND 22" → "turkey 1 lig"
     norm_input_base = re.sub(r'\s*-?\s*(round|matchday|playoffs?|apertura|clausura|1/\d+-finals?|group\s*\w)\s*.*$', '', norm_input, flags=re.IGNORECASE).strip()
 
     best_id = None
@@ -377,8 +391,24 @@ def find_best_match_league(input_name: str, country: str, existing_leagues: dict
     if best_id:
         return best_id, False
 
-    # No match â€” generate deterministic ID
+    # No match — generate deterministic ID
     return generate_deterministic_id(input_name, country or ""), True
+
+
+def _has_llm_capacity(chain_name: str = "search_dict") -> bool:
+    """
+    FIX: Replaces the broken circuit-breaker pattern:
+        `not health_manager._gemini_active`
+    which only fires when keys are permanently dead (403/401), never during
+    quota exhaustion.
+
+    This checks has_chain_capacity() which correctly accounts for daily
+    exhaustion AND per-minute cooldowns. Falls back to Grok active check
+    as a secondary path.
+    """
+    grok_ok = getattr(health_manager, '_grok_active', False)
+    gemini_ok = health_manager.has_chain_capacity(chain_name)
+    return grok_ok or gemini_ok
 
 
 @AIGOSuite.aigo_retry(max_retries=2, delay=2.0, use_aigo=False)
@@ -463,8 +493,9 @@ async def main():
         if not league_list: continue
         print(f"\n--- {pass_name}: Leagues ---")
         for i in range(0, len(league_list), BATCH_SIZE):
-            # Circuit breaker: skip if all LLM providers are down
-            if not health_manager._gemini_active and not getattr(health_manager, '_grok_active', False):
+            # FIX: use has_chain_capacity() — correctly detects quota exhaustion,
+            #      not just permanent key death.
+            if not _has_llm_capacity("search_dict"):
                 remaining = len(league_list) - i
                 print(f"  [SearchDict] All LLM providers offline -- skipping {remaining} remaining leagues.")
                 break
@@ -475,7 +506,7 @@ async def main():
             for item in results:
                 input_name = item.get("input_name")
                 official_name = item.get("official_name") or input_name
-                country = item.get("country") # LLM might return country for a league
+                country = item.get("country")  # LLM might return country for a league
                 lid, _ = find_best_match_league(input_name, country, existing_leagues)
                 
                 search_terms = {normalize_for_search(input_name), normalize_for_search(official_name)}
@@ -483,7 +514,7 @@ async def main():
                 for a in item.get("abbreviations", []): search_terms.add(normalize_for_search(a))
                 
                 upsert_data = clean_none_values({
-                    "name": official_name, # Standardized v7 column name
+                    "name": official_name,  # Standardized v7 column name
                     "other_names": item.get("other_names", []),
                     "abbreviations": item.get("abbreviations", []),
                     "search_terms": list(filter(None, search_terms)),
@@ -504,20 +535,20 @@ async def main():
     
     for team_ids, pass_name in [(team_ids_pass1, "PASS 1"), (team_ids_pass2, "PASS 2")]:
         if not team_ids: continue
-        print(f"\nâ”€â”€ {pass_name}: Teams â”€â”€")
+        print(f"\n── {pass_name}: Teams ──")
         for i in range(0, len(team_ids), BATCH_SIZE):
-            # Circuit breaker: skip if all LLM providers are down
-            if not health_manager._gemini_active and not getattr(health_manager, '_grok_active', False):
+            # FIX: use has_chain_capacity() — correctly detects quota exhaustion
+            if not _has_llm_capacity("search_dict"):
                 remaining = len(team_ids) - i
                 print(f"  [SearchDict] All LLM providers offline -- skipping {remaining} remaining teams.")
                 break
             batch_ids = team_ids[i:i + BATCH_SIZE]
-            batch_names = [list(teams_raw[tid]["names"])[0] for tid in batch_ids] # Use first name as input
+            batch_names = [list(teams_raw[tid]["names"])[0] for tid in batch_ids]  # Use first name as input
             print(f"  Processing batch of {len(batch_ids)} teams...")
             results = await async_query_llm_for_metadata(batch_names, item_type="team")
             updates = {}
             for idx, item in enumerate(results):
-                if idx >= len(batch_ids): break # Safety break
+                if idx >= len(batch_ids): break  # Safety break
                 tid = batch_ids[idx]
                 off_name = item.get("official_name") or list(teams_raw[tid]["names"])[0]
                 search_terms = {normalize_for_search(off_name)}
@@ -527,11 +558,11 @@ async def main():
                 
                 upsert_data = clean_none_values({
                     "team_id": tid,
-                    "name": off_name, # Standardized v7
+                    "name": off_name,  # Standardized v7
                     "other_names": item.get("other_names", []),
                     "abbreviations": item.get("abbreviations", []),
                     "search_terms": list(filter(None, search_terms)),
-                    "country_code": item.get("country_code") or item.get("country"), # Flex with v7
+                    "country_code": item.get("country_code") or item.get("country"),  # Flex with v7
                     "city": item.get("city"),
                     "stadium": item.get("stadium"),
                 })
@@ -540,7 +571,7 @@ async def main():
             if updates:
                 print(f"  [Supabase] Upserting {len(updates)} teams to 'teams'...")
                 batch_upsert("teams", list(updates.values()))
-                update_db_under_lock(updates, "team_id", "teams") # SQLite table is 'teams'
+                update_db_under_lock(updates, "team_id", "teams")  # SQLite table is 'teams'
             await asyncio.sleep(SLEEP_BETWEEN_BATCHES)
 
     print("\nSearch dictionary built and local CSVs/Supabase synced!")
@@ -619,7 +650,7 @@ async def enrich_match_search_dict(
 
                 upsert_data = clean_none_values({
                     "team_id": tid,
-                    "name": off_name, # Standardized v7
+                    "name": off_name,  # Standardized v7
                     "other_names": item.get("other_names", []),
                     "abbreviations": item.get("abbreviations", []),
                     "search_terms": list(filter(None, search_terms)),
@@ -652,7 +683,7 @@ async def enrich_match_search_dict(
 
                 upsert_data = clean_none_values({
                     "league_id": league_id,
-                    "name": official_name, # Standardized v7 column name
+                    "name": official_name,  # Standardized v7 column name
                     "other_names": item.get("other_names", []),
                     "abbreviations": item.get("abbreviations", []),
                     "search_terms": list(filter(None, search_terms)),
@@ -704,12 +735,13 @@ async def enrich_batch_teams_search_dict(team_pairs: list, batch_size: int = 10)
     total_enriched = 0
     consecutive_failures = 0
     
-    from Core.Intelligence.llm_health_manager import health_manager
+    # FIX: removed duplicate import — health_manager already imported at module level
     await health_manager.ensure_initialized()
 
     for i in range(0, len(unenriched), batch_size):
-        # Circuit-breaker: abort if no LLM providers are available
-        if not health_manager._gemini_active and not getattr(health_manager, '_grok_active', False):
+        # FIX: use _has_llm_capacity() — correctly detects quota exhaustion,
+        #      not just permanent key death.
+        if not _has_llm_capacity("search_dict"):
             remaining = len(unenriched) - i
             print(f"    [SearchDict Batch] ⚠ No LLM providers available — skipping remaining {remaining} teams.")
             break
@@ -752,7 +784,7 @@ async def enrich_batch_teams_search_dict(team_pairs: list, batch_size: int = 10)
 
                 upsert_data = clean_none_values({
                     "team_id": tid,
-                    "name": off_name, # Standardized v7
+                    "name": off_name,  # Standardized v7
                     "other_names": item.get("other_names", []),
                     "abbreviations": item.get("abbreviations", []),
                     "search_terms": list(filter(None, search_terms)),
@@ -771,9 +803,9 @@ async def enrich_batch_teams_search_dict(team_pairs: list, batch_size: int = 10)
         except Exception as e:
             print(f"    [SearchDict Batch] Batch {i // batch_size + 1} error (non-fatal): {e}")
 
-        # Small delay between batches to avoid rate limiting
+        # FIX: use SLEEP_BETWEEN_BATCHES constant (was hardcoded 2 — half the configured value)
         if i + batch_size < len(unenriched):
-            await asyncio.sleep(2)
+            await asyncio.sleep(SLEEP_BETWEEN_BATCHES)
 
     if total_enriched:
         print(f"    [SearchDict Batch] ✓ Total: {total_enriched}/{len(unenriched)} teams enriched")
@@ -800,4 +832,3 @@ if __name__ == "__main__":
         asyncio.run(test_health())
     else:
         asyncio.run(main())
-
