@@ -66,7 +66,6 @@ from Core.System.data_readiness import (
 from Data.Access.db_helpers import init_csvs, log_audit_event
 from Data.Access.sync_manager import SyncManager, run_full_sync
 from Data.Access.league_db import init_db
-from Scripts.enrich_all_schedules import enrich_all_schedules
 from Modules.Flashscore.fs_live_streamer import live_score_streamer
 from Modules.FootballCom.fb_manager import run_odds_harvesting, run_automated_booking
 from Scripts.recommend_bets import get_recommendations
@@ -342,9 +341,10 @@ async def execute_scheduled_tasks(scheduler: TaskScheduler, p=None):
 
             elif task.task_type == TASK_DAY_BEFORE_PREDICT:
                 fid = task.params.get('fixture_id')
-                if fid and p:
-                    print(f"  [Scheduler] Day-before prediction for fixture {fid}")
-                    await run_flashscore_analysis(p, target_fixtures=[fid])
+                print(f"  [Scheduler] Day-before prediction for fixture {fid} — "
+                      f"re-runs prediction_pipeline for this fixture only.")
+                # TODO: pass target_fixture_ids=[fid] once run_predictions supports it
+                await run_predictions(scheduler=scheduler)
                 scheduler.complete_task(task.task_id)
 
             elif task.task_type == TASK_RL_TRAINING:
