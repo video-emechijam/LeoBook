@@ -11,17 +11,27 @@ and online updates from new prediction outcomes.
 
 Training constraints:
 - Strict chronological order (no future data leakage)
-- Max 2-season lookback window
+- Season-aware date selection: training starts from each league's actual season
+  start date, not a global hardcoded date floor
 - Last-10 matches prioritized via recency weighting
 - Prediction accuracy is the primary reward signal
+
+Season targeting (--train-season CLI flag):
+  "current"     Use each league's current_season (from leagues table). Default.
+  "all"         All available seasons, oldest-first. Use for a full cold retraining.
+  N (int)       Past season by offset: 1 = most recent past, 2 = two seasons ago, etc.
+                Matches the --season N convention used by enrich_leagues.
+  "2024/2025"   Explicit season label (split-season format).
+  "2025"        Explicit season label (calendar-year format).
 """
 
 import os
+import re
 import json
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional, Tuple, Union
 from datetime import datetime, timedelta
 from pathlib import Path
 from collections import defaultdict
@@ -51,7 +61,7 @@ class RLTrainer:
 
     Training proceeds chronologically day-by-day:
     For each day D:
-        1. Build features using ONLY data before D (max 2 seasons back)
+        1. Build features using ONLY data before D (season-aware window)
         2. For each fixture on day D:
             a. Encode features
             b. Model predicts action (market + stake)
@@ -94,6 +104,152 @@ class RLTrainer:
         )
 
         self._step_count = 0
+
+    # -------------------------------------------------------------------
+    # Season Discovery & Date Selection
+    # -------------------------------------------------------------------
+
+    def _discover_seasons(self, conn) -> List[str]:
+        """
+        Return all distinct season labels found in schedules, most-recent-first.
+
+        Sorts by the 4-digit start year embedded in the season string so both
+        split-season ("2024/2025") and calendar-year ("2025") formats rank correctly.
+        """
+        rows = conn.execute(
+            "SELECT DISTINCT season FROM schedules "
+            "WHERE season IS NOT NULL AND season != ''"
+        ).fetchall()
+        seasons = [r[0] for r in rows]
+
+        def _start_year(s: str) -> int:
+            m = re.match(r'(\d{4})', s)
+            return int(m.group(1)) if m else 0
+
+        return sorted(seasons, key=_start_year, reverse=True)
+
+    def _get_season_dates(
+        self, conn, target_season: Union[str, int] = "current"
+    ) -> Tuple[List[str], str]:
+        """
+        Build the ordered list of fixture-dates for training, filtered to the
+        requested season scope.
+
+        Args:
+            target_season:
+                "current"   — per-league join against leagues.current_season.
+                              Starts training from the actual start of each
+                              league's live season. Default.
+                "all"       — all available completed fixtures, oldest-first.
+                              Use for a full cold retraining across all seasons.
+                int N       — past season by offset: 1 = most recent past,
+                              2 = two seasons ago, etc. (0-indexed internally,
+                              1-indexed in the CLI to match enrich_leagues).
+                str label   — explicit season label, e.g. "2024/2025" or "2025".
+
+        Returns:
+            (dates, label) where dates is a chronologically sorted list of
+            date strings and label is a human-readable description for logging.
+        """
+        today_str = datetime.now().strftime("%Y-%m-%d")
+
+        # ── All seasons ─────────────────────────────────────────────────────────
+        if target_season == "all":
+            rows = conn.execute("""
+                SELECT DISTINCT date FROM schedules
+                WHERE date IS NOT NULL
+                  AND home_score IS NOT NULL AND away_score IS NOT NULL
+                  AND date <= ?
+                ORDER BY date ASC
+            """, (today_str,)).fetchall()
+            return [r[0] for r in rows], "all seasons (oldest → newest)"
+
+        # ── Past season by offset (int) ──────────────────────────────────────────
+        if isinstance(target_season, int) and target_season >= 1:
+            seasons = self._discover_seasons(conn)
+            # Index 0 = current/latest season label; index N = past season N
+            if target_season >= len(seasons):
+                print(f"  [TRAIN] Season offset {target_season} out of range "
+                      f"({len(seasons)} seasons in DB). Falling back to current.")
+            else:
+                season_label = seasons[target_season]  # 1-indexed offset
+                rows = conn.execute("""
+                    SELECT DISTINCT date FROM schedules
+                    WHERE season = ?
+                      AND home_score IS NOT NULL AND away_score IS NOT NULL
+                      AND date IS NOT NULL AND date <= ?
+                    ORDER BY date ASC
+                """, (season_label, today_str)).fetchall()
+                if rows:
+                    return [r[0] for r in rows], f"season {season_label} (past offset {target_season})"
+                print(f"  [TRAIN] Season '{season_label}' has no completed fixtures. "
+                      f"Falling back to current.")
+
+        # ── Explicit season label (non-"current" string) ─────────────────────────
+        if isinstance(target_season, str) and target_season != "current":
+            rows = conn.execute("""
+                SELECT DISTINCT date FROM schedules
+                WHERE season = ?
+                  AND home_score IS NOT NULL AND away_score IS NOT NULL
+                  AND date IS NOT NULL AND date <= ?
+                ORDER BY date ASC
+            """, (target_season, today_str)).fetchall()
+            if rows:
+                return [r[0] for r in rows], f"season {target_season}"
+            print(f"  [TRAIN] Season '{target_season}' not found or has no completed "
+                  f"fixtures. Falling back to current.")
+
+        # ── Current season (default) ─────────────────────────────────────────────
+        # Join schedules against leagues.current_season so training starts from
+        # each league's actual season start date rather than a global date floor.
+        rows = conn.execute("""
+            SELECT DISTINCT s.date
+            FROM schedules s
+            INNER JOIN leagues l ON s.league_id = l.league_id
+            WHERE s.season = l.current_season
+              AND s.home_score IS NOT NULL AND s.away_score IS NOT NULL
+              AND s.date IS NOT NULL AND s.date <= ?
+            ORDER BY s.date ASC
+        """, (today_str,)).fetchall()
+        dates = [r[0] for r in rows]
+
+        if dates:
+            return dates, "current season (per-league season join)"
+
+        # Fallback: leagues.current_season not populated for all leagues, or the
+        # current season has no completed fixtures yet (e.g. very start of season).
+        # Use the most recent season label present in schedules.
+        seasons = self._discover_seasons(conn)
+        if seasons:
+            season_label = seasons[0]
+            print(f"  [TRAIN] Current-season join returned no dates "
+                  f"(leagues.current_season may not be fully populated). "
+                  f"Falling back to most recent season in DB: {season_label}")
+            rows = conn.execute("""
+                SELECT DISTINCT date FROM schedules
+                WHERE season = ?
+                  AND home_score IS NOT NULL AND away_score IS NOT NULL
+                  AND date IS NOT NULL AND date <= ?
+                ORDER BY date ASC
+            """, (season_label, today_str)).fetchall()
+            dates = [r[0] for r in rows]
+            return dates, f"season {season_label} (fallback — run --enrich-leagues to populate current_season)"
+
+        # Last resort: return all available dates (mirrors the old global-cutoff behavior)
+        print("  [TRAIN] WARNING: No season metadata found. Falling back to global date window.")
+        rows = conn.execute("""
+            SELECT DISTINCT date FROM schedules
+            WHERE date IS NOT NULL
+              AND home_score IS NOT NULL AND away_score IS NOT NULL
+              AND date <= ?
+            ORDER BY date ASC
+        """, (today_str,)).fetchall()
+        all_dates = [r[0] for r in rows]
+        if all_dates:
+            cutoff = (datetime.strptime(all_dates[-1], "%Y-%m-%d")
+                      - timedelta(days=self.max_seasons_back * 365)).strftime("%Y-%m-%d")
+            all_dates = [d for d in all_dates if d >= cutoff]
+        return all_dates, "global window (fallback)"
 
     # -------------------------------------------------------------------
     # Reward functions (30-dim action space)
@@ -341,15 +497,35 @@ class RLTrainer:
     # Chronological training from fixtures
     # -------------------------------------------------------------------
 
-    def train_from_fixtures(self, phase: int = 1, cold: bool = False, limit_days: Optional[int] = None, resume: bool = False):
+    def train_from_fixtures(
+        self,
+        phase: int = 1,
+        cold: bool = False,
+        limit_days: Optional[int] = None,
+        resume: bool = False,
+        target_season: Union[str, int] = "current",
+    ):
         """
-        3-Phase Chronological Training:
+        3-Phase Chronological Training with season-aware date selection.
+
         Phase 1: Imitation Learning (Warm-start from Rule Engine)
         Phase 2: PPO with KL penalty (Fine-tune with constraints)
         Phase 3: Adapter Fine-tuning (League specialization, frozen trunk)
+
+        Args:
+            target_season:
+                "current"   Per-league season start (default). Joins against
+                            leagues.current_season so each league's season
+                            start date is respected individually.
+                "all"       All available seasons, oldest-first. Full cold retrain.
+                int N       Past season by offset: 1 = most recent past season,
+                            2 = two seasons ago, etc. Matches enrich_leagues convention.
+                str label   Explicit season string, e.g. "2024/2025" or "2025".
+
+        CLI flag: --train-season (see lifecycle.py parse_args)
         """
         from Data.Access.db_helpers import _get_conn
-        
+
         conn = _get_conn()
         os.makedirs(MODELS_DIR, exist_ok=True)
 
@@ -389,23 +565,25 @@ class RLTrainer:
         elif cold:
             print("  [TRAIN] Cold start: Starting from base weights (no checkpoint loaded).")
 
-        # Get all fixture dates
-        cursor = conn.execute("""
-            SELECT DISTINCT date FROM schedules
-            WHERE date IS NOT NULL AND home_score IS NOT NULL AND away_score IS NOT NULL
-            ORDER BY date ASC
-        """)
-        all_dates = [row[0] for row in cursor.fetchall()]
-        
+        # ── Season-aware date selection ─────────────────────────────────────────
+        # Replaces the old global cutoff (max_seasons_back * 365 days from last date)
+        # which forced all leagues to start from the same arbitrary date floor.
+        # Now each league's training window begins at its own season start date.
+        all_dates, season_label = self._get_season_dates(conn, target_season)
+
+        if not all_dates:
+            print(f"  [TRAIN] No fixture dates found for target_season={target_season!r}. "
+                  f"Run --enrich-leagues to populate historical data.")
+            return
+
         today_str = datetime.now().strftime("%Y-%m-%d")
-        cutoff = datetime.strptime(all_dates[-1], "%Y-%m-%d") - timedelta(days=self.max_seasons_back * 365)
-        cutoff_str = cutoff.strftime("%Y-%m-%d")
-        all_dates = [d for d in all_dates if d >= cutoff_str and d <= today_str]
+        all_dates = [d for d in all_dates if d <= today_str]
 
         if limit_days:
             all_dates = all_dates[:limit_days]
 
-        print(f"  [TRAIN] Window: {all_dates[0]} → {all_dates[-1]} ({len(all_dates)} days)")
+        print(f"  [TRAIN] Season scope:  {season_label}")
+        print(f"  [TRAIN] Window:        {all_dates[0]} → {all_dates[-1]} ({len(all_dates)} fixture-days)")
 
         # --- Checkpoint setup ---
         CHECKPOINT_DIR = MODELS_DIR / "checkpoints"
@@ -427,10 +605,21 @@ class RLTrainer:
                     return
                 self.model.load_state_dict(ckpt["model_state"], strict=False)
                 self.optimizer.load_state_dict(ckpt["optimizer_state"])
+
+                # ── FIX (2026-03-14): Restore scheduler state on resume. ──────────
+                # Previously scheduler.state_dict() was not saved, so every --resume
+                # re-initialized the scheduler from scratch and the 10x Phase 1 LR
+                # reduction below was applied again — compounding the reduction on
+                # every resume. Now saved and restored correctly.
+                if "scheduler_state" in ckpt:
+                    self.scheduler.load_state_dict(ckpt["scheduler_state"])
+
                 start_day_idx = ckpt["day"]
                 total_matches_global = ckpt.get("total_matches", 0)
                 total_correct_global = ckpt.get("correct_predictions", 0)
-                print(f"  [RESUME] ✓ Loaded checkpoint from Day {start_day_idx}/{len(all_dates)} ({ckpt.get('match_date', '?')})")
+                ckpt_season = ckpt.get("target_season", "unknown")
+                print(f"  [RESUME] ✓ Loaded checkpoint from Day {start_day_idx}/{len(all_dates)} "
+                      f"({ckpt.get('match_date', '?')}) | season={ckpt_season}")
                 print(f"  [RESUME]   Matches so far: {total_matches_global} | Correct: {total_correct_global}")
                 all_dates = all_dates[start_day_idx:]
                 if not all_dates:
@@ -440,13 +629,16 @@ class RLTrainer:
                 print(f"  [RESUME] Failed to load checkpoint: {e} — starting fresh")
                 start_day_idx = 0
 
-        # Phase 1 LR reduction: imitation needs 10x lower LR than PPO exploration
+        # Phase 1 LR reduction: imitation needs 10x lower LR than PPO exploration.
+        # Guard with `not resume` so a resumed run does not re-apply the reduction
+        # on top of the scheduler state just restored above.
         original_lrs = []
-        if active_phase == 1:
+        if active_phase == 1 and not resume:
             for pg in self.optimizer.param_groups:
                 original_lrs.append(pg['lr'])
                 pg['lr'] = pg['lr'] * 0.1
-            print(f"  [TRAIN] Phase 1 LR reduced 10x for stable imitation (base → {self.optimizer.param_groups[0]['lr']:.2e})")
+            print(f"  [TRAIN] Phase 1 LR reduced 10x for stable imitation "
+                  f"(base → {self.optimizer.param_groups[0]['lr']:.2e})")
 
         for day_offset, match_date in enumerate(all_dates):
             day_idx = start_day_idx + day_offset
@@ -479,15 +671,15 @@ class RLTrainer:
                     "result": "home_win" if h_score > a_score else "away_win" if a_score > h_score else "draw",
                     "home_score": h_score, "away_score": a_score
                 }
-                
+
                 l_idx = self.registry.get_league_idx(league_id)
                 h_idx = self.registry.get_team_idx(home_tid)
                 a_idx = self.registry.get_team_idx(away_tid)
-                
+
                 vision_data = self._build_training_vision_data(conn, match_date, league_id, home_tid, h_name, away_tid, a_name, season=season)
                 features = FeatureEncoder.encode(vision_data)
                 expert_probs = self._get_rule_engine_probs(vision_data)
-                
+
                 if active_phase == 1:
                     metrics = self.train_step(features, l_idx, h_idx, a_idx, expert_probs=expert_probs)
                 else:
@@ -537,10 +729,16 @@ class RLTrainer:
                 gn = day_grad_norm / day_matches
                 if active_phase == 1:
                     il = day_imit_loss / day_matches
-                    print(f"  [Day {day_idx+1:2d}/{start_day_idx + len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | ImitLoss: {il:6.4f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
+                    print(f"  [Day {day_idx+1:3d}/{start_day_idx + len(all_dates)}] "
+                          f"Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | "
+                          f"KL: {kl:5.3f} | ImitLoss: {il:6.4f} | GradNorm: {gn:.4f} | "
+                          f"Matches: {day_matches}")
                 else:
                     rw = day_reward / day_matches
-                    print(f"  [Day {day_idx+1:2d}/{start_day_idx + len(all_dates)}] Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | KL: {kl:5.3f} | Reward: {rw:6.3f} | GradNorm: {gn:.4f} | Matches: {day_matches}")
+                    print(f"  [Day {day_idx+1:3d}/{start_day_idx + len(all_dates)}] "
+                          f"Rule Acc: {rule_acc:4.1f}% | RL Acc: {rl_acc:4.1f}% | "
+                          f"KL: {kl:5.3f} | Reward: {rw:6.3f} | GradNorm: {gn:.4f} | "
+                          f"Matches: {day_matches}")
 
                 # --- Save checkpoint after each day ---
                 total_matches_global += day_matches
@@ -551,12 +749,19 @@ class RLTrainer:
                     "match_date": match_date,
                     "model_state": self.model.state_dict(),
                     "optimizer_state": self.optimizer.state_dict(),
+                    # ── FIX (2026-03-14): Persist scheduler state. ──────────────
+                    # Without this, every --resume re-initialized the scheduler and
+                    # re-applied the 10x Phase 1 LR reduction, compounding it each time.
+                    "scheduler_state": self.scheduler.state_dict(),
                     "total_matches": total_matches_global,
                     "correct_predictions": total_correct_global,
                     "phase": active_phase,
                     "n_actions": N_ACTIONS,
                     "odds_rows_at_save": odds_rows,
                     "days_live_at_save": days_live,
+                    # Season metadata for auditability and resume awareness
+                    "target_season": str(target_season),
+                    "season_label": season_label,
                 }
                 torch.save(ckpt_data, CHECKPOINT_DIR / f"phase{active_phase}_day{day_idx+1:03d}.pth")
                 torch.save(ckpt_data, latest_path)
@@ -567,7 +772,7 @@ class RLTrainer:
                     existing[0].unlink()
                     existing = existing[1:]
 
-        # Restore LR after Phase 1  
+        # Restore LR after Phase 1
         if original_lrs:
             for pg, lr in zip(self.optimizer.param_groups, original_lrs):
                 pg['lr'] = lr
