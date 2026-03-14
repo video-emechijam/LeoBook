@@ -881,7 +881,9 @@ def upsert_team(conn: sqlite3.Connection, data: Dict[str, Any]) -> int:
                    name           = COALESCE(excluded.name, teams.name),
                    league_ids     = COALESCE(excluded.league_ids, teams.league_ids),
                    crest          = COALESCE(excluded.crest, teams.crest),
-                   country_code   = COALESCE(excluded.country_code, teams.country_code),
+                   -- NULLIF guards against empty string ('') from international leagues
+                   -- overwriting a real country_code set by a domestic league worker.
+                   country_code   = COALESCE(NULLIF(excluded.country_code, ''), teams.country_code),
                    url            = COALESCE(excluded.url, teams.url),
                    country        = COALESCE(excluded.country, teams.country),
                    city           = COALESCE(excluded.city, teams.city),
@@ -896,7 +898,7 @@ def upsert_team(conn: sqlite3.Connection, data: Dict[str, Any]) -> int:
                 "name": data.get("name", data.get("team_name", "")),
                 "league_ids": league_ids_json,
                 "crest": data.get("crest", data.get("team_crest")),
-                "country_code": data.get("country_code"),
+                "country_code": data.get("country_code") or None,  # store NULL not ''
                 "url": data.get("url", data.get("team_url")),
                 "country": data.get("country"),
                 "city": data.get("city"),
@@ -910,7 +912,7 @@ def upsert_team(conn: sqlite3.Connection, data: Dict[str, Any]) -> int:
     else:
         # Fallback: no team_id — look up by name+country_code to avoid duplicates
         name = data.get("name", data.get("team_name", ""))
-        country_code = data.get("country_code")
+        country_code = data.get("country_code") or None  # store NULL not ''
         existing = None
         if country_code:
             existing = conn.execute(
@@ -929,7 +931,7 @@ def upsert_team(conn: sqlite3.Connection, data: Dict[str, Any]) -> int:
                 """UPDATE teams SET
                        league_ids   = :league_ids,
                        crest        = COALESCE(:crest, crest),
-                       country_code = COALESCE(:country_code, country_code),
+                       country_code = COALESCE(NULLIF(:country_code, ''), country_code),
                        url          = COALESCE(:url, url),
                        last_updated = :last_updated
                    WHERE id = :row_id""",

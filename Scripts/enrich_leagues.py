@@ -250,13 +250,27 @@ def _backfill_schedule_crests(conn, league_id: str, season: str, country_code: s
 
     Runs immediately after team crest uploads so no local path ever reaches
     the Supabase DB via SyncManager.
+
+    country_code may be None/'' for international leagues — in that case the
+    join uses IS NULL so we still match the teams that were inserted without
+    a country_code from this same international league context.
     """
-    conn.execute("""
+    # Build the country_code filter that works for both real codes and NULL
+    if country_code:
+        cc_filter = "t.country_code = ?"
+        params_home = (country_code, league_id, season, country_code)
+        params_away = (country_code, league_id, season, country_code)
+    else:
+        cc_filter = "(t.country_code IS NULL OR t.country_code = '')"
+        params_home = (league_id, season)
+        params_away = (league_id, season)
+
+    conn.execute(f"""
         UPDATE schedules
         SET home_crest = (
             SELECT t.crest FROM teams t
             WHERE t.name = schedules.home_team_name
-              AND t.country_code = ?
+              AND {cc_filter}
               AND t.crest LIKE 'http%'
             LIMIT 1
         )
@@ -266,18 +280,18 @@ def _backfill_schedule_crests(conn, league_id: str, season: str, country_code: s
           AND EXISTS (
               SELECT 1 FROM teams t
               WHERE t.name = schedules.home_team_name
-                AND t.country_code = ?
+                AND {cc_filter}
                 AND t.crest LIKE 'http%'
           )
-    """, (country_code, league_id, season, country_code))
+    """, params_home)
     home_updated = conn.execute("SELECT changes()").fetchone()[0]
 
-    conn.execute("""
+    conn.execute(f"""
         UPDATE schedules
         SET away_crest = (
             SELECT t.crest FROM teams t
             WHERE t.name = schedules.away_team_name
-              AND t.country_code = ?
+              AND {cc_filter}
               AND t.crest LIKE 'http%'
             LIMIT 1
         )
@@ -287,10 +301,10 @@ def _backfill_schedule_crests(conn, league_id: str, season: str, country_code: s
           AND EXISTS (
               SELECT 1 FROM teams t
               WHERE t.name = schedules.away_team_name
-                AND t.country_code = ?
+                AND {cc_filter}
                 AND t.crest LIKE 'http%'
           )
-    """, (country_code, league_id, season, country_code))
+    """, params_away)
     away_updated = conn.execute("SELECT changes()").fetchone()[0]
 
     total = home_updated + away_updated
