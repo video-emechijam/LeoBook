@@ -32,7 +32,7 @@ from Data.Access.db_helpers import (
 from Data.Access.league_db import query_all, update_prediction, upsert_fixture
 from Data.Access.sync_manager import SyncManager
 from Core.Browser.site_helpers import fs_universal_popup_dismissal
-from Core.Utils.constants import NAVIGATION_TIMEOUT, WAIT_FOR_LOAD_STATE_TIMEOUT
+from Core.Utils.constants import NAVIGATION_TIMEOUT, WAIT_FOR_LOAD_STATE_TIMEOUT, now_ng
 from Core.Intelligence.selector_manager import SelectorManager
 from Core.Intelligence.aigo_suite import AIGOSuite
 from Modules.Flashscore.fs_extractor import extract_all_matches, expand_all_leagues as ensure_content_expanded
@@ -55,10 +55,12 @@ EXPAND_DROPDOWN_JS = """
 
 
 def _is_streamer_alive() -> bool:
+    """Check if the streamer process is alive via heartbeat file."""
     try:
         if os.path.exists(_STREAMER_HEARTBEAT_FILE):
             mtime = dt.fromtimestamp(os.path.getmtime(_STREAMER_HEARTBEAT_FILE))
-            return (dt.now() - mtime) < timedelta(minutes=30)
+            now = now_ng().replace(tzinfo=None)   # naive for comparison with os.path.getmtime
+            return (now - mtime) < timedelta(minutes=30)
     except Exception:
         pass
     return False
@@ -68,7 +70,7 @@ def _touch_heartbeat():
     try:
         os.makedirs(os.path.dirname(_STREAMER_HEARTBEAT_FILE), exist_ok=True)
         with open(_STREAMER_HEARTBEAT_FILE, 'w') as f:
-            f.write(dt.now().isoformat())
+            f.write(now_ng().isoformat())
     except Exception:
         pass
 
@@ -94,7 +96,7 @@ def _propagate_status_updates(live_matches, resolved_matches, force_finished_ids
     live_map = {m['fixture_id']: m for m in live_matches}
     resolved_ids = {m['fixture_id'] for m in resolved_matches}
     resolved_map = {m['fixture_id']: m for m in resolved_matches}
-    now = dt.now()
+    now = now_ng().replace(tzinfo=None)   # naive WAT datetime for comparisons
     now_iso = now.isoformat()
 
     NO_SCORE_STATUSES = {'cancelled', 'postponed', 'fro', 'abandoned'}
@@ -546,7 +548,7 @@ async def live_score_streamer(playwright: Playwright, user_data_dir: str = None)
                 cycle += 1
                 session_cycle += 1
                 _touch_heartbeat()
-                now_ts = dt.now().strftime("%H:%M:%S")
+                now_ts = now_ng().strftime("%H:%M:%S WAT")
 
                 try:
                     all_matches = await extract_all_matches(page, label="Streamer")
@@ -627,3 +629,22 @@ async def live_score_streamer(playwright: Playwright, user_data_dir: str = None)
                 except: pass
 
     print("   [Streamer] Streamer stopped.")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Standalone Entry Point
+#  Allows the streamer to run as an independent process:
+#    python -m Modules.Flashscore.fs_live_streamer
+#  Leo.py spawns this as a subprocess — it cannot be stopped by Leo.py.
+#  Only manual intervention (Ctrl+C or kill PID) stops it.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+if __name__ == "__main__":
+    from playwright.async_api import async_playwright
+
+    async def _run():
+        async with async_playwright() as playwright:
+            await live_score_streamer(playwright)
+
+    print("[Streamer] Starting as independent process...")
+    asyncio.run(_run())

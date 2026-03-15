@@ -66,7 +66,7 @@ from Core.System.data_readiness import (
 from Data.Access.db_helpers import init_csvs, log_audit_event
 from Data.Access.sync_manager import SyncManager, run_full_sync
 from Data.Access.league_db import init_db
-from Modules.Flashscore.fs_live_streamer import live_score_streamer
+from Modules.Flashscore.fs_live_streamer import live_score_streamer, _is_streamer_alive
 from Modules.FootballCom.fb_manager import run_odds_harvesting, run_automated_booking
 from Scripts.recommend_bets import get_recommendations
 from Core.Intelligence.prediction_pipeline import run_predictions, get_weekly_fixtures
@@ -155,9 +155,31 @@ async def run_utility(args):
             print_accuracy_report()
 
     elif args.streamer:
+        import subprocess
+        from Core.Utils.constants import now_ng
+
         print("\n  --- LEO: Live Score Streamer ---")
-        async with async_playwright() as p:
-            await live_score_streamer(p)
+
+        # Check if streamer is already running via heartbeat
+        if _is_streamer_alive():
+            print("  [Streamer] Already running (heartbeat alive). Skipping spawn.")
+            return
+
+        # Spawn the streamer as a fully independent subprocess.
+        # Leo.py does NOT wait for it (Popen, not run).
+        # The streamer cannot be stopped by Leo.py — only manual kill.
+        streamer_module = "Modules.Flashscore.fs_live_streamer"
+        proc = subprocess.Popen(
+            [sys.executable, "-m", streamer_module],
+            stdout=None,   # inherit terminal — streamer logs to its own segment
+            stderr=None,
+            stdin=subprocess.DEVNULL,
+            start_new_session=True,  # detach from Leo.py's process group
+        )
+        print(f"  [Streamer] Spawned as independent process (PID: {proc.pid}).")
+        print(f"  [Streamer] Started: {now_ng().strftime('%Y-%m-%d %H:%M:%S WAT')}")
+        print(f"  [Streamer] To stop: kill {proc.pid}  OR  Ctrl+C in the streamer terminal.")
+        print(f"  [Streamer] Leo.py continues its cycle independently.")
 
     elif args.rule_engine:
         from Core.Intelligence.rule_engine_manager import RuleEngineManager

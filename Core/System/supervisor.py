@@ -8,6 +8,8 @@
 import logging
 import json
 import asyncio
+import subprocess
+import sys
 import uuid
 from datetime import datetime
 from typing import Type, Dict, Any, Optional
@@ -150,18 +152,20 @@ class Supervisor:
 
         try:
             async with async_playwright() as p:
-                # Isolated background streamer
-                async def _streamer_safe():
-                    async with async_playwright() as sp:
-                        tdir = tempfile.mkdtemp(prefix="leo_stream_")
-                        try:
-                            await live_score_streamer(sp, user_data_dir=tdir)
-                        except Exception as e:
-                            logger.error(f"[Streamer] Background error: {e}")
-                        finally:
-                            shutil.rmtree(tdir, ignore_errors=True)
-
-                asyncio.create_task(_streamer_safe())
+                # Spawn the streamer as a fully independent subprocess.
+                # The supervisor does NOT wait for it. Only manual kill stops it.
+                from Modules.Flashscore.fs_live_streamer import _is_streamer_alive
+                if _is_streamer_alive():
+                    logger.info("[Supervisor] Streamer already running (heartbeat alive). Skipping spawn.")
+                else:
+                    proc = subprocess.Popen(
+                        [sys.executable, "-m", "Modules.Flashscore.fs_live_streamer"],
+                        stdout=None,
+                        stderr=None,
+                        stdin=subprocess.DEVNULL,
+                        start_new_session=True,  # detach from supervisor's process group
+                    )
+                    logger.info(f"[Supervisor] Streamer spawned as independent process (PID: {proc.pid}).")
 
                 while True:
                     self.state["cycle_count"] += 1
@@ -178,7 +182,7 @@ class Supervisor:
 
                     except Exception as e:
                         logger.error(f"[Supervisor] Unhandled cycle error: {e}")
-                        self.state["error_log"].append(f"{datetime.now()}: {e}")
+                        self.state["error_log"].append(f"{now_ng().isoformat()}: {e}")
                         await asyncio.sleep(60)
 
                     # Post-cycle cleanup & sleep
