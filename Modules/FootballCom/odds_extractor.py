@@ -108,15 +108,26 @@ class OddsExtractor:
         """
         Page is ALREADY navigated to the match detail URL.
         Do NOT call page.goto() inside this method.
-        Iterates through the market catalogue, finds containers
-        on the page, extracts outcomes+odds, and saves per-market.
+        Scrolls the full page first to ensure all market containers are
+        in the DOM (they are lazy-loaded), then iterates the catalogue.
+        Saves each market batch to SQLite immediately after extraction.
         """
+        from Modules.Flashscore.fs_league_hydration import _scroll_to_load
+
         start = time.monotonic()
         markets_found = 0
         outcomes_written = 0
 
         try:
             await self._assert_no_login(self.page)
+
+            # Hydrate the page — scroll until all [data-market-id] containers
+            # are stable in the DOM. Without this, containers below the initial
+            # viewport are invisible to query_selector and silently skipped.
+            containers_found = await _scroll_to_load(
+                self.page, "[data-market-id]"
+            )
+            print(f"    [Odds] {fixture_id}: {containers_found} market containers hydrated")
 
             # De-duplicate market IDs so we visit each container once
             seen_market_ids: set = set()
