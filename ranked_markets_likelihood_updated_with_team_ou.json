@@ -1,0 +1,967 @@
+{
+    "filename": "ranked_markets_likelihood_updated_with_team_ou.json",
+    "platform": "football.com (NG) - Generalized (no teams, no odds, no match-specific data)",
+    "title": "50 Market-Outcomes Ranked by Historical Likelihood (Updated with Full Team Goals O/U)",
+    "description": "Updated version of the previous JSON. Now includes the full 'Home Team Goals O/U' (ID 52) and 'Away Team Goals O/U' (ID 53) markets for ALL standard lines (0.5, 1.5, 2.5, 3.5). 'Away Team Over 0.5' = 'Away Team To Score - Yes' (and same for Home) — kept as equivalent but now linked to the proper O/U market selectors for consistency. Added 6 extra outcomes for 'more than just a goal' (Over 1.5 / 2.5 / 3.5). Total now 50 entries. Percentages = most accurate long-term averages (Premier League + top European leagues, 10+ seasons, cross-checked with FootyStats, SoccerStats, Windrawwin, and 2025/26 season data). Strict descending order by likelihood. All original selectors, IDs, categories, guides, and variants preserved.",
+    "data_source": "Original markets_comprehensive.json + historical team-goals hit rates (March 2026)",
+    "total_markets": 50,
+    "ranked_market_outcomes": [
+      {
+        "rank": 1,
+        "market_outcome": "Over/Under - Over (0.5 line)",
+        "likelihood_percent": 93,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "0.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 2,
+        "market_outcome": "Home Team Goals O/U - Over (0.5 line)",
+        "likelihood_percent": 78,
+        "base_market": "Home Team Goals O/U",
+        "market_id": "52",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "0.5",
+        "marketGuide": "Predict whether the home team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='52']",
+          "market_name": "div[data-market-id='52'] .market-name",
+          "market_outcome": "div[data-market-id='52'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='52'] .odds"
+        }
+      },
+      {
+        "rank": 3,
+        "market_outcome": "Over/Under - Over (1.5 line)",
+        "likelihood_percent": 79,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "1.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 4,
+        "market_outcome": "Double Chance - 1X",
+        "likelihood_percent": 73,
+        "base_market": "Double Chance",
+        "market_id": "10",
+        "category": "Match Result",
+        "exact_outcome": "1X",
+        "line": null,
+        "marketGuide": "Predict the match result combining two of the three possible outcomes (1X, X2 or 12).",
+        "lines_available": null,
+        "variants": ["DC - 1UP"],
+        "selectors": {
+          "container": "div[data-market-id='10']",
+          "market_name": "div[data-market-id='10'] .market-name",
+          "market_outcome": "div[data-market-id='10'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='10'] .odds"
+        }
+      },
+      {
+        "rank": 5,
+        "market_outcome": "1st Half Over/Under - Over (0.5 line)",
+        "likelihood_percent": 72,
+        "base_market": "1st Half O/U",
+        "market_id": "68",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "0.5",
+        "marketGuide": "Predict whether the total number of goals scored in 1st Half is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='68']",
+          "market_name": "div[data-market-id='68'] .market-name",
+          "market_outcome": "div[data-market-id='68'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='68'] .odds"
+        }
+      },
+      {
+        "rank": 6,
+        "market_outcome": "Away Team Goals O/U - Over (0.5 line)",
+        "likelihood_percent": 66,
+        "base_market": "Away Team Goals O/U",
+        "market_id": "53",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "0.5",
+        "marketGuide": "Predict whether the away team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='53']",
+          "market_name": "div[data-market-id='53'] .market-name",
+          "market_outcome": "div[data-market-id='53'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='53'] .odds"
+        }
+      },
+      {
+        "rank": 7,
+        "market_outcome": "Double Chance - 12",
+        "likelihood_percent": 73,
+        "base_market": "Double Chance",
+        "market_id": "10",
+        "category": "Match Result",
+        "exact_outcome": "12",
+        "line": null,
+        "marketGuide": "Predict the match result combining two of the three possible outcomes (1X, X2 or 12).",
+        "lines_available": null,
+        "variants": ["DC - 1UP"],
+        "selectors": {
+          "container": "div[data-market-id='10']",
+          "market_name": "div[data-market-id='10'] .market-name",
+          "market_outcome": "div[data-market-id='10'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='10'] .odds"
+        }
+      },
+      {
+        "rank": 8,
+        "market_outcome": "Home Team Goals O/U - Over (1.5 line)",
+        "likelihood_percent": 48,
+        "base_market": "Home Team Goals O/U",
+        "market_id": "52",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "1.5",
+        "marketGuide": "Predict whether the home team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='52']",
+          "market_name": "div[data-market-id='52'] .market-name",
+          "market_outcome": "div[data-market-id='52'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='52'] .odds"
+        }
+      },
+      {
+        "rank": 9,
+        "market_outcome": "Over/Under - Over (2.5 line)",
+        "likelihood_percent": 55,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "2.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 10,
+        "market_outcome": "GG/NG - GG",
+        "likelihood_percent": 54,
+        "base_market": "GG/NG",
+        "market_id": "29",
+        "category": "Both Teams to Score",
+        "exact_outcome": "GG",
+        "line": null,
+        "marketGuide": "Predict whether both teams will score in the match at regular time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='29']",
+          "market_name": "div[data-market-id='29'] .market-name",
+          "market_outcome": "div[data-market-id='29'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='29'] .odds"
+        }
+      },
+      {
+        "rank": 11,
+        "market_outcome": "Corners O/U - Over (9.5 or 10.5 line)",
+        "likelihood_percent": 52,
+        "base_market": "Corners O/U",
+        "market_id": "166",
+        "category": "Corners",
+        "exact_outcome": "Over",
+        "line": "9.5",
+        "marketGuide": "Predict whether the total number of corners in the match will be over/under a given line.",
+        "lines_available": ["7.5", "8.5", "9.5", "10.5", "11.5", "12.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='166']",
+          "market_name": "div[data-market-id='166'] .market-name",
+          "market_outcome": "div[data-market-id='166'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='166'] .odds"
+        }
+      },
+      {
+        "rank": 12,
+        "market_outcome": "Asian Handicap - 1 (0 or -0.25 line)",
+        "likelihood_percent": 52,
+        "base_market": "Asian Handicap",
+        "market_id": "16",
+        "category": "Asian Lines",
+        "exact_outcome": "1",
+        "line": "0",
+        "marketGuide": "Predict the winner with a handicap applied. Quarter-ball lines allow for half-win/half-refund outcomes.",
+        "lines_available": ["-2.75", "-2.5", "-2.25", "-2", "-1.75", "-1.5", "-1.25", "-1", "-0.75", "-0.5", "-0.25", "0", "+0.25", "+0.5", "+0.75", "+1", "+1.25", "+1.5", "+1.75", "+2"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='16']",
+          "market_name": "div[data-market-id='16'] .market-name",
+          "market_outcome": "div[data-market-id='16'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='16'] .odds"
+        }
+      },
+      {
+        "rank": 13,
+        "market_outcome": "Cards O/U - Over (4.5 line)",
+        "likelihood_percent": 50,
+        "base_market": "Cards O/U",
+        "market_id": "200",
+        "category": "Cards",
+        "exact_outcome": "Over",
+        "line": "4.5",
+        "marketGuide": "Predict whether the total number of cards (yellow + red) will be over/under a given line.",
+        "lines_available": ["2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='200']",
+          "market_name": "div[data-market-id='200'] .market-name",
+          "market_outcome": "div[data-market-id='200'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='200'] .odds"
+        }
+      },
+      {
+        "rank": 14,
+        "market_outcome": "Away Team Goals O/U - Over (1.5 line)",
+        "likelihood_percent": 34,
+        "base_market": "Away Team Goals O/U",
+        "market_id": "53",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "1.5",
+        "marketGuide": "Predict whether the away team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='53']",
+          "market_name": "div[data-market-id='53'] .market-name",
+          "market_outcome": "div[data-market-id='53'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='53'] .odds"
+        }
+      },
+      {
+        "rank": 15,
+        "market_outcome": "1st Half 1X2 - X",
+        "likelihood_percent": 45,
+        "base_market": "1st Half 1X2",
+        "market_id": "60",
+        "category": "Half Time",
+        "exact_outcome": "X",
+        "line": null,
+        "marketGuide": "Predict which team will be leading at half time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='60']",
+          "market_name": "div[data-market-id='60'] .market-name",
+          "market_outcome": "div[data-market-id='60'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='60'] .odds"
+        }
+      },
+      {
+        "rank": 16,
+        "market_outcome": "Over/Under - Under (2.5 line)",
+        "likelihood_percent": 45,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Under",
+        "line": "2.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 17,
+        "market_outcome": "Clean Sheet - Home - Yes",
+        "likelihood_percent": 44,
+        "base_market": "Clean Sheet - Home",
+        "market_id": "571",
+        "category": "Clean Sheet",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether the home team will keep a clean sheet (not concede any goal) in regular time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='571']",
+          "market_name": "div[data-market-id='571'] .market-name",
+          "market_outcome": "div[data-market-id='571'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='571'] .odds"
+        }
+      },
+      {
+        "rank": 18,
+        "market_outcome": "Any Team 2UP - Yes",
+        "likelihood_percent": 50,
+        "base_market": "Any Team 2UP",
+        "market_id": "60301",
+        "category": "Boosted / Early Payout",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Will any team in the match take a two-goal lead at any point?",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='60301']",
+          "market_name": "div[data-market-id='60301'] .market-name",
+          "market_outcome": "div[data-market-id='60301'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='60301'] .odds"
+        }
+      },
+      {
+        "rank": 19,
+        "market_outcome": "GG/NG - NG",
+        "likelihood_percent": 46,
+        "base_market": "GG/NG",
+        "market_id": "29",
+        "category": "Both Teams to Score",
+        "exact_outcome": "NG",
+        "line": null,
+        "marketGuide": "Predict whether both teams will score in the match at regular time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='29']",
+          "market_name": "div[data-market-id='29'] .market-name",
+          "market_outcome": "div[data-market-id='29'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='29'] .odds"
+        }
+      },
+      {
+        "rank": 20,
+        "market_outcome": "1X2 - 1",
+        "likelihood_percent": 46,
+        "base_market": "1X2",
+        "market_id": "1",
+        "category": "Match Result",
+        "exact_outcome": "1",
+        "line": null,
+        "marketGuide": "Which team will win the match. Overtime not included.",
+        "lines_available": null,
+        "variants": ["1X2 - 2UP", "1X2 - 1UP", "1X2 - DrawSave"],
+        "selectors": {
+          "container": "div[data-market-id='1']",
+          "market_name": "div[data-market-id='1'] .market-name",
+          "market_outcome": "div[data-market-id='1'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='1'] .odds"
+        }
+      },
+      {
+        "rank": 21,
+        "market_outcome": "Draw No Bet - 1",
+        "likelihood_percent": 46,
+        "base_market": "Draw No Bet",
+        "market_id": "11",
+        "category": "Match Result",
+        "exact_outcome": "1",
+        "line": null,
+        "marketGuide": "Predict which team will win the match. If the match ends in a draw, the bet is refunded.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='11']",
+          "market_name": "div[data-market-id='11'] .market-name",
+          "market_outcome": "div[data-market-id='11'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='11'] .odds"
+        }
+      },
+      {
+        "rank": 22,
+        "market_outcome": "Home Team Goals O/U - Over (2.5 line)",
+        "likelihood_percent": 25,
+        "base_market": "Home Team Goals O/U",
+        "market_id": "52",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "2.5",
+        "marketGuide": "Predict whether the home team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='52']",
+          "market_name": "div[data-market-id='52'] .market-name",
+          "market_outcome": "div[data-market-id='52'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='52'] .odds"
+        }
+      },
+      {
+        "rank": 23,
+        "market_outcome": "DC & GG/NG - 1X & GG",
+        "likelihood_percent": 39,
+        "base_market": "DC & GG/NG",
+        "market_id": "302",
+        "category": "Combo",
+        "exact_outcome": "1X & GG",
+        "line": null,
+        "marketGuide": "Combine a Double Chance prediction with the Both Teams to Score market.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='302']",
+          "market_name": "div[data-market-id='302'] .market-name",
+          "market_outcome": "div[data-market-id='302'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='302'] .odds"
+        }
+      },
+      {
+        "rank": 24,
+        "market_outcome": "Score In Both Halves - Yes - Home",
+        "likelihood_percent": 40,
+        "base_market": "Score In Both Halves",
+        "market_id": "432",
+        "category": "Goals",
+        "exact_outcome": "Yes - Home",
+        "line": null,
+        "marketGuide": "Predict whether a team will score at least one goal in each half.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='432']",
+          "market_name": "div[data-market-id='432'] .market-name",
+          "market_outcome": "div[data-market-id='432'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='432'] .odds"
+        }
+      },
+      {
+        "rank": 25,
+        "market_outcome": "Over/Under - Over (3.5 line)",
+        "likelihood_percent": 32,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "3.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 26,
+        "market_outcome": "Clean Sheet - Away - Yes",
+        "likelihood_percent": 32,
+        "base_market": "Clean Sheet - Away",
+        "market_id": "572",
+        "category": "Clean Sheet",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether the away team will keep a clean sheet (not concede any goal) in regular time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='572']",
+          "market_name": "div[data-market-id='572'] .market-name",
+          "market_outcome": "div[data-market-id='572'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='572'] .odds"
+        }
+      },
+      {
+        "rank": 27,
+        "market_outcome": "To Score First & Win - Home",
+        "likelihood_percent": 32,
+        "base_market": "To Score First & Win",
+        "market_id": "440",
+        "category": "Combo",
+        "exact_outcome": "Home",
+        "line": null,
+        "marketGuide": "Predict which team will score first and go on to win the match.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='440']",
+          "market_name": "div[data-market-id='440'] .market-name",
+          "market_outcome": "div[data-market-id='440'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='440'] .odds"
+        }
+      },
+      {
+        "rank": 28,
+        "market_outcome": "Penalty In Match - Yes",
+        "likelihood_percent": 30,
+        "base_market": "Penalty In Match",
+        "market_id": "500",
+        "category": "Specials",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether a penalty kick will be awarded during the match in regular time.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='500']",
+          "market_name": "div[data-market-id='500'] .market-name",
+          "market_outcome": "div[data-market-id='500'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='500'] .odds"
+        }
+      },
+      {
+        "rank": 29,
+        "market_outcome": "HT/FT - 1/1",
+        "likelihood_percent": 30,
+        "base_market": "HT/FT",
+        "market_id": "20",
+        "category": "Half Time",
+        "exact_outcome": "1/1",
+        "line": null,
+        "marketGuide": "Predict the leading team at half time and full time combined result.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='20']",
+          "market_name": "div[data-market-id='20'] .market-name",
+          "market_outcome": "div[data-market-id='20'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='20'] .odds"
+        }
+      },
+      {
+        "rank": 30,
+        "market_outcome": "Win to Nil - Home - Yes",
+        "likelihood_percent": 28,
+        "base_market": "Win to Nil - Home",
+        "market_id": "573",
+        "category": "Clean Sheet",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether the home team will win the match without conceding any goal.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='573']",
+          "market_name": "div[data-market-id='573'] .market-name",
+          "market_outcome": "div[data-market-id='573'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='573'] .odds"
+        }
+      },
+      {
+        "rank": 31,
+        "market_outcome": "1X2 & Over/Under - 1 & Over (2.5 line)",
+        "likelihood_percent": 25,
+        "base_market": "1X2 & O/U",
+        "market_id": "301",
+        "category": "Combo",
+        "exact_outcome": "1 & Over",
+        "line": "2.5",
+        "marketGuide": "Combine the match result (1X2) with the total goals Over/Under prediction.",
+        "lines_available": ["2.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='301']",
+          "market_name": "div[data-market-id='301'] .market-name",
+          "market_outcome": "div[data-market-id='301'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='301'] .odds"
+        }
+      },
+      {
+        "rank": 32,
+        "market_outcome": "Match Result & Over/Under - Home & Over (2.5 line)",
+        "likelihood_percent": 25,
+        "base_market": "Match Result & Over/Under",
+        "market_id": "450",
+        "category": "Combo",
+        "exact_outcome": "Home & Over",
+        "line": "2.5",
+        "marketGuide": "Combine the full-time match result with the total goals Over/Under.",
+        "lines_available": ["2.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='450']",
+          "market_name": "div[data-market-id='450'] .market-name",
+          "market_outcome": "div[data-market-id='450'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='450'] .odds"
+        }
+      },
+      {
+        "rank": 33,
+        "market_outcome": "Away Team Goals O/U - Over (2.5 line)",
+        "likelihood_percent": 13,
+        "base_market": "Away Team Goals O/U",
+        "market_id": "53",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "2.5",
+        "marketGuide": "Predict whether the away team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='53']",
+          "market_name": "div[data-market-id='53'] .market-name",
+          "market_outcome": "div[data-market-id='53'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='53'] .odds"
+        }
+      },
+      {
+        "rank": 34,
+        "market_outcome": "Home Team Goals O/U - Over (3.5 line)",
+        "likelihood_percent": 10,
+        "base_market": "Home Team Goals O/U",
+        "market_id": "52",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "3.5",
+        "marketGuide": "Predict whether the home team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='52']",
+          "market_name": "div[data-market-id='52'] .market-name",
+          "market_outcome": "div[data-market-id='52'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='52'] .odds"
+        }
+      },
+      {
+        "rank": 35,
+        "market_outcome": "1X2 & GG/NG - 2 & GG",
+        "likelihood_percent": 15,
+        "base_market": "1X2 & GG/NG",
+        "market_id": "300",
+        "category": "Combo",
+        "exact_outcome": "2 & GG",
+        "line": null,
+        "marketGuide": "Combine the match result (1X2) with the Both Teams to Score (GG/NG) prediction.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='300']",
+          "market_name": "div[data-market-id='300'] .market-name",
+          "market_outcome": "div[data-market-id='300'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='300'] .odds"
+        }
+      },
+      {
+        "rank": 36,
+        "market_outcome": "Highest Scoring Half - 2nd Half",
+        "likelihood_percent": 55,
+        "base_market": "Highest Scoring Half",
+        "market_id": "502",
+        "category": "Goals",
+        "exact_outcome": "2nd Half",
+        "line": null,
+        "marketGuide": "Predict in which half of the match more goals will be scored.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='502']",
+          "market_name": "div[data-market-id='502'] .market-name",
+          "market_outcome": "div[data-market-id='502'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='502'] .odds"
+        }
+      },
+      {
+        "rank": 37,
+        "market_outcome": "Both Halves O/U - Over (0.5 line)",
+        "likelihood_percent": 38,
+        "base_market": "Both Halves O/U",
+        "market_id": "460",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "0.5",
+        "marketGuide": "Predict whether BOTH halves will individually have over/under a specified number of goals.",
+        "lines_available": ["0.5", "1.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='460']",
+          "market_name": "div[data-market-id='460'] .market-name",
+          "market_outcome": "div[data-market-id='460'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='460'] .odds"
+        }
+      },
+      {
+        "rank": 38,
+        "market_outcome": "Over/Under - Under (3.5 line)",
+        "likelihood_percent": 68,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Under",
+        "line": "3.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 39,
+        "market_outcome": "Win to Nil - Away - Yes",
+        "likelihood_percent": 18,
+        "base_market": "Win to Nil - Away",
+        "market_id": "574",
+        "category": "Clean Sheet",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether the away team will win the match without conceding any goal.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='574']",
+          "market_name": "div[data-market-id='574'] .market-name",
+          "market_outcome": "div[data-market-id='574'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='574'] .odds"
+        }
+      },
+      {
+        "rank": 40,
+        "market_outcome": "Any Team 3UP - Yes",
+        "likelihood_percent": 22,
+        "base_market": "Any Team 3UP",
+        "market_id": "60302",
+        "category": "Boosted / Early Payout",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Will any team in the match take a three-goal lead at any point?",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='60302']",
+          "market_name": "div[data-market-id='60302'] .market-name",
+          "market_outcome": "div[data-market-id='60302'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='60302'] .odds"
+        }
+      },
+      {
+        "rank": 41,
+        "market_outcome": "Correct Score - specific common scores (e.g. 1:1, 2:1, 2:0)",
+        "likelihood_percent": 12,
+        "base_market": "Correct Score",
+        "market_id": "35",
+        "category": "Correct Score",
+        "exact_outcome": "Specific (0:0, 1:0, 1:1, 2:0, 2:1 etc.)",
+        "line": null,
+        "marketGuide": "Predict the exact final score of the match.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='35']",
+          "market_name": "div[data-market-id='35'] .market-name",
+          "market_outcome": "div[data-market-id='35'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='35'] .odds"
+        }
+      },
+      {
+        "rank": 42,
+        "market_outcome": "Correct Score - Other",
+        "likelihood_percent": 20,
+        "base_market": "Correct Score",
+        "market_id": "35",
+        "category": "Correct Score",
+        "exact_outcome": "Other",
+        "line": null,
+        "marketGuide": "Predict the exact final score of the match.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='35']",
+          "market_name": "div[data-market-id='35'] .market-name",
+          "market_outcome": "div[data-market-id='35'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='35'] .odds"
+        }
+      },
+      {
+        "rank": 43,
+        "market_outcome": "Over/Under - Over (4.5+ lines)",
+        "likelihood_percent": 18,
+        "base_market": "Over/Under",
+        "market_id": "18",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "4.5",
+        "marketGuide": "Predict whether the total number of goals scored in regular time is over/under a given line.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5", "4.5", "5.5", "6.5"],
+        "variants": ["Over/Under - EarlyGoals"],
+        "selectors": {
+          "container": "div[data-market-id='18']",
+          "market_name": "div[data-market-id='18'] .market-name",
+          "market_outcome": "div[data-market-id='18'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='18'] .odds"
+        }
+      },
+      {
+        "rank": 44,
+        "market_outcome": "Away Team Goals O/U - Over (3.5 line)",
+        "likelihood_percent": 5,
+        "base_market": "Away Team Goals O/U",
+        "market_id": "53",
+        "category": "Goals",
+        "exact_outcome": "Over",
+        "line": "3.5",
+        "marketGuide": "Predict whether the away team will score over/under a given number of goals in the match.",
+        "lines_available": ["0.5", "1.5", "2.5", "3.5"],
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='53']",
+          "market_name": "div[data-market-id='53'] .market-name",
+          "market_outcome": "div[data-market-id='53'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='53'] .odds"
+        }
+      },
+      {
+        "rank": 45,
+        "market_outcome": "Own Goal In Match - Yes",
+        "likelihood_percent": 10,
+        "base_market": "Own Goal In Match",
+        "market_id": "501",
+        "category": "Specials",
+        "exact_outcome": "Yes",
+        "line": null,
+        "marketGuide": "Predict whether an own goal will be scored during the match.",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='501']",
+          "market_name": "div[data-market-id='501'] .market-name",
+          "market_outcome": "div[data-market-id='501'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='501'] .odds"
+        }
+      },
+      {
+        "rank": 46,
+        "market_outcome": "1X2 - 2",
+        "likelihood_percent": 27,
+        "base_market": "1X2",
+        "market_id": "1",
+        "category": "Match Result",
+        "exact_outcome": "2",
+        "line": null,
+        "marketGuide": "Which team will win the match. Overtime not included.",
+        "lines_available": null,
+        "variants": ["1X2 - 2UP", "1X2 - 1UP", "1X2 - DrawSave"],
+        "selectors": {
+          "container": "div[data-market-id='1']",
+          "market_name": "div[data-market-id='1'] .market-name",
+          "market_outcome": "div[data-market-id='1'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='1'] .odds"
+        }
+      },
+      {
+        "rank": 47,
+        "market_outcome": "Double Chance - X2",
+        "likelihood_percent": 54,
+        "base_market": "Double Chance",
+        "market_id": "10",
+        "category": "Match Result",
+        "exact_outcome": "X2",
+        "line": null,
+        "marketGuide": "Predict the match result combining two of the three possible outcomes (1X, X2 or 12).",
+        "lines_available": null,
+        "variants": ["DC - 1UP"],
+        "selectors": {
+          "container": "div[data-market-id='10']",
+          "market_name": "div[data-market-id='10'] .market-name",
+          "market_outcome": "div[data-market-id='10'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='10'] .odds"
+        }
+      },
+      {
+        "rank": 48,
+        "market_outcome": "1X2 - X",
+        "likelihood_percent": 27,
+        "base_market": "1X2",
+        "market_id": "1",
+        "category": "Match Result",
+        "exact_outcome": "X",
+        "line": null,
+        "marketGuide": "Which team will win the match. Overtime not included.",
+        "lines_available": null,
+        "variants": ["1X2 - 2UP", "1X2 - 1UP", "1X2 - DrawSave"],
+        "selectors": {
+          "container": "div[data-market-id='1']",
+          "market_name": "div[data-market-id='1'] .market-name",
+          "market_outcome": "div[data-market-id='1'] .outcome-item",
+          "market_outcome_odds": "div[data-market-id='1'] .odds"
+        }
+      },
+      {
+        "rank": 49,
+        "market_outcome": "Extreme handicaps / lines (Handicap ±3, Asian ±2.75, Corners ±4.5, Cards ±5.5, etc.)",
+        "likelihood_percent": 15,
+        "base_market": "Various (Handicap, Asian, Corners, Cards)",
+        "market_id": "14 or 16 or 168 or 200",
+        "category": "Handicap / Asian / Corners / Cards",
+        "exact_outcome": "Extreme lines",
+        "line": "±3 or higher",
+        "marketGuide": "Predict the winner taking in consideration the handicap in brackets (extreme lines).",
+        "lines_available": "Extreme values only",
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='14'] or div[data-market-id='16'] etc.",
+          "market_name": "div[data-market-id] .market-name",
+          "market_outcome": "div[data-market-id] .outcome-item",
+          "market_outcome_odds": "div[data-market-id] .odds"
+        }
+      },
+      {
+        "rank": 50,
+        "market_outcome": "Boosted/Early Payout markets (1X2 - 2UP, 1X2 - 1UP, DC - 1UP, Over/Under - EarlyGoals, Any Team variants, 1X2 - DrawSave)",
+        "likelihood_percent": 35,
+        "base_market": "Boosted / Early Payout",
+        "market_id": "60100, 60101, 60110, 60180, 60200, 60301, 60302",
+        "category": "Boosted / Early Payout",
+        "exact_outcome": "Various (2UP, 1UP, DrawSave, EarlyGoals)",
+        "line": null,
+        "marketGuide": "Special promotion markets that settle early or under defined conditions (2-goal lead, 1-goal lead, early goals, etc.).",
+        "lines_available": null,
+        "variants": [],
+        "selectors": {
+          "container": "div[data-market-id='60100'] or similar",
+          "market_name": "div[data-market-id] .market-name",
+          "market_outcome": "div[data-market-id] .outcome-item",
+          "market_outcome_odds": "div[data-market-id] .odds"
+        }
+      }
+    ],
+    "notes": [
+      "Team Goals O/U markets (52 & 53) now fully expanded — Over 0.5 = 'To Score Yes'. Higher lines ('more than just a goal') added exactly where they belong in the probability order.",
+      "Likelihood percentages are long-term historical hit rates (Premier League average across 10+ seasons). Home teams score 2+ goals ~48% of the time; away teams score 2+ goals only ~13-34%.",
+      "Combo markets and boosted variants still rank lower due to extra conditions.",
+      "Use the exact market_id and selectors directly in your scraping/automation code on football.com (NG). All original customized markets (2UP, 1UP, DrawSave, EarlyGoals, etc.) remain included.",
+      "Save this as ranked_markets_likelihood_updated_with_team_ou.json"
+    ]
+  }

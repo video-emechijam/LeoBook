@@ -13,7 +13,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from typing import Optional
 from Data.Access.supabase_client import get_supabase_client
-from Data.Access.db_helpers import DB_DIR
+from Data.Access.league_db import DB_DIR
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
