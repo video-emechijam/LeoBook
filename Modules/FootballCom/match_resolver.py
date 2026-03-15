@@ -110,8 +110,9 @@ class GrokMatcher:
         for m in fb_matches:
             fb_h = self._get_name(m, 'home').lower()
             fb_a = self._get_name(m, 'away').lower()
-            h_match = fb_h in h_aliases or any(fb_h in alias for alias in h_aliases)
-            a_match = fb_a in a_aliases or any(fb_a in alias for alias in a_aliases)
+            # Bidirectional: fb name IS an alias, OR fb name contains an alias, OR alias contains fb name
+            h_match = fb_h in h_aliases or any(fb_h in alias for alias in h_aliases) or any(alias in fb_h for alias in h_aliases if len(alias) >= 4)
+            a_match = fb_a in a_aliases or any(fb_a in alias for alias in a_aliases) or any(alias in fb_a for alias in a_aliases if len(alias) >= 4)
             if h_match and a_match:
                 # Auto-learn fb name as alias for future sessions
                 self._auto_learn(conn, home_id, self._get_name(m, 'home'))
@@ -190,11 +191,11 @@ class GrokMatcher:
             except Exception as e:
                 err_str = str(e).lower()
                 if 'quota' in err_str or '429' in err_str:
-                    # Rate-limited — mark dead, try next model
+                    # Rate-limited — mark dead for entire session, try next
                     _session_dead_models.add(model_name)
                 else:
-                    # Any other error (400, 500, timeout) — skip this model only,
-                    # do NOT kill the rest of the chain
-                    _session_dead_models.add(model_name)
+                    # Transient error (400, 500, timeout) — skip for THIS fixture only,
+                    # NOT permanent. Do NOT add to dead models — let next fixture retry.
+                    break
 
         return None, 0.0

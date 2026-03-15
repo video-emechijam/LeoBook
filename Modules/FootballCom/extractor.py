@@ -315,10 +315,14 @@ async def _extract_matches_from_container(container, match_card_sel, home_team_s
 
 
 async def validate_match_data(matches: List[Dict]) -> List[Dict]:
-    """Validate and clean extracted match data."""
+    """Validate and clean extracted match data.
+    Only requires home+away team names — url is optional (needed for odds
+    extraction but not for resolution pairing; many cards on tournament pages
+    have no href at the list level).
+    """
     valid_matches = []
     for match in matches:
-        if all(k in match for k in ['home', 'away', 'url', 'league']) and match['home'] and match['away'] and match['url']:
+        if match.get('home') and match.get('away'):
             valid_matches.append(match)
     print(f"  [Validation] {len(valid_matches)}/{len(matches)} valid.")
     return valid_matches
