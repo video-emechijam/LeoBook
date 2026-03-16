@@ -389,18 +389,36 @@ class SyncManager:
             )
             for i in range(0, len(deduped), api_batch_size):
                 batch = deduped[i:i + api_batch_size]
-                try:
-                    self.supabase.table(remote_table).upsert(batch, on_conflict=conflict_key).execute()
-                except Exception as batch_err:
-                    err_str = str(batch_err)
-                    if 'PGRST205' in err_str or 'Could not find the table' in err_str:
-                        logger.info(f"    [AUTO] Table '{remote_table}' missing during upsert — auto-creating...")
-                        if self._ensure_remote_table(remote_table):
+                # BUG3 FIX: retry on 'database is locked' with exponential backoff
+                for attempt in range(5):
+                    try:
+                        try:
                             self.supabase.table(remote_table).upsert(batch, on_conflict=conflict_key).execute()
+                        except Exception as batch_err:
+                            err_str = str(batch_err)
+                            if 'PGRST205' in err_str or 'Could not find the table' in err_str:
+                                logger.info(f"    [AUTO] Table '{remote_table}' missing during upsert — auto-creating...")
+                                if self._ensure_remote_table(remote_table):
+                                    self.supabase.table(remote_table).upsert(batch, on_conflict=conflict_key).execute()
+                                else:
+                                    raise batch_err
+                            else:
+                                raise batch_err
+                        break  # success — exit retry loop
+                    except Exception as retry_err:
+                        err_lower = str(retry_err).lower()
+                        if ('database is locked' in err_lower or 'operationalerror' in err_lower) and attempt < 4:
+                            delay = 2 ** attempt  # 1s, 2s, 4s, 8s
+                            logger.warning(
+                                f"    [Retry {attempt + 1}/5] {remote_table} locked — waiting {delay}s before retry..."
+                            )
+                            print(
+                                f"    [Retry {attempt + 1}/5] database locked — waiting {delay}s"
+                            )
+                            import asyncio as _asyncio
+                            await _asyncio.sleep(delay)
                         else:
-                            raise batch_err
-                    else:
-                        raise batch_err
+                            raise retry_err
                 pbar.update(len(batch))
             pbar.close()
             logger.info(f"    [SYNC] Upserted {len(deduped):,} rows to {remote_table}.")

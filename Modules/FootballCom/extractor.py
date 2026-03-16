@@ -234,7 +234,14 @@ async def _extract_matches_from_container(container, match_card_sel, home_team_s
             cards.forEach(card => {
                 const homeEl = card.querySelector(selectors.home_team_sel);
                 const awayEl = card.querySelector(selectors.away_team_sel);
-                const timeEl = card.querySelector(selectors.time_sel);
+                // BUG2 FIX: fallback selector chain — return null if no time element found
+                const timeEl = card.querySelector(selectors.time_sel)
+                    || card.querySelector('.match-time')
+                    || card.querySelector('.ko-time')
+                    || card.querySelector('.fixture-time')
+                    || card.querySelector('.start-time')
+                    || card.querySelector('[class*="time"]:not([class*="team"]):not([class*="overtime"])')
+                    || card.querySelector('[data-time]');
                 const linkEl = card.querySelector(selectors.match_url_sel) || card.closest('a');
                 if (homeEl && awayEl) {
                     const dateEl = card.querySelector(
@@ -248,10 +255,11 @@ async def _extract_matches_from_container(container, match_card_sel, home_team_s
                     if (cardDate && !/^\d{4}-\d{2}-\d{2}$/.test(cardDate)) {
                         cardDate = targetDate;
                     }
+                    const rawTime = timeEl ? timeEl.innerText.trim() : null;
                     results.push({
                         home: homeEl.innerText.trim(),
                         away: awayEl.innerText.trim(),
-                        time: timeEl ? timeEl.innerText.trim() : "N/A",
+                        time: rawTime,
                         league: leagueText,
                         url: linkEl ? linkEl.href : "",
                         date: cardDate
@@ -279,7 +287,14 @@ async def _extract_matches_from_container(container, match_card_sel, home_team_s
             cards.forEach(card => {
                 const homeEl = card.querySelector(selectors.home_team_sel);
                 const awayEl = card.querySelector(selectors.away_team_sel);
-                const timeEl = card.querySelector(selectors.time_sel);
+                // BUG2 FIX: fallback selector chain — return null if no time element found
+                const timeEl = card.querySelector(selectors.time_sel)
+                    || card.querySelector('.match-time')
+                    || card.querySelector('.ko-time')
+                    || card.querySelector('.fixture-time')
+                    || card.querySelector('.start-time')
+                    || card.querySelector('[class*="time"]:not([class*="team"]):not([class*="overtime"])')
+                    || card.querySelector('[data-time]');
                 const linkEl = card.querySelector(selectors.match_url_sel) || card.closest('a');
                 if (homeEl && awayEl) {
                     const dateEl = card.querySelector(
@@ -293,10 +308,11 @@ async def _extract_matches_from_container(container, match_card_sel, home_team_s
                     if (cardDate && !/^\d{4}-\d{2}-\d{2}$/.test(cardDate)) {
                         cardDate = targetDate;
                     }
+                    const rawTime = timeEl ? timeEl.innerText.trim() : null;
                     results.push({
                         home: homeEl.innerText.trim(),
                         away: awayEl.innerText.trim(),
-                        time: timeEl ? timeEl.innerText.trim() : "N/A",
+                        time: rawTime,
                         league: leagueText,
                         url: linkEl ? linkEl.href : "",
                         date: cardDate
@@ -319,10 +335,24 @@ async def validate_match_data(matches: List[Dict]) -> List[Dict]:
     Only requires home+away team names — url is optional (needed for odds
     extraction but not for resolution pairing; many cards on tournament pages
     have no href at the list level).
+
+    BUG2 FIX: Normalise time field — strip literal 'N/A' and empty strings to None.
+    Emit a warning log if significant portion of cards have no time element.
     """
     valid_matches = []
+    missing_time = 0
     for match in matches:
         if match.get('home') and match.get('away'):
+            # Normalise time: N/A / empty string → None so downstream can distinguish
+            raw_time = match.get('time')
+            if not raw_time or str(raw_time).strip().upper() in ('N/A', 'NONE', '-', ''):
+                match['time'] = None
+                missing_time += 1
             valid_matches.append(match)
     print(f"  [Validation] {len(valid_matches)}/{len(matches)} valid.")
+    if missing_time:
+        print(
+            f"  [Time] WARNING: {missing_time}/{len(valid_matches)} cards have no time element "
+            f"— selector chain exhausted. Check .header .time on current football.com build."
+        )
     return valid_matches
