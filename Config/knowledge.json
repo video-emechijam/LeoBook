@@ -181,6 +181,7 @@
         "match_market_search_icon_button": ".search-icon-box svg.search-icon",
         "match_market_search_input": ".search-icon-box input[type=\"search\"]",
         "match_detail_time_elapsed": ".estimate-start-time .time",
+        "match_detail_date": ".estimate-start-time .date",
         "match_detail_status": ".live-in-play-icon + span",
         "search_icon": ".m-icon-search",
         "search_input": "input[type=\"search\"]",

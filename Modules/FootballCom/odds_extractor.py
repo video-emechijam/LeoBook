@@ -2,6 +2,7 @@
 #                    a single match from football.com. No-login only.
 # Part of LeoBook Modules — FootballCom
 #
+# v5.1 (2026-03-17): + match date/time extraction from header.
 # v5.0 (2026-03-17): Intro dialog dismissal + recursive scroll + recursive
 #   expand + knowledge.json selectors + ranked_markets extraction + debug
 #   screenshots on failure.
@@ -53,6 +54,8 @@ class OddsResult:
     outcomes_extracted: int
     duration_ms: int
     error: Optional[str] = None
+    match_date: Optional[str] = None   # YYYY-MM-DD from page header
+    match_time: Optional[str] = None   # HH:MM from page header
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────
@@ -70,6 +73,22 @@ async def _safe_screenshot(page: Page, fixture_id: str, tag: str = "") -> None:
         print(f"    [Debug] Screenshot saved: {name}")
     except Exception:
         pass
+
+
+def _parse_fb_date(raw: str) -> Optional[str]:
+    """Parse football.com header date like '17 Mar, Tuesday' into 'YYYY-MM-DD'.
+    Falls back to None if parsing fails."""
+    from datetime import datetime
+    # Remove day-of-week part: '17 Mar, Tuesday' -> '17 Mar'
+    cleaned = raw.split(',')[0].strip() if ',' in raw else raw.strip()
+    now_year = datetime.now().year
+    for fmt in ("%d %b", "%d %B", "%b %d", "%B %d"):
+        try:
+            parsed = datetime.strptime(cleaned, fmt).replace(year=now_year)
+            return parsed.strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
 
 
 # ── Intro Dialog Dismissal ────────────────────────────────────────────────
@@ -312,8 +331,32 @@ class OddsExtractor:
             or "span.un-text-rem-\\[14px\\].un-font-bold, span.un-font-bold[class*='un-text-rem']"
         )
 
+        # Date/time from match header
+        extracted_date: Optional[str] = None
+        extracted_time: Optional[str] = None
+
         try:
             await self._assert_no_login(self.page)
+
+            # ── Step 0: Extract match date + time from header ──
+            try:
+                date_sel = _sel("match_detail_date") or ".estimate-start-time .date"
+                time_sel_hdr = _sel("match_detail_time_elapsed") or ".estimate-start-time .time"
+
+                date_el = self.page.locator(date_sel).first
+                time_el = self.page.locator(time_sel_hdr).first
+
+                if await date_el.count() > 0:
+                    raw_date = (await date_el.inner_text()).strip()
+                    # Parse "17 Mar, Tuesday" → "2026-03-17"
+                    extracted_date = _parse_fb_date(raw_date)
+                    print(f"    [Odds] {fixture_id}: date from header = {raw_date} → {extracted_date}")
+
+                if await time_el.count() > 0:
+                    extracted_time = (await time_el.inner_text()).strip()
+                    print(f"    [Odds] {fixture_id}: time from header = {extracted_time}")
+            except Exception as dt_err:
+                print(f"    [Odds] {fixture_id}: date/time extraction skipped: {dt_err}")
 
             # ── Step 1: Dismiss intro dialog ──
             await _dismiss_intro_dialog(self.page)
@@ -430,6 +473,8 @@ class OddsExtractor:
                 outcomes_extracted=0,
                 duration_ms=elapsed,
                 error=str(e),
+                match_date=extracted_date,
+                match_time=extracted_time,
             )
 
         elapsed = int((time.monotonic() - start) * 1000)
@@ -439,4 +484,6 @@ class OddsExtractor:
             markets_found=markets_found,
             outcomes_extracted=outcomes_written,
             duration_ms=elapsed,
+            match_date=extracted_date,
+            match_time=extracted_time,
         )

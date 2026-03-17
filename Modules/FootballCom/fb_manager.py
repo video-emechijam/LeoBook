@@ -225,6 +225,25 @@ async def _odds_worker(
                 f"{result.outcomes_extracted} outcomes "
                 f"({result.duration_ms}ms)"
             )
+
+            # Save extracted date/time to fb_matches
+            if result.match_date or result.match_time:
+                try:
+                    update_kwargs = {}
+                    if result.match_date:
+                        update_kwargs["date"] = result.match_date
+                    if result.match_time:
+                        update_kwargs["match_time"] = result.match_time
+                    if site_id and update_kwargs:
+                        update_site_match_status(
+                            site_id, "odds_extracted",
+                            fixture_id=fixture_id,
+                            **update_kwargs,
+                        )
+                        print(f"    [Odds] {fixture_id}: saved date={result.match_date} time={result.match_time}")
+                except Exception as dt_save_err:
+                    print(f"    [Odds] {fixture_id}: date/time save skipped: {dt_save_err}")
+
             return result
 
         except Exception as e:
