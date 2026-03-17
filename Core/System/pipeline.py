@@ -184,7 +184,7 @@ async def run_chapter_1_p3(p=None):
         print("=" * 60)
 
         # 1. Generate recommendations — sorted by score DESC per date
-        result = get_recommendations(save_to_file=True)
+        result = await get_recommendations(save_to_file=True)
         recommendations = result.get("recommendations", []) if result else []
 
         # 2. Booking code harvest — top 20% per date, no-login session

@@ -136,7 +136,7 @@ async def run_utility(args):
 
     elif args.recommend:
         print("\n  --- LEO: Generate Recommendations ---")
-        get_recommendations(save_to_file=True)
+        await get_recommendations(save_to_file=True)
 
     elif args.accuracy:
         print("\n  --- LEO: Accuracy Report ---")
