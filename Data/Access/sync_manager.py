@@ -57,13 +57,10 @@ class SyncManager:
         self.conn.commit()
 
     def _ensure_remote_table(self, remote_table: str) -> bool:
-        """Check if a Supabase table exists; if not, print the DDL the engineer must run.
+        """Check if a Supabase table exists; if not, auto-create via exec_sql RPC.
 
-        FIX (2026-03-17): Removed exec_sql RPC path — that function no longer exists in
-        Supabase after schema resets. Instead we do a lightweight SELECT probe. If it fails
-        (PGRST205 / table missing), we log the CREATE TABLE DDL so it can be run manually
-        in the Supabase SQL editor. This makes the failure loud and actionable instead of
-        silently retrying and aborting with a cryptic error.
+        Requires the exec_sql(TEXT) function to exist in Supabase (STEP 1 of bootstrap).
+        If exec_sql is unavailable, prints the DDL for manual execution.
         """
         if remote_table in self._created_tables:
             return True
@@ -74,13 +71,31 @@ class SyncManager:
             return True
         except Exception as probe_err:
             err_str = str(probe_err)
-            if 'PGRST205' in err_str or 'Could not find the table' in err_str or '404' in err_str:
-                ddl = SUPABASE_SCHEMA.get(remote_table)
+            if 'PGRST205' not in err_str and 'Could not find the table' not in err_str and '404' not in err_str:
+                logger.warning(f"    [!] Table probe failed for '{remote_table}': {probe_err}")
+                return False
+
+            # Table doesn't exist — try to auto-create via exec_sql RPC
+            ddl = SUPABASE_SCHEMA.get(remote_table)
+            if not ddl:
+                logger.error(f"    [!] No DDL defined for '{remote_table}' in SUPABASE_SCHEMA")
+                return False
+
+            try:
+                self.supabase.rpc('exec_sql', {'query': ddl}).execute()
+                logger.info(f"    [AUTO] Created table '{remote_table}' via exec_sql RPC.")
+                # Verify it actually worked
+                self.supabase.table(remote_table).select('*').limit(0).execute()
+                self._created_tables.add(remote_table)
+                return True
+            except Exception as create_err:
+                # exec_sql failed — fall back to printing DDL
                 logger.error(
                     f"\n{'='*72}\n"
                     f"[ACTION REQUIRED] Supabase table '{remote_table}' does not exist.\n"
+                    f"Auto-create via exec_sql failed: {create_err}\n"
                     f"Run the following DDL in your Supabase SQL Editor:\n\n"
-                    f"{ddl if ddl else '(No DDL defined in SUPABASE_SCHEMA — add it to sync_schema.py)'}\n"
+                    f"{ddl}\n"
                     f"{'='*72}\n"
                 )
                 print(
@@ -88,9 +103,7 @@ class SyncManager:
                     f"    Run DDL from sync_schema.SUPABASE_SCHEMA['{remote_table}'] in Supabase SQL Editor.\n"
                     f"    Skipping sync for this table until provisioned.\n"
                 )
-            else:
-                logger.warning(f"    [!] Table probe failed for '{remote_table}': {probe_err}")
-            return False
+                return False
 
 
     async def sync_on_startup(self, force_full: bool = False) -> None:
