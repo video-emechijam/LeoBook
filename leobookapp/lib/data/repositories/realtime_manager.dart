@@ -35,7 +35,7 @@ class RealtimeManager {
         });
 
     channel.subscribe((status, [error]) {
-      if (status == 'SUBSCRIBED') {
+      if (status == RealtimeSubscribeStatus.subscribed) {
          debugPrint('[RealtimeManager] Subscribed to postgres_changes: $table');
       } else {
          debugPrint('[RealtimeManager] Realtime subscription status ($table): $status');

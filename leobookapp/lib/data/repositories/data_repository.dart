@@ -153,12 +153,13 @@ class DataRepository {
       debugPrint('Loaded ${response.length} recommendations from Supabase');
 
       // SharedPreferences String length limit quota can trigger on large arrays.
-      // Cache only the top 100 highest scoring recommendations to avoid exceeding quota.
-      final listToCache = (response as List).take(100).toList();
+      // Cache only the top 30 highest scoring recommendations to avoid exceeding quota.
+      final listToCache = (response as List).take(30).toList();
       try {
         await prefs.setString(_keyRecommended, jsonEncode(listToCache));
       } catch (e) {
         debugPrint('Warning: Could not save recommendations cache due to size limit: $e');
+        try { await prefs.remove(_keyRecommended); } catch (_) {}
       }
 
       return (response)
