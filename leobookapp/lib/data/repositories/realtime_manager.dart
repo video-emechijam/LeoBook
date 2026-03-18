@@ -1,4 +1,4 @@
-// realtime_manager.dart: Centralized Supabase Broadcast Realtime subscription manager.
+// realtime_manager.dart: Centralized Supabase Realtime subscription manager.
 // Part of LeoBook App — Data Layer
 //
 // Classes: RealtimeManager
@@ -7,14 +7,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Callback type for realtime broadcast events.
-typedef RealtimeHandler = void Function(Map<String, dynamic> payload);
+/// Callback type for realtime postgres changes events.
+typedef RealtimeHandler = void Function(
+    PostgresChangePayload payload, String table);
 
 /// Manages private broadcast channel subscriptions to all Supabase tables.
 ///
-/// Subscribes to topics matching table names (e.g., 'predictions', 'schedules').
-/// Requires broadcast triggers to be set up on the Supabase side and
-/// realtime.messages RLS policies for auth access.
+/// Subscribes to postgres_changes for tables (e.g., 'predictions', 'schedules').
+/// Requires supabase realtime replication to be enabled on those tables.
 class RealtimeManager {
   final SupabaseClient _supabase;
   final Map<String, RealtimeChannel> _channels = {};
@@ -22,28 +22,27 @@ class RealtimeManager {
 
   RealtimeManager(this._supabase);
 
-  /// Subscribe to broadcast events for a table topic.
-  /// The topic name must match what the Postgres trigger broadcasts to.
+  /// Subscribe to postgres_changes for a table.
   Future<void> subscribeToTable(String table) async {
     if (_channels.containsKey(table)) return; // Already subscribed
 
-    final channel = _supabase.channel(
-      table,
-      opts: const RealtimeChannelConfig(private: true),
-    );
+    final channel = _supabase.channel('public:$table').onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        table: table,
+        callback: (payload) {
+          _dispatch(table, payload);
+        });
 
-    // Listen to all broadcast events (INSERT, UPDATE, DELETE)
-    channel.onBroadcast(
-      event: '*',
-      callback: (payload) {
-        final data = Map<String, dynamic>.from(payload);
-        _dispatch(table, data);
-      },
-    );
-
-    channel.subscribe();
+    channel.subscribe((status, [error]) {
+      if (status == 'SUBSCRIBED') {
+         debugPrint('[RealtimeManager] Subscribed to postgres_changes: $table');
+      } else {
+         debugPrint('[RealtimeManager] Realtime subscription status ($table): $status');
+      }
+    });
+    
     _channels[table] = channel;
-    debugPrint('[RealtimeManager] Subscribed to broadcast topic: $table');
   }
 
   /// Unsubscribe and remove a table topic.
@@ -68,12 +67,12 @@ class RealtimeManager {
     if (list != null && list.isEmpty) _handlers.remove(table);
   }
 
-  void _dispatch(String table, Map<String, dynamic> payload) {
+  void _dispatch(String table, PostgresChangePayload payload) {
     final list = _handlers[table];
     if (list == null) return;
     for (final h in list) {
       try {
-        h(payload);
+        h(payload, table);
       } catch (e, st) {
         debugPrint('[RealtimeManager] Handler error for $table: $e\n$st');
       }

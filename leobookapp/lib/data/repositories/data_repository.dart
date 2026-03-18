@@ -152,9 +152,16 @@ class DataRepository {
 
       debugPrint('Loaded ${response.length} recommendations from Supabase');
 
-      await prefs.setString(_keyRecommended, jsonEncode(response));
+      // SharedPreferences String length limit quota can trigger on large arrays.
+      // Cache only the top 100 highest scoring recommendations to avoid exceeding quota.
+      final listToCache = (response as List).take(100).toList();
+      try {
+        await prefs.setString(_keyRecommended, jsonEncode(listToCache));
+      } catch (e) {
+        debugPrint('Warning: Could not save recommendations cache due to size limit: $e');
+      }
 
-      return (response as List)
+      return (response)
           .map((json) => RecommendationModel.fromJson(json))
           .toList();
     } catch (e) {
@@ -178,17 +185,17 @@ class DataRepository {
     try {
       // Try exact match first
       var response = await _supabase
-          .from('standings')
+          .from('computed_standings')
           .select()
-          .eq('region_league', leagueName)
+          .eq('league', leagueName)
           .order('position', ascending: true);
 
       // Fallback: ILIKE if exact match returns empty (handles format variations)
       if ((response as List).isEmpty && leagueName.isNotEmpty) {
         response = await _supabase
-            .from('standings')
+            .from('computed_standings')
             .select()
-            .ilike('region_league', '%$leagueName%')
+            .ilike('league', '%$leagueName%')
             .order('position', ascending: true);
       }
 
@@ -285,7 +292,7 @@ class DataRepository {
   Future<StandingModel?> getTeamStanding(String teamName) async {
     try {
       final response = await _supabase
-          .from('standings')
+          .from('computed_standings')
           .select()
           .eq('team_name', teamName)
           .maybeSingle();
@@ -338,12 +345,16 @@ class DataRepository {
   }
 
   Stream<List<StandingModel>> watchStandings(String leagueName) {
+    // Note: Views are not natively supported by realtime unless specific triggers are set.
+    // However, the base tables (schedules) are streamed, so changes will be reflected.
+    // If realtime postgres_changes fails on this view, the app relies on schedule stream updates to refresh anyway.
     return _supabase
-        .from('standings')
-        .stream(primaryKey: ['standings_key'])
-        .eq('region_league', leagueName)
+        .from('computed_standings')
+        .stream(primaryKey: ['league_id', 'team_id']) // Views don't have PKs natively in stream(), but we must provide unique keys
+        .eq('league', leagueName)
         .map((rows) => rows.map((row) => StandingModel.fromJson(row)).toList());
   }
+
 
   Stream<Map<String, String>> watchTeamCrestUpdates() {
     return _supabase.from('teams').stream(primaryKey: ['name']).map((rows) {
@@ -355,6 +366,15 @@ class DataRepository {
       }
       return crests;
     });
+  }
+
+  /// Watch match_odds table for realtime odds updates
+  Stream<List<Map<String, dynamic>>> watchMatchOdds(String fixtureId) {
+    return _supabase
+        .from('match_odds')
+        .stream(primaryKey: ['fixture_id', 'market_id', 'exact_outcome', 'line'])
+        .eq('fixture_id', fixtureId)
+        .map((rows) => rows);
   }
 
   // --- League Data ---
