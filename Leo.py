@@ -48,6 +48,10 @@ def validate_config():
 # Validate configuration on startup
 validate_config()
 
+# ── Feature Flags (set True to disable for faster Ch1 runs) ──────────────
+DISABLE_PAPER_TRADES = True   # Skip paper-trade logging in prediction pipeline
+DISABLE_SEARCH_DICT  = True   # Skip SearchDict / team enrichment LLM calls
+
 # --- Modular Imports (all logic is external) ---
 from Core.System.lifecycle import (
     log_state, log_audit_state, setup_terminal_logging, parse_args, state
@@ -143,9 +147,12 @@ async def run_utility(args):
         print_accuracy_report()
 
     elif args.search_dict:
-        print("\n  --- LEO: Rebuild Search Dictionary ---")
-        from Scripts.build_search_dict import main as build_search
-        await build_search()
+        if DISABLE_SEARCH_DICT:
+            print("\n  [CH1] SearchDict enrichment disabled by flag (DISABLE_SEARCH_DICT=True)")
+        else:
+            print("\n  --- LEO: Rebuild Search Dictionary ---")
+            from Scripts.build_search_dict import main as build_search
+            await build_search()
 
     elif args.review:
         print("\n  --- LEO: Outcome Review ---")

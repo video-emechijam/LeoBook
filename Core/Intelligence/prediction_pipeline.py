@@ -335,35 +335,45 @@ async def run_predictions(conn=None, fixtures: List[Dict] = None, scheduler=None
             print(f"      [✓] {home} vs {away} → {p_type} ({prediction.get('confidence', '?')})")
 
             # Paper trade logging (never blocks pipeline)
+            # Controlled by DISABLE_PAPER_TRADES flag in Leo.py
             try:
-                from Core.Intelligence.ensemble import log_paper_trade
-                # Derive picks
-                rl_probs = rl_prediction.get("rl_action_probs", {})
-                rl_pick_key = max(rl_probs, key=rl_probs.get) if rl_probs else "no_bet"
+                from Leo import DISABLE_PAPER_TRADES
+            except ImportError:
+                DISABLE_PAPER_TRADES = False
 
-                # 30-dim rule pick (upgraded from 1X2-only)
-                best_30 = rule_prediction.get("best_30dim")
-                rule_pick_key = best_30["market_key"] if best_30 else "no_bet"
+            if DISABLE_PAPER_TRADES:
+                if fixture_id == fixtures[0].get("fixture_id"):  # Log once per batch
+                    print("      [CH1] Paper trades disabled by flag (DISABLE_PAPER_TRADES=True)")
+            else:
+                try:
+                    from Core.Intelligence.ensemble import log_paper_trade
+                    # Derive picks
+                    rl_probs = rl_prediction.get("rl_action_probs", {})
+                    rl_pick_key = max(rl_probs, key=rl_probs.get) if rl_probs else "no_bet"
 
-                # Ensemble: use RL pick if RL is active, otherwise 30-dim rule pick
-                is_symbolic = prediction.get("ensemble_path") == "symbolic_fallback"
-                ensemble_pick_key = rule_pick_key if is_symbolic else rl_pick_key
+                    # 30-dim rule pick (upgraded from 1X2-only)
+                    best_30 = rule_prediction.get("best_30dim")
+                    rule_pick_key = best_30["market_key"] if best_30 else "no_bet"
 
-                log_paper_trade(
-                    fixture_id=fixture_id,
-                    home_team=home,
-                    away_team=away,
-                    league_id=fixture.get("league_id"),
-                    match_date=fixture.get("date", ""),
-                    rl_pick=rl_pick_key,
-                    rule_pick=rule_pick_key,
-                    ensemble_pick=ensemble_pick_key,
-                    model_prob=best_30["prob"] if best_30 else 0.0,
-                    rl_confidence=rl_prediction.get("ml_confidence"),
-                    rule_confidence=rule_prediction.get("market_reliability"),
-                )
-            except Exception:
-                pass  # Paper trade logging must never block
+                    # Ensemble: use RL pick if RL is active, otherwise 30-dim rule pick
+                    is_symbolic = prediction.get("ensemble_path") == "symbolic_fallback"
+                    ensemble_pick_key = rule_pick_key if is_symbolic else rl_pick_key
+
+                    log_paper_trade(
+                        fixture_id=fixture_id,
+                        home_team=home,
+                        away_team=away,
+                        league_id=fixture.get("league_id"),
+                        match_date=fixture.get("date", ""),
+                        rl_pick=rl_pick_key,
+                        rule_pick=rule_pick_key,
+                        ensemble_pick=ensemble_pick_key,
+                        model_prob=best_30["prob"] if best_30 else 0.0,
+                        rl_confidence=rl_prediction.get("ml_confidence"),
+                        rule_confidence=rule_prediction.get("market_reliability"),
+                    )
+                except Exception:
+                    pass  # Paper trade logging must never block
 
         except Exception as e:
             logger.error(f"      [✗] Prediction failed for {home} vs {away}: {e}")
